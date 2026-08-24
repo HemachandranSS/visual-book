@@ -99,7 +99,8 @@ const visualBooks = [
     'https://hemachandranss.github.io/books1/books/visual-books/Encyclopedia_of_Garden_Plants_for_Every_Location_-_DK',
     'https://hemachandranss.github.io/books1/books/visual-books/Encyclopedia_Of_Herbal_Medicine_-_Andrew_Chevallier',
     'https://hemachandranss.github.io/books1/books/visual-books/First_Animal_Encyclopedia_-_DK',
-    'https://hemachandranss.github.io/books1/books/visual-books/First_Science_Encyclopedia_Revised_Edition_-_DK'
+    'https://hemachandranss.github.io/books1/books/visual-books/First_Science_Encyclopedia_Revised_Edition_-_DK',
+    'https://hemachandranss.github.io/books1/books/visual-books/Flight_The_Complete_History_of_Aviation_-_RG_Grant'
 ];
 
 const normalizeBookPath = (value) => {
