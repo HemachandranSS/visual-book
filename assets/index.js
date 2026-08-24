@@ -1,0 +1,124 @@
+const visualBooks = [
+    'books/visual-books/baby_play_for_every_day',
+    'books/visual-books/Scientists_-_Dorling_Kindersley',
+    'books/visual-books/jack_maker_lab_28_super_cool_projects_build_invent',
+    'books/visual-books/first_children_s_encyclopedia',
+    'books/visual-books/100_people_who_made_history',
+    'books/visual-books/children_first_childrens_dictionary',
+    'books/visual-books/Night_sky_Explore_nature',
+    'books/visual-books/my_encyclopedia_of_very_important_sports',
+    'books/visual-books/1000_words_nature',
+    'books/visual-books/did_you_know_amazing_answer_to_the_questions',
+    'books/visual-books/dk_children_big_questions',
+    'books/visual-books/cars_trains_ships_and_planes',
+    'books/visual-books/picture-encyclopedia',
+    'books/visual-books/the_steam_team_explains_more_than_10',
+    'books/visual-books/our_world_in_pictures_countries_cultures_people',
+    'books/visual-books/dk_my_top_to_bottom_body_book',
+    'books/visual-books/me_and_my_body',
+    'books/visual-books/great_things_to_do_outside',
+    'books/visual-books/my_encyclopedia_of_very_important_animals',
+    'books/visual-books/life_cycles_everything_from_start_to_finish',
+    'books/visual-books/dk_children_s_illustrated_animal_atlas',
+    'books/visual-books/the_animal_atlas',
+    'books/visual-books/the_bird_atlas',
+    'books/visual-books/the_most_fantastic_atlas',
+    'books/visual-books/dk_children_s_illustrated_history_atlas',
+    'books/visual-books/science_squad',
+    'books/visual-books/weather_and_the_seasons',
+    'books/visual-books/woodfores',
+    'books/visual-books/life_as_we_know_it',
+    'books/visual-books/mills_a_dkfindout_oceans',
+    'books/visual-books/365_things_to_do_with_paper',
+    'books/visual-books/domoney_d_my_house_plant_changed_my_life',
+    'books/visual-books/the_crafter_s_year',
+    'books/visual-books/dk_children_lets_sew',
+    'books/visual-books/cooking_step_by_step',
+    'books/visual-books/my_first_vegetarian_cookbook',
+    'books/visual-books/gladiators_riveting_reads',
+    'books/visual-books/macfarlane_t_dragon_world',
+    'books/visual-books/leonardo_da_vinci_life_stories',
+    'books/visual-books/queen_elizabeth_iilife_stories',
+    'books/visual-books/hilton_h_ed_stuff_to_know_when_you_start_school',
+    'books/visual-books/lost_in_the_clouds',
+    'books/visual-books/disney_princess_craft_book',
+    'books/visual-books/dk_readers_prelevel_1_in_the_park',
+    'books/visual-books/Avengers_The_Ultimate_Guide',
+    'books/visual-books/a_first_bible_story_book',
+    'books/visual-books/dk_children_my_very_first_bible_stories',
+    'books/visual-books/dk_my_little_picture_bible',
+    'books/visual-books/Alphabet_Poems',
+    'books/visual-books/InteractiveLeveledBooksICanDailyTasks',
+    'books/visual-books/babys_first_chinese_new_year',
+    'books/visual-books/english_for_everyone_junior_5_words_a_day_learn',
+    'books/visual-books/help_your_kids_with_times_tables',
+    'books/visual-books/50_states_of_the_united_states_of_america',
+    'books/visual-books/Help_your_kids_with_English',
+    'books/visual-books/Help_Your_kids_with_Math',
+    'books/visual-books/Help_Your_kids_with_Science',
+    'books/visual-books/Kniga_Help_Your_Kids_with_Computer_Coding',
+    'books/visual-books/Help_Your_Kids_with_Language_Arts',
+    'books/visual-books/Help_Your_Kids_with_Music',
+    'books/visual-books/Help_Your_Kids_with_Computer',
+    'books/visual-books/Help_Your_Kids_with_Adolescence',
+    'books/visual-books/dk_eyewitness_books_ocean',
+    'books/visual-books/dk_google_online_oceans',
+    'books/visual-books/dk_smithsonian_ocean',
+    'books/visual-books/Ann_Swanson_Science_of_Yoga_Understand_the_Anat',
+    'books/visual-books/DK_-_1000_Words_-_Science',
+    'books/visual-books/Where_on_Earth_-_Dorling_Kindersley',
+    'books/DK_-_Big_Book_of_Knowledge',
+    'books/visual-books/Natural_Wonders_of_the_World_By_DK',
+    'books/visual-books/Plant_DK_Eye_Wonder_by_Fleur_Star',
+    'books/visual-books/Christopher_Brickell_-_Encyclopedia_of_Plants_and_Flowers-DK_Publishing_2019',
+    'books/visual-books/Scientists_Who_Changed_History',
+    'books/visual-books/Geography_of_the_World_By_DK',
+    'books/visual-books/DK_-_Wonders_of_Nature_Ben_Hoare',
+    'books/visual-books/Super_Science_Encyclopedia_How_Science_Shapes_Our_World_by_Dorling_Kindersley',
+    'books/visual-books/dk_first_space_encyclopedia',
+    'books/visual-books/dk_see_how_they_go_spaceship',
+    'books/visual-books/dk_space_visual_encyclopedia',
+    'books/visual-books/The_Mysteries_of_the_Universe_Discover_the_best-kept_secrets_of_space_by_Will_Gater_z-lib_org',
+    'books/visual-books/The_Stars_The_Definitive_Visual_Guide_to_the_Cosmos',
+    'books/visual-books/Starfinder_The_Complete_Beginners_Guide_to_Exploring_the_Night_Sky_by_Carole_Stott',
+    'books/visual-books/Universe_Third_Edition_by_DK',
+    'books/visual-books/Simply_Quantum_Physics_Miezan_van_Zyl_Project_Editor',
+    'books/visual-books/Quantum-Physics',
+    'https://hemachandranss.github.io/books1/books/visual-books/How_Money_Works_-_The_Facts_Visually_Explained_2017',
+    'https://hemachandranss.github.io/books1/books/visual-books/How_Business_Works',
+    'https://hemachandranss.github.io/books1/books/visual-books/DK-Essential-Managers-Innovation',
+    'https://hemachandranss.github.io/books1/books/visual-books/How_to_Start_Your_Own_Business_The_Facts_Visually_Explained_DK',
+    'https://hemachandranss.github.io/books1/books/visual-books/The_Law_Book_by_DK',
+    'https://hemachandranss.github.io/books1/books/visual-books/Glynis_Barnes-Mellish_-_Watercolor_Workshop_-_2006',
+    'https://hemachandranss.github.io/books1/books/visual-books/An_Introduction_to_Oil_Painting_DK_Art_School',
+    'https://hemachandranss.github.io/books1/books/visual-books/Norse_Myths',
+    'https://hemachandranss.github.io/books1/books/visual-books/A_History_of_Magic_Witchcraft_and_the_Occult_-_DK',
+    'https://hemachandranss.github.io/books1/books/visual-books/Aircraft_The_Definitive_Visual_History_New_Edition_-_DK',
+    'https://hemachandranss.github.io/books1/books/visual-books/Animal_-_David_Burnie',
+    'https://hemachandranss.github.io/books1/books/visual-books/Computer_Coding_Python_Projects_for_Kids_-_Carol_Vorderman',
+    'https://hemachandranss.github.io/books1/books/visual-books/Encyclopedia_of_Garden_Plants_for_Every_Location_-_DK',
+    'https://hemachandranss.github.io/books1/books/visual-books/Encyclopedia_Of_Herbal_Medicine_-_Andrew_Chevallier',
+    'https://hemachandranss.github.io/books1/books/visual-books/First_Animal_Encyclopedia_-_DK'
+];
+
+const normalizeBookPath = (value) => {
+    if (!value) return '';
+    try {
+        const url = new URL(value, window.location.href);
+        const pathname = url.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+        const booksIndex = pathname.indexOf('books/');
+        return booksIndex >= 0 ? pathname.slice(booksIndex) : pathname;
+    } catch {
+        const cleaned = String(value).replace(/^\/+/, '').replace(/\/+$/, '');
+        const booksIndex = cleaned.indexOf('books/');
+        return booksIndex >= 0 ? cleaned.slice(booksIndex) : cleaned;
+    }
+};
+
+const relativeVisualBooks = visualBooks.map((book) => normalizeBookPath(book));
+
+const bookCount = relativeVisualBooks.length;
+const label = bookCount === 1 ? 'Book' : 'Books';
+
+document.getElementById('count').textContent = `${bookCount} ${label}`;
+document.getElementById('visualCount').textContent = `${bookCount} ${label}`;
