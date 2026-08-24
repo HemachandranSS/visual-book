@@ -98,7 +98,8 @@ const visualBooks = [
     'https://hemachandranss.github.io/books1/books/visual-books/Computer_Coding_Python_Projects_for_Kids_-_Carol_Vorderman',
     'https://hemachandranss.github.io/books1/books/visual-books/Encyclopedia_of_Garden_Plants_for_Every_Location_-_DK',
     'https://hemachandranss.github.io/books1/books/visual-books/Encyclopedia_Of_Herbal_Medicine_-_Andrew_Chevallier',
-    'https://hemachandranss.github.io/books1/books/visual-books/First_Animal_Encyclopedia_-_DK'
+    'https://hemachandranss.github.io/books1/books/visual-books/First_Animal_Encyclopedia_-_DK',
+    'https://hemachandranss.github.io/books1/books/visual-books/First_Science_Encyclopedia_Revised_Edition_-_DK'
 ];
 
 const normalizeBookPath = (value) => {
