@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Viewer</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -194,6 +195,16 @@
             border: 1px solid rgba(255, 255, 255, 0.18);
         }
 
+        .export-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.24rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
         .zoom-btn {
             background: rgba(255, 255, 255, 0.16);
             color: rgba(255, 255, 255, 0.98);
@@ -215,6 +226,29 @@
 
         .zoom-btn:active {
             transform: scale(0.96);
+        }
+
+        .export-btn {
+            background: rgba(255, 255, 255, 0.16);
+            color: rgba(255, 255, 255, 0.98);
+            border: none;
+            padding: 0.55rem 0.9rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.18s ease, background 0.18s ease, opacity 0.18s ease;
+            font-size: 0.86rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .export-btn:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.26);
+            transform: translateY(-1px);
+        }
+
+        .export-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .main-content {
@@ -429,6 +463,11 @@
                 <div id="pageInfo" class="page-info">-</div>
                 <button id="nextBtn" class="nav-btn" disabled>Next →</button>
             </div>
+            <div class="export-controls">
+                <button id="exportPngBtn" class="export-btn" disabled>Export PNG</button>
+                <button id="exportJpgBtn" class="export-btn" disabled>Export JPG</button>
+                <button id="exportPdfBtn" class="export-btn" disabled>Export PDF</button>
+            </div>
             <div class="zoom-controls">
                 <button id="zoomOut" class="zoom-btn">−</button>
                 <button id="zoomIn" class="zoom-btn">+</button>
@@ -475,6 +514,9 @@
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const pageInfo = document.getElementById('pageInfo');
+        const exportPngBtn = document.getElementById('exportPngBtn');
+        const exportJpgBtn = document.getElementById('exportJpgBtn');
+        const exportPdfBtn = document.getElementById('exportPdfBtn');
         const zoomInBtn = document.getElementById('zoomIn');
         const zoomOutBtn = document.getElementById('zoomOut');
         const welcomeMessage = document.getElementById('welcomeMessage');
@@ -495,6 +537,9 @@
         fileInput.addEventListener('change', handleFileSelect);
         prevBtn.addEventListener('click', showPrevPage);
         nextBtn.addEventListener('click', showNextPage);
+        exportPngBtn.addEventListener('click', () => exportCurrentSpread('png'));
+        exportJpgBtn.addEventListener('click', () => exportCurrentSpread('jpg'));
+        exportPdfBtn.addEventListener('click', () => exportCurrentSpread('pdf'));
         zoomInBtn.addEventListener('click', zoomIn);
         zoomOutBtn.addEventListener('click', zoomOut);
 
@@ -1022,6 +1067,9 @@
             const hasDocument = pdfDoc || bookMode;
             prevBtn.disabled = !hasDocument || currentPage <= 1;
             nextBtn.disabled = !hasDocument || (!bookMode && currentPage >= totalPages) || (bookMode && !(currentPage === 1 || bookHasMore || currentPage + 1 < bookPages.length));
+            exportPngBtn.disabled = !hasDocument;
+            exportJpgBtn.disabled = !hasDocument;
+            exportPdfBtn.disabled = !hasDocument;
         }
 
         function clampBookPageToTotal() {
@@ -1108,6 +1156,74 @@
             return value
                 .replace(/[_-]+/g, ' ')
                 .replace(/\b\w/g, (ch) => ch.toUpperCase());
+        }
+
+        async function exportCurrentSpread(format) {
+            const canvases = Array.from(pagesContainer.querySelectorAll('canvas'));
+            if (!canvases.length) return;
+
+            const mergedCanvas = document.createElement('canvas');
+            const mergedContext = mergedCanvas.getContext('2d');
+            const gap = canvases.length > 1 ? 0 : 0;
+            const width = canvases.reduce((sum, canvas) => sum + canvas.width, 0) + gap * Math.max(0, canvases.length - 1);
+            const height = Math.max(...canvases.map((canvas) => canvas.height));
+
+            mergedCanvas.width = width;
+            mergedCanvas.height = height;
+            mergedContext.fillStyle = '#ffffff';
+            mergedContext.fillRect(0, 0, width, height);
+
+            let offsetX = 0;
+            for (const canvas of canvases) {
+                mergedContext.drawImage(canvas, offsetX, 0);
+                offsetX += canvas.width + gap;
+            }
+
+            const baseName = buildExportBaseName();
+
+            if (format === 'png' || format === 'jpg') {
+                const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
+                const quality = format === 'jpg' ? 0.95 : undefined;
+                const dataUrl = mergedCanvas.toDataURL(mimeType, quality);
+                downloadDataUrl(dataUrl, `${baseName}.${format === 'jpg' ? 'jpg' : 'png'}`);
+                return;
+            }
+
+            if (format === 'pdf') {
+                const pdfApi = window.jspdf && window.jspdf.jsPDF;
+                if (!pdfApi) {
+                    alert('PDF export is not available right now.');
+                    return;
+                }
+
+                const { width: canvasWidth, height: canvasHeight } = mergedCanvas;
+                const orientation = canvasWidth >= canvasHeight ? 'landscape' : 'portrait';
+                const pdf = new pdfApi({
+                    orientation,
+                    unit: 'px',
+                    format: [canvasWidth, canvasHeight],
+                    compress: true
+                });
+                const dataUrl = mergedCanvas.toDataURL('image/png');
+                pdf.addImage(dataUrl, 'PNG', 0, 0, canvasWidth, canvasHeight);
+                pdf.save(`${baseName}.pdf`);
+            }
+        }
+
+        function buildExportBaseName() {
+            const sourceName = bookMode
+                ? (bookFolderPath ? titleize(bookFolderPath.split('/').filter(Boolean).pop() || 'spread') : 'spread')
+                : `page-${currentPage}`;
+            return `dual-spread-${sourceName}`.replace(/[^\w.-]+/g, '_');
+        }
+
+        function downloadDataUrl(dataUrl, filename) {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
         }
 
         function normalizeBookFolder(folder) {
