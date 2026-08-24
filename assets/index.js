@@ -104,7 +104,9 @@ const visualBooks = [
     'https://hemachandranss.github.io/books1/books/visual-books/Great_Fruit_n_Vegetable_Guide_-_DK',
     'https://hemachandranss.github.io/books1/books/visual-books/History_A_Visual_Encyclopedia_-_DK',
     'https://hemachandranss.github.io/books1/books/visual-books/History_-_The_DK_Definitive_Visual_Guide_-_Adam_Hart-Davis',
-    'https://hemachandranss.github.io/books1/books/visual-books/Illustrated_Family_Encyclopedia_-_DK_Publishing'
+    'https://hemachandranss.github.io/books1/books/visual-books/Illustrated_Family_Encyclopedia_-_DK_Publishing',
+    'https://hemachandranss.github.io/books1/books/visual-books/Indian_Railways_A_Visual_Journey_-_DK'
+
 ];
 
 const normalizeBookPath = (value) => {
