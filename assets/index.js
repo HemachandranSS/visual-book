@@ -121,7 +121,8 @@ const visualBooks = [
     'https://hemachandranss.github.io/books2/books/visual-books/Made_for_Baby_-_DK',
     'https://hemachandranss.github.io/books2/books/visual-books/Geography_A_Visual_Encyclopedia',
     'https://hemachandranss.github.io/books2/books/visual-books/Dorling_Kindersley_Inventions_A_Visual_Encyclop',
-    'https://hemachandranss.github.io/books2/books/visual-books/Dorling_Kindersley_Limited_-_Atlas'
+    'https://hemachandranss.github.io/books2/books/visual-books/Dorling_Kindersley_Limited_-_Atlas',
+    'https://hemachandranss.github.io/books2/books/visual-books/Where_on_Earth_Geography_As_Youve_Never_Seen_It_Before_by_DK'
 ];
 
 const normalizeBookPath = (value) => {
