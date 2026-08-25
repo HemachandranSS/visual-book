@@ -125,7 +125,8 @@ const visualBooks = [
     'https://hemachandranss.github.io/books2/books/visual-books/Where_on_Earth_Geography_As_Youve_Never_Seen_It_Before_by_DK',
     'https://hemachandranss.github.io/books2/books/visual-books/The_Concise_Human_Body_Book_New_Edition_-_DK_UserUpload_Net',
     'https://hemachandranss.github.io/books2/books/visual-books/human_body_facts_at_your_fingertips',
-    'https://hemachandranss.github.io/books2/books/visual-books/human-body-a-visual-encyclopedia-1st-american'
+    'https://hemachandranss.github.io/books2/books/visual-books/human-body-a-visual-encyclopedia-1st-american',
+    "https://hemachandranss.github.io/books2/books/visual-books/Human_Body_DK_Eyewitness_Science"
 ];
 
 const normalizeBookPath = (value) => {
