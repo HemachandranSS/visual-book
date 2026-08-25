@@ -120,7 +120,8 @@ const visualBooks = [
     'https://hemachandranss.github.io/books2/books/visual-books/pregnancy_day_by_day_4th_edition_-_dk',
     'https://hemachandranss.github.io/books2/books/visual-books/Made_for_Baby_-_DK',
     'https://hemachandranss.github.io/books2/books/visual-books/Geography_A_Visual_Encyclopedia',
-    'https://hemachandranss.github.io/books2/books/visual-books/Dorling_Kindersley_Inventions_A_Visual_Encyclop'
+    'https://hemachandranss.github.io/books2/books/visual-books/Dorling_Kindersley_Inventions_A_Visual_Encyclop',
+    'https://hemachandranss.github.io/books2/books/visual-books/Dorling_Kindersley_Limited_-_Atlas'
 ];
 
 const normalizeBookPath = (value) => {
