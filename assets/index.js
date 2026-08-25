@@ -114,7 +114,8 @@ const visualBooks = [
     'https://hemachandranss.github.io/books2/books/visual-books/Timelines_of_World_History_-_DK',
     'https://hemachandranss.github.io/books2/books/visual-books/The_Military_History_Book_-_DK',
     'https://hemachandranss.github.io/books2/books/visual-books/Trees_Leaves_Flowers_n_Seeds_-_DK',
-    'https://hemachandranss.github.io/books2/books/visual-books/Ultimate_Food_Journeys_-_DK_Eyewitness_Travel'
+    'https://hemachandranss.github.io/books2/books/visual-books/Ultimate_Food_Journeys_-_DK_Eyewitness_Travel',
+    'https://hemachandranss.github.io/books2/books/visual-books/How_It_Works_DK_-_How_the_Brain_Works_The_Facts_Visually_Explained-DK_2020'
 ];
 
 const normalizeBookPath = (value) => {
