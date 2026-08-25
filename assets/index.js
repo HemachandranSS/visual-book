@@ -118,7 +118,8 @@ const visualBooks = [
     'https://hemachandranss.github.io/books2/books/visual-books/How_It_Works_DK_-_How_the_Brain_Works_The_Facts_Visually_Explained-DK_2020',
     'https://hemachandranss.github.io/books2/books/visual-books/Pregnancy_Encyclopedia_-_Paula_Amato',
     'https://hemachandranss.github.io/books2/books/visual-books/pregnancy_day_by_day_4th_edition_-_dk',
-    'https://hemachandranss.github.io/books2/books/visual-books/Made_for_Baby_-_DK'
+    'https://hemachandranss.github.io/books2/books/visual-books/Made_for_Baby_-_DK',
+    'https://hemachandranss.github.io/books2/books/visual-books/Geography_A_Visual_Encyclopedia'
 ];
 
 const normalizeBookPath = (value) => {
