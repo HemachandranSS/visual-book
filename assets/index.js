@@ -123,7 +123,8 @@ const visualBooks = [
     'https://hemachandranss.github.io/books2/books/visual-books/Dorling_Kindersley_Inventions_A_Visual_Encyclop',
     'https://hemachandranss.github.io/books2/books/visual-books/Dorling_Kindersley_Limited_-_Atlas',
     'https://hemachandranss.github.io/books2/books/visual-books/Where_on_Earth_Geography_As_Youve_Never_Seen_It_Before_by_DK',
-    'https://hemachandranss.github.io/books2/books/visual-books/The_Concise_Human_Body_Book_New_Edition_-_DK_UserUpload_Net'
+    'https://hemachandranss.github.io/books2/books/visual-books/The_Concise_Human_Body_Book_New_Edition_-_DK_UserUpload_Net',
+    'https://hemachandranss.github.io/books2/books/visual-books/human_body_facts_at_your_fingertips'
 ];
 
 const normalizeBookPath = (value) => {
