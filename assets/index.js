@@ -127,7 +127,11 @@ const visualBooks = [
     'https://hemachandranss.github.io/books2/books/visual-books/human_body_facts_at_your_fingertips',
     'https://hemachandranss.github.io/books2/books/visual-books/human-body-a-visual-encyclopedia-1st-american',
     'https://hemachandranss.github.io/books2/books/visual-books/Human_Body_DK_Eyewitness_Science',
-    'https://hemachandranss.github.io/books2/books/visual-books/The_Visual_Dictionary_of_The_Human_Being'
+    'https://hemachandranss.github.io/books2/books/visual-books/The_Visual_Dictionary_of_The_Human_Being',
+    'https://hemachandranss.github.io/books2/books/visual-books/1dk_science_year_by_year_a_visual_history_from_stone_tools_to',
+    'https://hemachandranss.github.io/books2/books/visual-books/Picturepedia_An_Encyclopedia_on_Every_Page__8213_DK',
+    'https://hemachandranss.github.io/books2/books/visual-books/The_Periodic_Table_Book',
+    'https://hemachandranss.github.io/books2/books/visual-books/Periodic_Table_-_Facts_at_Your_Fingertips_By_DK.pdf'
 ];
 
 const normalizeBookPath = (value) => {
