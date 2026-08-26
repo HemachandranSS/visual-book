@@ -122,8 +122,8 @@ body {
     gap: 0.45rem;
     padding: 0.24rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .file-input-wrapper {
@@ -155,14 +155,70 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    background: linear-gradient(180deg, rgba(143, 216, 255, 0.16), rgba(255, 255, 255, 0.08));
+    background: linear-gradient(180deg, rgba(143, 216, 255, 0.22), rgba(255, 255, 255, 0.08));
     padding: 0.55rem 0.95rem;
     border-radius: 25px;
-    border: 1px solid rgba(143, 216, 255, 0.22);
+    border: 1px solid rgba(143, 216, 255, 0.28);
     font-size: 0.9rem;
     font-weight: 500;
     box-shadow: 0 8px 20px rgba(4, 10, 24, 0.2);
     white-space: nowrap;
+}
+
+.nav-controls {
+    background: linear-gradient(180deg, rgba(124, 92, 255, 0.18), rgba(124, 92, 255, 0.08));
+    border-color: rgba(124, 92, 255, 0.22);
+}
+
+.nav-btn {
+    background: linear-gradient(180deg, rgba(124, 92, 255, 0.24), rgba(86, 62, 196, 0.14));
+    border: 1px solid rgba(164, 145, 255, 0.2);
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: linear-gradient(180deg, rgba(146, 122, 255, 0.3), rgba(96, 72, 210, 0.18));
+}
+
+.export-controls {
+    background: linear-gradient(180deg, rgba(255, 163, 92, 0.16), rgba(255, 163, 92, 0.08));
+    border-color: rgba(255, 163, 92, 0.22);
+}
+
+.export-btn {
+    background: linear-gradient(180deg, rgba(255, 163, 92, 0.24), rgba(214, 118, 39, 0.14));
+    border: 1px solid rgba(255, 197, 143, 0.2);
+}
+
+.export-btn:hover:not(:disabled) {
+    background: linear-gradient(180deg, rgba(255, 177, 110, 0.32), rgba(225, 133, 49, 0.2));
+}
+
+.rotate-controls {
+    background: linear-gradient(180deg, rgba(255, 107, 138, 0.16), rgba(255, 107, 138, 0.08));
+    border-color: rgba(255, 107, 138, 0.22);
+}
+
+.rotate-btn {
+    background: linear-gradient(180deg, rgba(255, 107, 138, 0.24), rgba(182, 58, 96, 0.14));
+    border: 1px solid rgba(255, 161, 182, 0.2);
+}
+
+.rotate-btn:hover:not(:disabled) {
+    background: linear-gradient(180deg, rgba(255, 131, 155, 0.32), rgba(204, 74, 108, 0.2));
+}
+
+.zoom-controls {
+    background: linear-gradient(180deg, rgba(78, 190, 166, 0.16), rgba(78, 190, 166, 0.08));
+    border-color: rgba(78, 190, 166, 0.22);
+}
+
+.zoom-btn {
+    background: linear-gradient(180deg, rgba(78, 190, 166, 0.24), rgba(40, 132, 114, 0.14));
+    border: 1px solid rgba(133, 221, 207, 0.2);
+}
+
+.zoom-btn:hover {
+    background: linear-gradient(180deg, rgba(104, 205, 183, 0.32), rgba(52, 151, 130, 0.2));
 }
 
 .file-label:hover,
@@ -176,7 +232,6 @@ body {
 
 .nav-btn,
 .export-btn {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.08));
     padding: 0.55rem 0.9rem;
     border-radius: 20px;
     font-weight: 500;
@@ -211,7 +266,6 @@ body {
     font-size: 1rem;
     font-weight: bold;
     line-height: 1;
-    background: linear-gradient(180deg, rgba(143, 216, 255, 0.14), rgba(255, 255, 255, 0.08));
 }
 
 .zoom-btn:active:not(:disabled),
