@@ -131,7 +131,8 @@ const visualBooks = [
     'https://hemachandranss.github.io/books2/books/visual-books/1dk_science_year_by_year_a_visual_history_from_stone_tools_to',
     'https://hemachandranss.github.io/books2/books/visual-books/Picturepedia_An_Encyclopedia_on_Every_Page__8213_DK',
     'https://hemachandranss.github.io/books2/books/visual-books/The_Periodic_Table_Book',
-    'https://hemachandranss.github.io/books2/books/visual-books/Periodic_Table_-_Facts_at_Your_Fingertips_By_DK.pdf'
+    'https://hemachandranss.github.io/books2/books/visual-books/Periodic_Table_-_Facts_at_Your_Fingertips_By_DK.pdf',
+    'https://hemachandranss.github.io/books2/books/visual-books/Back_to_Life_-_DK'
 ];
 
 const normalizeBookPath = (value) => {
