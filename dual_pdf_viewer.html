@@ -79,6 +79,7 @@
         let zoomAnchor = null;
         let hasLoadedInitialView = false;
         let pageRotation = 0;
+        const mobileZoomFactor = window.matchMedia('(max-width: 768px)').matches ? 1.3 : 1.2;
         const mainContent = document.querySelector('.main-content');
 
         const fileInput = document.getElementById('pdfFile');
@@ -604,7 +605,7 @@
             if (!preserveAnchor) {
                 captureZoomAnchor();
             }
-            scale = Math.min(scale * 1.2, 3);
+            scale = Math.min(scale * mobileZoomFactor, 3);
             hasZoomed = true;
             mainContent.classList.add('zoomed-state');
             rerenderCurrentView();
@@ -614,7 +615,7 @@
             if (!preserveAnchor) {
                 captureZoomAnchor();
             }
-            scale = Math.max(scale / 1.2, 0.5);
+            scale = Math.max(scale / mobileZoomFactor, 0.5);
             hasZoomed = true;
             mainContent.classList.add('zoomed-state');
             rerenderCurrentView();
