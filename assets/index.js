@@ -136,7 +136,8 @@ const visualBooks = [
     'https://hemachandranss.github.io/books2/books/visual-books/Women_Our_History',
     'https://hemachandranss.github.io/books2/books/visual-books/1dorling_kindersley_earth',
     'https://hemachandranss.github.io/books2/books/visual-books/DK_-Rita-Carter_-The-Human-Brain-Book_-An-Illustr_z-lib_org',
-    'https://hemachandranss.github.io/books2/books/visual-books/DK_Smithsonian_Science_33__Science_as_You_39_ve_Neve'
+    'https://hemachandranss.github.io/books2/books/visual-books/DK_Smithsonian_Science_33__Science_as_You_39_ve_Neve',
+    'https://hemachandranss.github.io/books2/books/visual-books/DK_Children_-_The_Elements'
 ];
 
 const normalizeBookPath = (value) => {
