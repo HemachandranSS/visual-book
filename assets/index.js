@@ -143,7 +143,9 @@ const visualBooks = [
     'https://hemachandranss.github.io/books3/books/visual-books/DK_How_to_be_good_at_science_technology_engineering',
     'https://hemachandranss.github.io/books3/books/visual-books/DK_How_to_be_a_Genius_Your_Brain_and_How_to_Train_It',
     'https://hemachandranss.github.io/books3/books/visual-books/How_Super_Cool_Tech_Works_-_Dorling_Kindersley_UserUpload_Net',
-    'https://hemachandranss.github.io/books3/books/visual-books/DK_-_Civilization'
+    'https://hemachandranss.github.io/books3/books/visual-books/DK_-_Civilization',
+    'https://hemachandranss.github.io/books3/books/visual-books/Ultimate_English_Visual_Dictionary_Dorling_Kindersley',
+    'https://hemachandranss.github.io/books3/books/visual-books/The_Visual_Encyclopedia_By_DK'
 ];
 
 const normalizeBookPath = (value) => {
