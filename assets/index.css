@@ -1,32 +1,50 @@
 :root {
-    --bg: #0b1020;
+    --bg: #070b16;
+    --bg-2: #10192d;
     --panel: rgba(255, 255, 255, 0.08);
+    --panel-strong: rgba(255, 255, 255, 0.12);
     --panel-border: rgba(255, 255, 255, 0.14);
-    --text: #f5f7fb;
-    --muted: rgba(245, 247, 251, 0.72);
+    --text: #f6f8ff;
+    --muted: rgba(246, 248, 255, 0.72);
     --accent: #8dd6ff;
-    --accent-2: #7c9cff;
+    --accent-2: #9a8cff;
 }
 
 * {
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
     min-height: 100vh;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "Georgia", "Times New Roman", serif;
     color: var(--text);
     background:
-        radial-gradient(circle at top left, rgba(141, 214, 255, 0.24), transparent 30%),
-        radial-gradient(circle at top right, rgba(124, 156, 255, 0.2), transparent 28%),
-        linear-gradient(135deg, #080b16 0%, #10182c 55%, #0f1b2f 100%);
+        radial-gradient(circle at top left, rgba(141, 214, 255, 0.22), transparent 28%),
+        radial-gradient(circle at top right, rgba(154, 140, 255, 0.18), transparent 25%),
+        radial-gradient(circle at bottom center, rgba(77, 173, 255, 0.12), transparent 30%),
+        linear-gradient(135deg, var(--bg) 0%, var(--bg-2) 55%, #0d1627 100%);
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.22), transparent 75%);
 }
 
 .shell {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 20px 56px;
+    padding: 42px 20px 60px;
 }
 
 .hero {
@@ -40,32 +58,27 @@ body {
 
 h1 {
     margin: 0;
-    font-size: clamp(2.2rem, 5vw, 4rem);
-    letter-spacing: -0.04em;
+    font-size: clamp(2.4rem, 5vw, 4.4rem);
+    letter-spacing: -0.05em;
     line-height: 0.95;
 }
 
 .lede {
     margin: 12px 0 0;
-    max-width: 58ch;
+    max-width: 62ch;
     color: var(--muted);
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.65;
 }
 
 .count {
     padding: 12px 16px;
     border: 1px solid var(--panel-border);
-    background: var(--panel);
+    background: linear-gradient(180deg, var(--panel-strong), var(--panel));
     border-radius: 999px;
     color: var(--muted);
     backdrop-filter: blur(16px);
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
 }
 
 .section {
@@ -87,7 +100,7 @@ h1 {
 .section-title {
     margin: 0;
     font-size: 1.45rem;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
 }
 
 .section-note {
@@ -95,29 +108,60 @@ h1 {
     font-size: 0.92rem;
 }
 
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
 .card {
+    position: relative;
     display: block;
     text-decoration: none;
     color: inherit;
     padding: 18px 18px 20px;
-    border-radius: 20px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+    border-radius: 22px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.06)),
+        rgba(255, 255, 255, 0.03);
     border: 1px solid var(--panel-border);
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
     backdrop-filter: blur(18px);
-    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
     min-height: 132px;
+    overflow: hidden;
+}
+
+.card::after {
+    content: "";
+    position: absolute;
+    inset: auto -24px -28px auto;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(141, 214, 255, 0.2), transparent 65%);
+    opacity: 0;
+    transition: opacity 180ms ease;
 }
 
 .card:hover {
     transform: translateY(-4px);
     border-color: rgba(141, 214, 255, 0.45);
-    background: linear-gradient(180deg, rgba(141, 214, 255, 0.16), rgba(255, 255, 255, 0.06));
+    background:
+        linear-gradient(180deg, rgba(141, 214, 255, 0.18), rgba(255, 255, 255, 0.06)),
+        rgba(255, 255, 255, 0.03);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
+}
+
+.card:hover::after {
+    opacity: 1;
 }
 
 .card-title {
-    font-size: 1.35rem;
+    font-size: 1.2rem;
     margin: 0 0 10px;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
 }
 
 .card-meta {
@@ -146,7 +190,15 @@ h1 {
         padding-top: 28px;
     }
 
+    .hero {
+        align-items: flex-start;
+    }
+
     .count {
         width: 100%;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
     }
 }
