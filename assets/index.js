@@ -145,7 +145,8 @@ const visualBooks = [
     'https://hemachandranss.github.io/books3/books/visual-books/How_Super_Cool_Tech_Works_-_Dorling_Kindersley_UserUpload_Net',
     'https://hemachandranss.github.io/books3/books/visual-books/DK_-_Civilization',
     'https://hemachandranss.github.io/books3/books/visual-books/Ultimate_English_Visual_Dictionary_Dorling_Kindersley',
-    'https://hemachandranss.github.io/books3/books/visual-books/The_Visual_Encyclopedia_By_DK'
+    'https://hemachandranss.github.io/books3/books/visual-books/The_Visual_Encyclopedia_By_DK',
+    'https://hemachandranss.github.io/books3/books/visual-books/The_Dorling_Kindersley_Visual_Encyclopedia'
 ];
 
 const normalizeBookPath = (value) => {
