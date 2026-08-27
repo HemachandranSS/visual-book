@@ -152,7 +152,8 @@ const visualBooks = [
     'https://hemachandranss.github.io/books3/books/visual-books/help_your_kids_with_geography',
     'https://hemachandranss.github.io/books3/books/visual-books/How_To_Be_Good_At_Math',
     'https://hemachandranss.github.io/books3/books/visual-books/Whats_the_Point_of_Math_by_DK_z-lib_org',
-    'https://hemachandranss.github.io/books3/books/visual-books/DK_Goldsmith_How_to_Be_a_Math_Genius'
+    'https://hemachandranss.github.io/books3/books/visual-books/DK_Goldsmith_How_to_Be_a_Math_Genius',
+    'https://hemachandranss.github.io/books3/books/visual-books/simple-maths'
 ];
 
 const normalizeBookPath = (value) => {
