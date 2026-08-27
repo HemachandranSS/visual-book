@@ -149,7 +149,8 @@ const visualBooks = [
     'https://hemachandranss.github.io/books3/books/visual-books/The_Dorling_Kindersley_Visual_Encyclopedia',
     'https://hemachandranss.github.io/books3/books/visual-books/the-new-childrens-encyclopedia-visual-encyclopedia',
     'https://hemachandranss.github.io/books3/books/visual-books/help_your_kids_with_growing_up',
-    'https://hemachandranss.github.io/books3/books/visual-books/help_your_kids_with_geography'
+    'https://hemachandranss.github.io/books3/books/visual-books/help_your_kids_with_geography',
+    'https://hemachandranss.github.io/books3/books/visual-books/How_To_Be_Good_At_Math'
 ];
 
 const normalizeBookPath = (value) => {
