@@ -147,7 +147,9 @@ const visualBooks = [
     'https://hemachandranss.github.io/books3/books/visual-books/Ultimate_English_Visual_Dictionary_Dorling_Kindersley',
     'https://hemachandranss.github.io/books3/books/visual-books/The_Visual_Encyclopedia_By_DK',
     'https://hemachandranss.github.io/books3/books/visual-books/The_Dorling_Kindersley_Visual_Encyclopedia',
-    'https://hemachandranss.github.io/books3/books/visual-books/the-new-childrens-encyclopedia-visual-encyclopedia'
+    'https://hemachandranss.github.io/books3/books/visual-books/the-new-childrens-encyclopedia-visual-encyclopedia',
+    'https://hemachandranss.github.io/books3/books/visual-books/help_your_kids_with_growing_up',
+    'https://hemachandranss.github.io/books3/books/visual-books/help_your_kids_with_geography'
 ];
 
 const normalizeBookPath = (value) => {
