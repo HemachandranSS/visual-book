@@ -155,7 +155,9 @@ const visualBooks = [
     'https://hemachandranss.github.io/books3/books/visual-books/DK_Goldsmith_How_to_Be_a_Math_Genius',
     'https://hemachandranss.github.io/books3/books/visual-books/simple-maths',
     'https://hemachandranss.github.io/books3/books/visual-books/Math_Maker_Lab__DK',
-    'https://hemachandranss.github.io/books3/books/visual-books/The_Rock_Gem_Book__And_Other_Treasures_of_the_Natural_World_by_DK_Smithsonian_Dan_Green_z-lib_org'
+    'https://hemachandranss.github.io/books3/books/visual-books/The_Rock_Gem_Book__And_Other_Treasures_of_the_Natural_World_by_DK_Smithsonian_Dan_Green_z-lib_org',
+    'https://hemachandranss.github.io/books3/books/visual-books/DK_Findout_33_Engineering_DK_Findout_33_Engineering_-_Emily_Hunt',
+    'https://hemachandranss.github.io/books3/books/visual-books/How_To_Play_Chess_-_Dorling_Kindersley'
 ];
 
 const normalizeBookPath = (value) => {
