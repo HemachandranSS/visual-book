@@ -3,7 +3,15 @@ const digitBooks = [
 'https://hemachandranss.github.io/books3/books/visual-books/digit_dmystify/201507_dmsytify_String_Theory',
 'https://hemachandranss.github.io/books3/books/visual-books/digit_dmystify/201508_dmsytify_Exotic_Materials',
 'https://hemachandranss.github.io/books3/books/visual-books/digit_dmystify/201509_dmsytify_Dark_Matter_Dark_Energy',
-'https://hemachandranss.github.io/books3/books/visual-books/digit_dmystify/201510_dmsytify_Math'
+'https://hemachandranss.github.io/books3/books/visual-books/digit_dmystify/201510_dmsytify_Math',
+'https://hemachandranss.github.io/books3/books/visual-books/digit_dmystify/201511_dmsytify_Evolution',
+'https://hemachandranss.github.io/books3/books/visual-books/digit_dmystify/201512_dmsytify_Solar_System',
+'https://hemachandranss.github.io/books3/books/visual-books/digit_dmystify/201601_dmsytify_Human_Brain',
+'https://hemachandranss.github.io/books3/books/visual-books/digit_dmystify/201602_dmsytify_Nuclear_Weapons',
+'https://hemachandranss.github.io/books3/books/visual-books/digit_dmystify/201603_dmsytify_Earth',
+'https://hemachandranss.github.io/books3/books/visual-books/digit_dmystify/201604_dmsytify_Climate_Change',
+'https://hemachandranss.github.io/books3/books/visual-books/digit_dmystify/201605_dmsytify_Milky_Way',
+'https://hemachandranss.github.io/books3/books/visual-books/digit_dmystify/201606_dmystify_Big_Bang'
 ];
 
 const normalizeBookPath = (value) => {
