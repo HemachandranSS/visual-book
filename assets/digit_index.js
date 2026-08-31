@@ -1,5 +1,6 @@
 const digitBooks = [
-'https://hemachandranss.github.io/books3/books/visual-books/201505_dmsytify_E=mc2'
+'https://hemachandranss.github.io/books3/books/visual-books/digit_dmystify/201505_dmsytify_E=mc2',
+'https://hemachandranss.github.io/books3/books/visual-books/digit_dmystify/201507_dmsytify_String_Theory',
 ];
 
 const normalizeBookPath = (value) => {
