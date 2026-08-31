@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books</title>
+    <link rel="stylesheet" href="assets/index.css">
+</head>
+
+<body>
+    <main class="shell">
+        <section class="hero">
+            <div>
+                <h1>Books</h1>
+                <!-- <p class="lede">Pick a book folder to open its numbered PDF pages in the viewer. The viewer expects files like `1.pdf`, `2.pdf`, continuing through the last page in that folder.</p> -->
+            </div>
+            <div id="count" class="count"></div>
+        </section>
+
+        <section class="section">
+            <div class="section-head">
+                <h2 class="section-title">Digit</h2>
+                <div id="visualCount" class="section-note"></div>
+            </div>
+            <section id="visualGrid" class="grid">
+
+                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/201505_dmsytify_E=mc2" target="_blank">
+                    <h2 class="card-title">E=mc2</h2>
+                </a>
+                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/201505_dmsytify_E=mc2" target="_blank">
+                    <h2 class="card-title">E=mc2</h2>
+                </a>
+                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/201505_dmsytify_E=mc2" target="_blank">
+                    <h2 class="card-title">E=mc2</h2>
+                </a>
+            </section>
+        </section>
+
+        <div class="empty" style="display:none;">No book folders were found.</div>
+        <div class="footer">Click any book to open it in the dual-page viewer.</div>
+    </main>
+
+    <script src="assets/digit_index.js"></script>
+</body>
+
+</html>
