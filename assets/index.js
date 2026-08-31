@@ -159,7 +159,27 @@ const visualBooks = [
     'https://hemachandranss.github.io/books3/books/visual-books/DK_Findout_33_Engineering_DK_Findout_33_Engineering_-_Emily_Hunt',
     'https://hemachandranss.github.io/books3/books/visual-books/How_To_Play_Chess_-_Dorling_Kindersley',
     'https://hemachandranss.github.io/books3/books/visual-books/World_War_I_The_Definitive_Visual_History',
-    'https://hemachandranss.github.io/books3/books/visual-books/World_War_II_The_Definitive_Visual_History'
+    'https://hemachandranss.github.io/books3/books/visual-books/World_War_II_The_Definitive_Visual_History',
+    "https://hemachandranss.github.io/books3/books/visual-books/History_of_the_World_Map_by_Map_DK_Publishing.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/Super_Simple_Biology.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/SuperSimple_Chemistry_-_DK_UserUpload_Net.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/Super_Simple_Physics_-_DK.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/The_Amazon_-_Tom_Jackson_DK_Eyewitness.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/The_Animal_Book_A_Visual_Encyclopedia_of_Life_on_Earth.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/THE_BODY_ATLAS_-_A_PICTORIAL_GUIDE_TO_THE_HUMAN_BODY_-_1ST_ED__2020_Giuliano_Fornari_Steve_Parker.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/DK_Life_Stories_Albert_Einstein_-_Wil_Mara.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/How_Food_Works_-_DK.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/How_Management_Works_The_Concepts_Visually_Explained_by_DK.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/How_to_be_a_Global_Citizen_Be_Informed_Get_Involved_by_Dorling_Kindersley.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/Journey_An_Illustrated_History_of_Travel_DK_Simon_Adams.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/Medical_Symptoms_Visual_Guide_The_Easy_Way_to_Identify_Medical_Problems_2nd_Edition_DK_Dorling_Kindersley.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/My_Encyclopedia_of_Very_Important_Things.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/Philosophy_A_Visual_Encyclopedia_DK.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/The_Illustrated_Mahabharata_The_Definitive_Guide_to_Indias_Greatest_Epic_DK.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/The_Poetry_Book_-_DK.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/The_Religions_Book.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/Whats_the_Point_of_Philosophy_-_DK.pdf",
+    "https://hemachandranss.github.io/books3/books/visual-books/What_s_the_Point_of_Science_by_DK.pdf"
 ];
 
 const normalizeBookPath = (value) => {
