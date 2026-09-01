@@ -680,7 +680,29 @@ const digitBooks = [
 
   "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Being-Anonymous-Onine_Issue_08_Vol_21_August_2026_High-Res",
 
-  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Podcasting_Issue_09_Vol_21_September_2026_High-Res"
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Podcasting_Issue_09_Vol_21_September_2026_High-Res",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_24_Issue_12_December_2024_Medium-Res_Better",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_25_Issue_01_January_2025_Medium-Res",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_25_Issue_02_February_2025_Medium_2",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_25_Issue_03_March_2025_Medium-Res-02",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_25_Issue_04_April_2025_Medium-Res-01",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_25_Issue_05_May_2025_Medium-Res_01",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_25_Issue_06_June_2025_Medium-Res-1",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_25_Issue_07_July_2025_Midum-Res",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_25_Issue_08_August_2025_Medium-Res",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_25_Issue_09_September_2025_Medium-Res",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_25_Issue_10_October_2025_Low-Res1",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_25_Issue_11_November_2025_Medium-Res",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_25_Issue_12_December_2025_Low-Res",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_26_Issue_01_January_2026_Medium-Res",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_26_Issue_02_February_2026_Medium-Res",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_26_Issue_03_March_2026_Medium-Res-1",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_26_Issue_04_April_2026_Medium-Res",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_26_Issue_05_May_2026_Medium-Res",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_26_Issue_06_June_2026_Low-Res",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_26_Issue_07_July_2026_Medium-Res",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_26_Issue_08_August_2026_Medium-Res",
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_26_Issue_09_September_2026_Medium-Res-1"
 
 
 ];
