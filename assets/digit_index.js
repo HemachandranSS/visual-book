@@ -637,7 +637,52 @@ const digitBooks = [
   "https://hemachandranss.github.io/books4/books/visual-books/digit_mag/202408_Digit.pdf",
   "https://hemachandranss.github.io/books4/books/visual-books/digit_mag/202409_Digit.pdf",
   "https://hemachandranss.github.io/books4/books/visual-books/digit_mag/202410_Digit.pdf",
-  "https://hemachandranss.github.io/books4/books/visual-books/digit_mag/202411_Digit.pdf"
+  "https://hemachandranss.github.io/books4/books/visual-books/digit_mag/202411_Digit.pdf",
+    "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Tech-Resolutions_Issue_12_Vol_19_December_2024_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Best-of-AI-in-2024_Issue_01_Vol_20_January_2025_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Smartphone-Apps_Issue_02_Vol_20_February_2025_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Linux-for-Beginners_Issue_03_Vol_20_March_2025_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Online-Scams_Issue_04_Vol_20_April_2025_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Mindfulness-Tech_Issue_05_Vol_20_May_2025_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Secure-Office-Network_Issue_06_Vol_20_June_2025_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Mobile-Security-101_Issue_07_Vol_20_July_2025_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Best-Indian-Apps_Issue_08_Vol_20_August_2025_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Enhanced-Entertainment_Issue_09_Vol_20_September_2025_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Buying-Any-Laptop_Issue_10_Vol_20_October_2025_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Essential-PC-Hardware_Issue_11_Vol_20_November_2025_Medium-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Free-Mobile-Apps-You-Must-Try_Issue_12_Vol_20_December_2025_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Smart-Resolutions-with-Help-of-AI_Issue_01_Vol_21_January_2026_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-DIY-Smart-Home_Issue_02_Vol_21_February_2026_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Semiconductors-101_Issue_03_Vol_21_March_2026_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Windows-11_Issue_04_Vol_21_April_2026_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Backing-Up-Your-Data_Issue_05_Vol_21_May_2026_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Mastering-Android_Issue_06_Vol_21_June_2026_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-AI-Agents_Issue_07_Vol_21_July_2026_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Being-Anonymous-Onine_Issue_08_Vol_21_August_2026_High-Res",
+
+  "https://hemachandranss.github.io/books6/books/visual-books/digit_fast_track/Digit-FT-to-Podcasting_Issue_09_Vol_21_September_2026_High-Res"
+
+
 ];
 
 const normalizeBookPath = (value) => {
