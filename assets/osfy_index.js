@@ -1,4 +1,4 @@
-const fileNames = [
+const books5Files = [
   "OSFY_jan_2009.pdf",
   "OSFY_feb_2009.pdf",
   "OSFY_march_2009.pdf",
@@ -224,10 +224,24 @@ const fileNames = [
   "OSFYMay2026.pdf"
 ];
 
-const osfyBooks = fileNames.map(
-  (fileName) =>
-    `https://hemachandranss.github.io/books5/books/osfy/${fileName}`
-);
+const books6Files = [
+  "OSFYAug2026.pdf",
+  "OSFYJuly2026.pdf",
+  "OSFYJune2026.pdf",
+  'OSFYSep2026.pdf'
+];
+
+const osfyBooks = [
+  ...books5Files.map(
+    (fileName) =>
+      `https://hemachandranss.github.io/books5/books/osfy/${fileName}`
+  ),
+
+  ...books6Files.map(
+    (fileName) =>
+      `https://hemachandranss.github.io/books6/books/osfy/${fileName}`
+  )
+];
 
 const normalizeBookPath = (value) => {
   if (!value) return '';
