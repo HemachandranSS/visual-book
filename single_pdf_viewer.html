@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="assets/dual_pdf_viewer.css">
+</head>
+
+<body>
+    <div id="topRevealZone" class="top-reveal-zone" aria-hidden="true"></div>
+    <div class="header">
+        <div class="header-left">
+            <div class="title">📚 Book Viewer</div>
+            <div id="subtitle" class="subtitle">Open a book folder or choose a PDF file</div>
+        </div>
+        <div class="controls">
+            <div id="bookBadge" class="book-badge" style="display:none;"></div>
+            <div class="file-input-wrapper">
+                <input type="file" id="pdfFile" class="file-input" accept=".pdf">
+                <label for="pdfFile" class="file-label">Choose PDF File</label>
+            </div>
+            <div class="nav-controls">
+                <button id="prevBtn" class="nav-btn" disabled>← Previous</button>
+                <div id="pageInfo" class="page-info">-</div>
+                <button id="nextBtn" class="nav-btn" disabled>Next →</button>
+            </div>
+            <div class="export-controls">
+                <button id="exportPngBtn" class="export-btn" disabled>Export PNG</button>
+                <button id="exportJpgBtn" class="export-btn" disabled>Export JPG</button>
+                <button id="exportPdfBtn" class="export-btn" disabled>Export PDF</button>
+            </div>
+            <div class="rotate-controls">
+                <button id="rotateBtn" class="rotate-btn" disabled title="Rotate page 90° clockwise">⟳</button>
+            </div>
+            <div class="zoom-controls">
+                <button id="zoomOut" class="zoom-btn">−</button>
+                <button id="zoomIn" class="zoom-btn">+</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="viewer-container">
+            <div id="welcomeMessage" class="welcome-message">
+                <div class="welcome-icon">📖</div>
+                <div class="welcome-text">
+                    Select a PDF file to start reading one page at a time<br>
+                    Experience your documents in single-page mode
+                </div>
+            </div>
+            <div id="loadingMessage" class="loading" style="display: none;">
+                Loading PDF...
+            </div>
+            <div id="pagesContainer" class="pages-container" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        let pdfDoc = null;
+        let currentPage = 1;
+        let scale = 1.2;
+        let totalPages = 0;
+        let bookMode = false;
+        let bookPages = [];
+        let bookPageBuffers = [];
+        let bookFolderPath = '';
+        let bookHasMore = true;
+        let bookTotalPagesResolved = false;
+        let hasZoomed = false;
+        let zoomAnchor = null;
+        let hasLoadedInitialView = false;
+        let pageRotation = 0;
+        const mobileZoomFactor = window.matchMedia('(max-width: 768px)').matches ? 1.3 : 1.2;
+        const mainContent = document.querySelector('.main-content');
+
+        const fileInput = document.getElementById('pdfFile');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageInfo = document.getElementById('pageInfo');
+        const exportPngBtn = document.getElementById('exportPngBtn');
+        const exportJpgBtn = document.getElementById('exportJpgBtn');
+        const exportPdfBtn = document.getElementById('exportPdfBtn');
+        const rotateBtn = document.getElementById('rotateBtn');
+        const zoomInBtn = document.getElementById('zoomIn');
+        const zoomOutBtn = document.getElementById('zoomOut');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const pagesContainer = document.getElementById('pagesContainer');
+        const viewerContainer = document.querySelector('.viewer-container');
+        const subtitle = document.getElementById('subtitle');
+        const bookBadge = document.getElementById('bookBadge');
+        const header = document.querySelector('.header');
+        const topRevealZone = document.getElementById('topRevealZone');
+
+        const params = new URLSearchParams(window.location.search);
+        const bookName = normalizeBookFolder(params.get('book'));
+        const pdfParam = params.get('pdf');
+        let headerHideTimer = null;
+        let headerPinned = false;
+
+        fileInput.addEventListener('change', handleFileSelect);
+        prevBtn.addEventListener('click', showPrevPage);
+        nextBtn.addEventListener('click', showNextPage);
+        exportPngBtn.addEventListener('click', () => exportCurrentSpread('png'));
+        exportJpgBtn.addEventListener('click', () => exportCurrentSpread('jpg'));
+        exportPdfBtn.addEventListener('click', () => exportCurrentSpread('pdf'));
+        rotateBtn.addEventListener('click', rotatePages);
+        zoomInBtn.addEventListener('click', zoomIn);
+        zoomOutBtn.addEventListener('click', zoomOut);
+
+        let activePinchDistance = null;
+        let activePinchCenter = null;
+
+        const getTouchDistance = (touchA, touchB) => Math.hypot(touchA.clientX - touchB.clientX, touchA.clientY - touchB.clientY);
+
+        const getTouchCenter = (touchA, touchB) => ({
+            x: (touchA.clientX + touchB.clientX) / 2,
+            y: (touchA.clientY + touchB.clientY) / 2
+        });
+
+        const beginPinch = (touches) => {
+            if (touches.length < 2) return;
+            activePinchDistance = getTouchDistance(touches[0], touches[1]);
+            activePinchCenter = getTouchCenter(touches[0], touches[1]);
+            zoomAnchor = {
+                x: mainContent.scrollLeft + activePinchCenter.x,
+                y: mainContent.scrollTop + activePinchCenter.y
+            };
+        };
+
+        const updatePinch = (touches) => {
+            if (touches.length < 2 || !activePinchDistance) return;
+            const nextDistance = getTouchDistance(touches[0], touches[1]);
+            const delta = nextDistance - activePinchDistance;
+
+            if (Math.abs(delta) < 12) return;
+
+            if (delta > 0) {
+                zoomIn(true);
+            } else {
+                zoomOut(true);
+            }
+
+            activePinchDistance = nextDistance;
+            activePinchCenter = getTouchCenter(touches[0], touches[1]);
+            zoomAnchor = {
+                x: mainContent.scrollLeft + activePinchCenter.x,
+                y: mainContent.scrollTop + activePinchCenter.y
+            };
+        };
+
+        const endPinch = () => {
+            activePinchDistance = null;
+            activePinchCenter = null;
+        };
+
+        mainContent.addEventListener('touchstart', (event) => {
+            if (event.touches.length === 2) {
+                beginPinch(event.touches);
+            }
+        }, { passive: true });
+
+        mainContent.addEventListener('touchmove', (event) => {
+            if (event.touches.length === 2) {
+                event.preventDefault();
+                updatePinch(event.touches);
+            }
+        }, { passive: false });
+
+        mainContent.addEventListener('touchend', (event) => {
+            if (event.touches.length < 2) {
+                endPinch();
+            }
+        }, { passive: true });
+
+        mainContent.addEventListener('touchcancel', endPinch, { passive: true });
+
+        const activateHeader = () => {
+            header.classList.remove('is-hidden');
+            clearTimeout(headerHideTimer);
+            if (!headerPinned) {
+                headerHideTimer = setTimeout(() => {
+                    header.classList.add('is-hidden');
+                }, 2200);
+            }
+        };
+
+        const pinHeader = () => {
+            headerPinned = true;
+            activateHeader();
+        };
+
+        const unpinHeader = () => {
+            headerPinned = false;
+            activateHeader();
+        };
+
+        ['mousemove', 'pointermove'].forEach((eventName) => {
+            document.addEventListener(eventName, (event) => {
+                if (event.clientY <= 10) {
+                    unpinHeader();
+                } else {
+                    if (!header.matches(':hover') && !topRevealZone.matches(':hover')) {
+                        header.classList.add('is-hidden');
+                    }
+                }
+            }, { passive: true });
+        });
+
+        header.addEventListener('mouseenter', pinHeader);
+        header.addEventListener('mouseleave', unpinHeader);
+        topRevealZone.addEventListener('mouseenter', unpinHeader);
+        topRevealZone.addEventListener('mouseleave', () => {
+            if (!header.matches(':hover')) {
+                header.classList.add('is-hidden');
+            }
+        });
+        header.classList.add('is-hidden');
+        clearTimeout(headerHideTimer);
+
+        if (bookName) {
+            bookMode = true;
+            subtitle.textContent = 'Loading pages from a book folder';
+            bookBadge.style.display = 'inline-flex';
+            bookBadge.textContent = titleize(bookName);
+            loadBookFromFolder(bookName);
+        } else if (pdfParam) {
+            subtitle.textContent = 'Loading a single PDF file';
+            loadPdfFromUrl(pdfParam);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!pdfDoc && !bookMode) return;
+
+            switch (e.key) {
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    showPrevPage();
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    showNextPage();
+                    break;
+                case '+':
+                case '=':
+                    e.preventDefault();
+                    zoomIn();
+                    break;
+                case '-':
+                    e.preventDefault();
+                    zoomOut();
+                    break;
+            }
+        });
+
+        async function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file || file.type !== 'application/pdf') {
+                alert('Please select a valid PDF file.');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                pdfDoc = await pdfjsLib.getDocument({
+                    data: new Uint8Array(arrayBuffer),
+                    stopAtErrors: false,
+                    isOffscreenCanvasSupported: false,
+                    isImageDecoderSupported: false,
+                    isEvalSupported: false,
+                    useWorkerFetch: false
+                }).promise;
+                bookMode = false;
+                bookPages = [];
+                hasZoomed = false;
+                pageRotation = 0;
+                totalPages = pdfDoc.numPages;
+                currentPage = 1;
+
+                hideLoading();
+                updatePageInfo();
+                renderPages();
+                updateNavigationButtons();
+            } catch (error) {
+                console.error('Error loading PDF:', error);
+                alert('Error loading PDF file. Please try another file.');
+                hideLoading();
+            }
+        }
+
+        async function loadPdfFromUrl(url) {
+            showLoading();
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Failed to load ${url}`);
+                }
+                const arrayBuffer = await response.arrayBuffer();
+                pdfDoc = await pdfjsLib.getDocument({
+                    data: new Uint8Array(arrayBuffer),
+                    stopAtErrors: false,
+                    isOffscreenCanvasSupported: false,
+                    isImageDecoderSupported: false,
+                    isEvalSupported: false,
+                    useWorkerFetch: false
+                }).promise;
+                bookMode = false;
+                bookPages = [];
+                hasZoomed = false;
+                pageRotation = 0;
+                totalPages = pdfDoc.numPages;
+                currentPage = 1;
+                hideLoading();
+                updatePageInfo();
+                renderPages();
+                updateNavigationButtons();
+            } catch (error) {
+                console.error('Error loading PDF URL:', error);
+                alert('Error loading PDF file from the provided URL.');
+                hideLoading();
+            }
+        }
+
+        async function loadBookFromFolder(folder) {
+            showLoading();
+            try {
+                const normalizedFolder = normalizeBookFolder(folder);
+                bookFolderPath = normalizedFolder;
+                bookPages = [];
+                bookPageBuffers = [];
+                bookHasMore = true;
+                bookTotalPagesResolved = false;
+                pdfDoc = null;
+                hasZoomed = false;
+                pageRotation = 0;
+                totalPages = 0;
+                currentPage = 1;
+                hideLoading();
+                subtitle.textContent = `${titleize(normalizedFolder)} · loading pages on demand`;
+                pageInfo.textContent = `Page 1`;
+                countBookPagesInBackground();
+                renderBookPages();
+                updateNavigationButtons();
+            } catch (error) {
+                console.error('Error loading book folder:', error);
+                alert('Could not load the book folder. Make sure it contains 1.pdf, 2.pdf, and so on.');
+                hideLoading();
+            }
+        }
+
+        function showLoading() {
+            welcomeMessage.style.display = 'none';
+            loadingMessage.style.display = 'block';
+            pagesContainer.style.display = 'none';
+            mainContent.classList.add('loading-state');
+        }
+
+        function hideLoading() {
+            welcomeMessage.style.display = 'none';
+            loadingMessage.style.display = 'none';
+            pagesContainer.style.display = 'flex';
+            mainContent.classList.remove('loading-state');
+        }
+
+        // --- Single-page rendering (always renders exactly one page) ---
+        async function renderPages() {
+            if (!pdfDoc) return;
+
+            mainContent.classList.toggle('zoomed-state', hasZoomed);
+            const nextContainer = document.createElement('div');
+            nextContainer.className = 'pages-container single-page-container';
+
+            await renderPage(currentPage, 'single', nextContainer);
+
+            swapPagesContainer(nextContainer);
+            settleViewportAfterRender();
+        }
+
+        async function renderBookPages() {
+            mainContent.classList.toggle('zoomed-state', hasZoomed);
+            const nextContainer = document.createElement('div');
+            nextContainer.className = 'pages-container single-page-container';
+
+            await renderBookPage(currentPage, 'single', nextContainer);
+
+            swapPagesContainer(nextContainer);
+            prefetchNextBookSpread();
+            settleViewportAfterRender();
+        }
+
+        async function renderBookPage(pageNum, position, targetContainer) {
+            const buffer = await getBookPageBuffer(pageNum);
+            if (!buffer) return;
+            await renderPdfBuffer(buffer, position, targetContainer);
+        }
+
+        async function getBookPageBuffer(pageNum) {
+            if (pageNum <= 0) return null;
+            if (bookPageBuffers[pageNum - 1]) {
+                return bookPageBuffers[pageNum - 1];
+            }
+            if (!bookHasMore && pageNum > bookPages.length) {
+                return null;
+            }
+
+            const pageUrl = new URL(`${normalizeBookFolder(bookFolderPath)}/${pageNum}.pdf`, window.location.origin + '/').toString();
+            const response = await fetch(pageUrl, { method: 'GET' });
+            if (!response.ok) {
+                bookHasMore = false;
+                return null;
+            }
+
+            bookPages[pageNum - 1] = pageUrl;
+            const buffer = new Uint8Array(await response.arrayBuffer());
+            bookPageBuffers[pageNum - 1] = buffer;
+            totalPages = Math.max(totalPages, pageNum);
+            return buffer;
+        }
+
+        function countBookPagesInBackground() {
+            const encodedFolder = normalizeBookFolder(bookFolderPath);
+            let pageNum = 1;
+
+            const probeNext = () => {
+                if (!bookMode || encodedFolder !== normalizeBookFolder(bookFolderPath)) return;
+
+                const pageUrl = new URL(`${encodedFolder}/${pageNum}.pdf`, window.location.origin + '/').toString();
+                fetch(pageUrl, { method: 'HEAD', cache: 'no-store' })
+                    .then((response) => {
+                        if (!response.ok) {
+                            totalPages = pageNum - 1;
+                            bookTotalPagesResolved = true;
+                            updatePageInfo();
+                            updateNavigationButtons();
+                            return;
+                        }
+
+                        pageNum += 1;
+                        probeNext();
+                    })
+                    .catch(() => {
+                        totalPages = Math.max(totalPages, pageNum - 1);
+                        bookTotalPagesResolved = true;
+                        updatePageInfo();
+                        updateNavigationButtons();
+                    });
+            };
+
+            setTimeout(probeNext, 0);
+        }
+
+        function prefetchNextBookSpread() {
+            if (!bookMode || !bookHasMore) return;
+
+            const nextPage = currentPage + 1;
+            if (nextPage <= 0 || bookPageBuffers[nextPage - 1]) return;
+
+            setTimeout(() => {
+                getBookPageBuffer(nextPage).catch((error) => {
+                    console.warn('Prefetch failed:', error);
+                });
+            }, 0);
+        }
+
+        async function renderPdfBuffer(arrayBuffer, position, targetContainer) {
+            try {
+                const data = arrayBuffer instanceof Uint8Array ? new Uint8Array(arrayBuffer) : new Uint8Array(arrayBuffer);
+                const doc = await pdfjsLib.getDocument({
+                    data,
+                    stopAtErrors: false,
+                    isOffscreenCanvasSupported: false,
+                    isImageDecoderSupported: false,
+                    isEvalSupported: false,
+                    useWorkerFetch: false
+                }).promise;
+                const page = await doc.getPage(1);
+                const viewport = page.getViewport({ scale, rotation: pageRotation });
+
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                canvas.className = 'page-canvas';
+
+                const wrapper = document.createElement('div');
+                wrapper.className = `page-wrapper single-page`;
+                wrapper.appendChild(canvas);
+                (targetContainer || pagesContainer).appendChild(wrapper);
+
+                await page.render({ canvasContext: context, viewport }).promise;
+                await page.cleanup();
+                doc.cleanup();
+                doc.destroy();
+            } catch (error) {
+                console.error('Error rendering book page:', error);
+            }
+        }
+
+        async function renderPage(pageNum, position, targetContainer) {
+            try {
+                const page = await pdfDoc.getPage(pageNum);
+                const viewport = page.getViewport({ scale, rotation: pageRotation });
+
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                canvas.className = 'page-canvas';
+
+                const wrapper = document.createElement('div');
+                wrapper.className = `page-wrapper single-page`;
+                wrapper.appendChild(canvas);
+
+                (targetContainer || pagesContainer).appendChild(wrapper);
+
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+
+                await page.render(renderContext).promise;
+            } catch (error) {
+                console.error(`Error rendering page ${pageNum}:`, error);
+            }
+        }
+
+        function swapPagesContainer(nextContainer) {
+            pagesContainer.replaceChildren(...nextContainer.children);
+            pagesContainer.style.display = 'flex';
+        }
+
+        // --- Single-page navigation (step by 1 each time) ---
+        function showPrevPage() {
+            if (currentPage > 1) {
+                currentPage -= 1;
+                if (bookMode) {
+                    renderBookPages();
+                } else {
+                    renderPages();
+                }
+                updatePageInfo();
+                updateNavigationButtons();
+            }
+        }
+
+        function showNextPage() {
+            const canAdvance = bookMode
+                ? (bookHasMore || currentPage < bookPages.length)
+                : currentPage < totalPages;
+            if (canAdvance) {
+                currentPage += 1;
+                if (!bookMode && currentPage > totalPages) currentPage = totalPages;
+                if (bookMode) {
+                    renderBookPages();
+                } else {
+                    renderPages();
+                }
+                updatePageInfo();
+                updateNavigationButtons();
+            }
+        }
+
+        function zoomIn(preserveAnchor = false) {
+            if (!preserveAnchor) {
+                captureZoomAnchor();
+            }
+            scale = Math.min(scale * mobileZoomFactor, 3);
+            hasZoomed = true;
+            mainContent.classList.add('zoomed-state');
+            rerenderCurrentView();
+        }
+
+        function zoomOut(preserveAnchor = false) {
+            if (!preserveAnchor) {
+                captureZoomAnchor();
+            }
+            scale = Math.max(scale / mobileZoomFactor, 0.5);
+            hasZoomed = true;
+            mainContent.classList.add('zoomed-state');
+            rerenderCurrentView();
+        }
+
+        function rotatePages() {
+            pageRotation = (pageRotation + 90) % 360;
+            rerenderCurrentView();
+        }
+
+        function updatePageInfo() {
+            if (pdfDoc || bookMode) {
+                const safePage = totalPages ? Math.min(currentPage, totalPages) : currentPage;
+                if (totalPages) {
+                    pageInfo.textContent = `Page ${safePage} of ${totalPages}`;
+                } else {
+                    pageInfo.textContent = `Page ${safePage}`;
+                }
+            } else {
+                pageInfo.textContent = '-';
+            }
+        }
+
+        function updateNavigationButtons() {
+            const hasDocument = pdfDoc || bookMode;
+            prevBtn.disabled = !hasDocument || currentPage <= 1;
+            nextBtn.disabled = !hasDocument
+                || (!bookMode && currentPage >= totalPages)
+                || (bookMode && !(bookHasMore || currentPage < bookPages.length));
+            exportPngBtn.disabled = !hasDocument;
+            exportJpgBtn.disabled = !hasDocument;
+            exportPdfBtn.disabled = !hasDocument;
+            rotateBtn.disabled = !hasDocument;
+        }
+
+        function rerenderCurrentView() {
+            if (bookMode) {
+                renderBookPages();
+            } else if (pdfDoc) {
+                renderPages();
+            }
+        }
+
+        function updateViewportFitMode() {
+            requestAnimationFrame(() => {
+                const fitsHorizontally = mainContent.scrollWidth <= mainContent.clientWidth;
+                const fitsVertically = mainContent.scrollHeight <= mainContent.clientHeight;
+                mainContent.classList.toggle('centered-state', fitsHorizontally && fitsVertically);
+                mainContent.classList.toggle('zoomed-state', !(fitsHorizontally && fitsVertically));
+
+                if (fitsHorizontally) {
+                    mainContent.scrollLeft = 0;
+                }
+                if (fitsVertically) {
+                    mainContent.scrollTop = 0;
+                }
+            });
+        }
+
+        function captureZoomAnchor() {
+            zoomAnchor = {
+                x: mainContent.scrollLeft + mainContent.clientWidth / 2,
+                y: mainContent.scrollTop + mainContent.clientHeight / 2
+            };
+        }
+
+        function restoreZoomAnchor() {
+            requestAnimationFrame(() => {
+                if (!zoomAnchor) {
+                    mainContent.scrollLeft = 0;
+                    mainContent.scrollTop = 0;
+                    return;
+                }
+
+                const targetLeft = zoomAnchor.x - mainContent.clientWidth / 2;
+                const targetTop = zoomAnchor.y - mainContent.clientHeight / 2;
+                const maxLeft = Math.max(0, mainContent.scrollWidth - mainContent.clientWidth);
+                const maxTop = Math.max(0, mainContent.scrollHeight - mainContent.clientHeight);
+                mainContent.scrollLeft = Math.min(Math.max(0, targetLeft), maxLeft);
+                mainContent.scrollTop = Math.min(Math.max(0, targetTop), maxTop);
+                zoomAnchor = null;
+            });
+        }
+
+        function settleViewportAfterRender() {
+            if (!hasLoadedInitialView) {
+                hasLoadedInitialView = true;
+                mainContent.scrollLeft = 0;
+                mainContent.scrollTop = 0;
+                updateViewportFitMode();
+                return;
+            }
+
+            if (hasZoomed && zoomAnchor) {
+                restoreZoomAnchor();
+                return;
+            }
+
+            requestAnimationFrame(() => {
+                mainContent.scrollLeft = 0;
+                mainContent.scrollTop = 0;
+                updateViewportFitMode();
+            });
+        }
+
+        function titleize(value) {
+            return value
+                .replace(/[_-]+/g, ' ')
+                .replace(/\b\w/g, (ch) => ch.toUpperCase());
+        }
+
+        async function exportCurrentSpread(format) {
+            const canvases = Array.from(pagesContainer.querySelectorAll('canvas'));
+            if (!canvases.length) return;
+
+            const mergedCanvas = document.createElement('canvas');
+            const mergedContext = mergedCanvas.getContext('2d');
+            const width = canvases.reduce((sum, canvas) => sum + canvas.width, 0);
+            const height = Math.max(...canvases.map((canvas) => canvas.height));
+
+            mergedCanvas.width = width;
+            mergedCanvas.height = height;
+            mergedContext.fillStyle = '#ffffff';
+            mergedContext.fillRect(0, 0, width, height);
+
+            let offsetX = 0;
+            for (const canvas of canvases) {
+                mergedContext.drawImage(canvas, offsetX, 0);
+                offsetX += canvas.width;
+            }
+
+            const baseName = buildExportBaseName();
+
+            if (format === 'png' || format === 'jpg') {
+                const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
+                const quality = format === 'jpg' ? 0.95 : undefined;
+                const dataUrl = mergedCanvas.toDataURL(mimeType, quality);
+                downloadDataUrl(dataUrl, `${baseName}.${format === 'jpg' ? 'jpg' : 'png'}`);
+                return;
+            }
+
+            if (format === 'pdf') {
+                const pdfApi = window.jspdf && window.jspdf.jsPDF;
+                if (!pdfApi) {
+                    alert('PDF export is not available right now.');
+                    return;
+                }
+
+                const { width: canvasWidth, height: canvasHeight } = mergedCanvas;
+                const orientation = canvasWidth >= canvasHeight ? 'landscape' : 'portrait';
+                const pdf = new pdfApi({
+                    orientation,
+                    unit: 'px',
+                    format: [canvasWidth, canvasHeight],
+                    compress: true
+                });
+                const dataUrl = mergedCanvas.toDataURL('image/png');
+                pdf.addImage(dataUrl, 'PNG', 0, 0, canvasWidth, canvasHeight);
+                pdf.save(`${baseName}.pdf`);
+            }
+        }
+
+        function buildExportBaseName() {
+            const sourceName = bookMode
+                ? (bookFolderPath ? titleize(bookFolderPath.split('/').filter(Boolean).pop() || 'page') : 'page')
+                : `page-${currentPage}`;
+            return `single-page-${sourceName}`.replace(/[^\w.-]+/g, '_');
+        }
+
+        function downloadDataUrl(dataUrl, filename) {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
+
+        function normalizeBookFolder(folder) {
+            const raw = (folder || '').trim();
+            if (!raw) return '';
+            if (/^https?:\/\//i.test(raw)) {
+                try {
+                    return new URL(raw).pathname.replace(/\/+$/, '');
+                } catch {
+                    return raw.replace(/\/+$/, '');
+                }
+            }
+            return raw.replace(/\/+$/, '');
+        }
+    </script>
+</body>
+
+</html>
