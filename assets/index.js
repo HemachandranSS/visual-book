@@ -179,7 +179,8 @@ const visualBooks = [
     "https://hemachandranss.github.io/books3/books/visual-books/The_Poetry_Book_-_DK.pdf",
     "https://hemachandranss.github.io/books3/books/visual-books/The_Religions_Book.pdf",
     "https://hemachandranss.github.io/books3/books/visual-books/Whats_the_Point_of_Philosophy_-_DK.pdf",
-    "https://hemachandranss.github.io/books3/books/visual-books/What_s_the_Point_of_Science_by_DK.pdf"
+    "https://hemachandranss.github.io/books3/books/visual-books/What_s_the_Point_of_Science_by_DK.pdf",
+    'https://hemachandranss.github.io/books6/books/visual-books/Jewel_A_Celebration_of_Earth_s_Treasures'
 ];
 
 const normalizeBookPath = (value) => {
