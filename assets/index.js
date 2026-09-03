@@ -191,7 +191,6 @@ const visualBooks = [
   "https://hemachandranss.github.io/books6/books/visual-books/dk-tank-the-definitive-visual-history-of-armored-v",
   "https://hemachandranss.github.io/books6/books/visual-books/DK_-_Under_Your_Feet",
   "https://hemachandranss.github.io/books6/books/visual-books/Energizing_Workout_-_DK",
-  "https://hemachandranss.github.io/books6/books/visual-books/Europe_by_Train_-_DK_Eyewitness",
   "https://hemachandranss.github.io/books6/books/visual-books/Fashion_The_Definitive_Visual_Guide_Caryn_Franklin",
   "https://hemachandranss.github.io/books6/books/visual-books/Find_My_Favorite_Animals_-_DK",
   "https://hemachandranss.github.io/books6/books/visual-books/Firearms_-_An_Illustrated_History_DK_Smithsonian_-_2014",
