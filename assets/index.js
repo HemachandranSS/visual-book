@@ -180,7 +180,32 @@ const visualBooks = [
     "https://hemachandranss.github.io/books3/books/visual-books/The_Religions_Book.pdf",
     "https://hemachandranss.github.io/books3/books/visual-books/Whats_the_Point_of_Philosophy_-_DK.pdf",
     "https://hemachandranss.github.io/books3/books/visual-books/What_s_the_Point_of_Science_by_DK.pdf",
-    'https://hemachandranss.github.io/books6/books/visual-books/Jewel_A_Celebration_of_Earth_s_Treasures'
+    'https://hemachandranss.github.io/books6/books/visual-books/Jewel_A_Celebration_of_Earth_s_Treasures',
+     "https://hemachandranss.github.io/books6/books/visual-books/Composers_DK",
+  "https://hemachandranss.github.io/books6/books/visual-books/Dinosaurs_-_A_Visual_Encyclopedia_-_DK_-_2011",
+  "https://hemachandranss.github.io/books6/books/visual-books/DK_CAREERS_-_THE_GRAPHIC_GUIDE_TO_FIND_THE_PERFECT_JOB_FOR_YOU_-_1ST_ED__2015_Allison_Singer",
+  "https://hemachandranss.github.io/books6/books/visual-books/DK_Findout_33_Coding_-_James_Floyd_Kelly",
+  "https://hemachandranss.github.io/books6/books/visual-books/DKfindout_Dinosaurs_-_DK",
+  "https://hemachandranss.github.io/books6/books/visual-books/DKfindout_Energy_-_DK",
+  "https://hemachandranss.github.io/books6/books/visual-books/DKfindout_Stone_Age_-_Klint_Janulis",
+  "https://hemachandranss.github.io/books6/books/visual-books/dk-tank-the-definitive-visual-history-of-armored-v",
+  "https://hemachandranss.github.io/books6/books/visual-books/DK_-_Under_Your_Feet",
+  "https://hemachandranss.github.io/books6/books/visual-books/Energizing_Workout_-_DK",
+  "https://hemachandranss.github.io/books6/books/visual-books/Europe_by_Train_-_DK_Eyewitness",
+  "https://hemachandranss.github.io/books6/books/visual-books/Fashion_The_Definitive_Visual_Guide_Caryn_Franklin",
+  "https://hemachandranss.github.io/books6/books/visual-books/Find_My_Favorite_Animals_-_DK",
+  "https://hemachandranss.github.io/books6/books/visual-books/Firearms_-_An_Illustrated_History_DK_Smithsonian_-_2014",
+  "https://hemachandranss.github.io/books6/books/visual-books/How_People_Live_-_DK_Publishing",
+  "https://hemachandranss.github.io/books6/books/visual-books/murray_stuart_mars_dk_eyewitness_books",
+  "https://hemachandranss.github.io/books6/books/visual-books/My_Encyclopedia_of_Very_Important_Dinosaurs_For_Little_Dinosaur_Lovers_Who_Want_to_Know_Everything_by_DK_Englishare",
+  "https://hemachandranss.github.io/books6/books/visual-books/Quilt_Step_by_Step_-_DK",
+  "https://hemachandranss.github.io/books6/books/visual-books/The_Civil_War_-_DK",
+  "https://hemachandranss.github.io/books6/books/visual-books/The_Mandalorian_Handbook_-_DK_Matt_Jones",
+  "https://hemachandranss.github.io/books6/books/visual-books/The_Marvel_Encyclopedia",
+  "https://hemachandranss.github.io/books6/books/visual-books/The_Movie_Book_Big_Ideas_Simply_Explained_by_Danny_Leigh_Louis_Baxter_John_Farndon",
+  "https://hemachandranss.github.io/books6/books/visual-books/The_Vietnam_War_2025_Edition_-_DK",
+  "https://hemachandranss.github.io/books6/books/visual-books/think_of_a_number_-_ball_j",
+  "https://hemachandranss.github.io/books6/books/visual-books/Whales_and_Dolphins_-_DK_Eye_Wonder"
 ];
 
 const normalizeBookPath = (value) => {
