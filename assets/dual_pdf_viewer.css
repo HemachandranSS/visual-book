@@ -313,6 +313,10 @@ body {
     width: max-content;
     min-width: max-content;
     flex: 0 0 auto;
+    /* Live pinch-zoom preview — cleared after re-render */
+    transform-origin: center center;
+    will-change: transform;
+    transition: transform 60ms linear;
 }
 
 .pages-container {

@@ -117,72 +117,88 @@
         zoomInBtn.addEventListener('click', zoomIn);
         zoomOutBtn.addEventListener('click', zoomOut);
 
-        let activePinchDistance = null;
-        let activePinchCenter = null;
+        // ── Touch helpers ──────────────────────────────────────────────────────
+        const getTouchDistance = (a, b) => Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+        const getTouchCenter = (a, b) => ({ x: (a.clientX + b.clientX) / 2, y: (a.clientY + b.clientY) / 2 });
 
-        const getTouchDistance = (touchA, touchB) => Math.hypot(touchA.clientX - touchB.clientX, touchA.clientY - touchB.clientY);
+        // ── Smooth pinch-to-zoom state ─────────────────────────────────────────
+        let pinchStartDist = null;   // finger distance at gesture start
+        let pinchStartScale = null;   // PDF scale at gesture start
+        let pinchLiveRatio = 1;      // last applied CSS ratio (for commit)
 
-        const getTouchCenter = (touchA, touchB) => ({
-            x: (touchA.clientX + touchB.clientX) / 2,
-            y: (touchA.clientY + touchB.clientY) / 2
-        });
+        // ── Swipe-to-navigate state ────────────────────────────────────────────
+        let swipeStartX = null;
+        let swipeStartY = null;
+        let swipeStartTime = null;
 
-        const beginPinch = (touches) => {
-            if (touches.length < 2) return;
-            activePinchDistance = getTouchDistance(touches[0], touches[1]);
-            activePinchCenter = getTouchCenter(touches[0], touches[1]);
-            zoomAnchor = {
-                x: mainContent.scrollLeft + activePinchCenter.x,
-                y: mainContent.scrollTop + activePinchCenter.y
-            };
-        };
-
-        const updatePinch = (touches) => {
-            if (touches.length < 2 || !activePinchDistance) return;
-            const nextDistance = getTouchDistance(touches[0], touches[1]);
-            const delta = nextDistance - activePinchDistance;
-
-            if (Math.abs(delta) < 12) return;
-
-            if (delta > 0) {
-                zoomIn(true);
-            } else {
-                zoomOut(true);
-            }
-
-            activePinchDistance = nextDistance;
-            activePinchCenter = getTouchCenter(touches[0], touches[1]);
-            zoomAnchor = {
-                x: mainContent.scrollLeft + activePinchCenter.x,
-                y: mainContent.scrollTop + activePinchCenter.y
-            };
-        };
-
-        const endPinch = () => {
-            activePinchDistance = null;
-            activePinchCenter = null;
-        };
-
-        mainContent.addEventListener('touchstart', (event) => {
-            if (event.touches.length === 2) {
-                beginPinch(event.touches);
+        mainContent.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                // Begin pinch — snapshot distance & current scale
+                pinchStartDist = getTouchDistance(e.touches[0], e.touches[1]);
+                pinchStartScale = scale;
+                pinchLiveRatio = 1;
+                const center = getTouchCenter(e.touches[0], e.touches[1]);
+                zoomAnchor = {
+                    x: mainContent.scrollLeft + center.x,
+                    y: mainContent.scrollTop + center.y
+                };
+                swipeStartX = null; // cancel any swipe in progress
+            } else if (e.touches.length === 1) {
+                swipeStartX = e.touches[0].clientX;
+                swipeStartY = e.touches[0].clientY;
+                swipeStartTime = Date.now();
             }
         }, { passive: true });
 
-        mainContent.addEventListener('touchmove', (event) => {
-            if (event.touches.length === 2) {
-                event.preventDefault();
-                updatePinch(event.touches);
+        mainContent.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2 && pinchStartDist !== null) {
+                e.preventDefault();
+                const dist = getTouchDistance(e.touches[0], e.touches[1]);
+                const ratio = Math.min(Math.max(dist / pinchStartDist, 0.5 / pinchStartScale), 3.0 / pinchStartScale);
+                pinchLiveRatio = ratio;
+                // Live CSS preview — smooth, zero re-render cost
+                viewerContainer.style.transform = `scale(${ratio})`;
             }
         }, { passive: false });
 
-        mainContent.addEventListener('touchend', (event) => {
-            if (event.touches.length < 2) {
-                endPinch();
+        mainContent.addEventListener('touchend', (e) => {
+            if (pinchStartDist !== null && e.touches.length < 2) {
+                // Commit: clear CSS preview, re-render once at new quality scale
+                viewerContainer.style.transform = '';
+                const newScale = Math.min(Math.max(pinchStartScale * pinchLiveRatio, 0.5), 3.0);
+                if (Math.abs(newScale - scale) > 0.01) {
+                    scale = newScale;
+                    hasZoomed = true;
+                    mainContent.classList.add('zoomed-state');
+                    rerenderCurrentView();
+                }
+                pinchStartDist = null;
+                pinchStartScale = null;
+                pinchLiveRatio = 1;
+                swipeStartX = null;
+                return;
+            }
+
+            // ── Swipe-to-navigate (1-finger horizontal swipe) ─────────────────
+            if (e.changedTouches.length === 1 && swipeStartX !== null) {
+                const dx = e.changedTouches[0].clientX - swipeStartX;
+                const dy = e.changedTouches[0].clientY - swipeStartY;
+                const dt = Date.now() - swipeStartTime;
+                // Must be fast, clearly horizontal, and travel far enough
+                if (dt < 600 && Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+                    if (dx < 0) showNextPage();
+                    else showPrevPage();
+                }
+                swipeStartX = null;
             }
         }, { passive: true });
 
-        mainContent.addEventListener('touchcancel', endPinch, { passive: true });
+        mainContent.addEventListener('touchcancel', () => {
+            viewerContainer.style.transform = '';
+            pinchStartDist = null;
+            pinchStartScale = null;
+            swipeStartX = null;
+        }, { passive: true });
 
         const activateHeader = () => {
             header.classList.remove('is-hidden');
