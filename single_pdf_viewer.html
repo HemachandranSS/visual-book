@@ -127,12 +127,29 @@
         const getTouchDistance = (a, b) => Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
         const getTouchCenter = (a, b) => ({ x: (a.clientX + b.clientX) / 2, y: (a.clientY + b.clientY) / 2 });
 
+        // ── Mobile arrow show-on-tap (mobile only — touch events only) ─────────
+        let mobileArrowHideTimer = null;
+        const showMobileArrows = () => {
+            mobilePrevBtn.classList.add('is-visible');
+            mobileNextBtn.classList.add('is-visible');
+            clearTimeout(mobileArrowHideTimer);
+            mobileArrowHideTimer = setTimeout(() => {
+                mobilePrevBtn.classList.remove('is-visible');
+                mobileNextBtn.classList.remove('is-visible');
+            }, 2200);
+        };
+        // Keep arrows visible while the user taps them
+        mobilePrevBtn.addEventListener('touchstart', showMobileArrows, { passive: true });
+        mobileNextBtn.addEventListener('touchstart', showMobileArrows, { passive: true });
+
         // ── Smooth pinch-to-zoom state ─────────────────────────────────────
         let pinchStartDist = null;
         let pinchStartScale = null;
         let pinchLiveRatio = 1;
 
         mainContent.addEventListener('touchstart', (e) => {
+            // Any tap on the content area reveals the nav arrows briefly
+            showMobileArrows();
             if (e.touches.length === 2) {
                 pinchStartDist = getTouchDistance(e.touches[0], e.touches[1]);
                 pinchStartScale = scale;

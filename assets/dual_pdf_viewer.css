@@ -413,14 +413,14 @@ body {
     font-size: 0.9rem;
 }
 
-/* ── Mobile floating nav arrows (hidden on desktop) ─────────────────────── */
+/* ── Mobile floating nav arrows (hidden on desktop, hidden until tap) ───── */
 .mobile-nav-arrow {
     display: none;
 }
 
 @media (max-width: 768px) {
 
-    /* Show floating arrows only on mobile */
+    /* Base: rendered but invisible; revealed by JS on tap */
     .mobile-nav-arrow {
         display: flex;
         align-items: center;
@@ -432,18 +432,27 @@ body {
         width: 2.8rem;
         height: 6rem;
         border: none;
-        background: rgba(8, 13, 26, 0.10);
-        backdrop-filter: blur(6px) saturate(1.2);
-        -webkit-backdrop-filter: blur(6px) saturate(1.2);
-        color: rgba(255, 255, 255, 0.70);
+        background: rgba(8, 13, 26, 0.05);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        color: rgba(255, 255, 255, 0.65);
         font-size: 2.4rem;
         font-weight: 300;
         line-height: 1;
         cursor: pointer;
-        transition: background 0.2s ease, opacity 0.22s ease, transform 0.18s ease;
+        /* Hidden by default — JS adds .is-visible on tap */
+        opacity: 0;
+        pointer-events: none;
+        transition: background 0.2s ease, opacity 0.32s ease, transform 0.18s ease;
         user-select: none;
         -webkit-tap-highlight-color: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Tap anywhere → JS adds this class; auto-removed after 2.2 s */
+    .mobile-nav-arrow.is-visible {
+        opacity: 1;
+        pointer-events: auto;
     }
 
     .mobile-nav-prev {
@@ -460,14 +469,14 @@ body {
         padding-left: 0.2rem;
     }
 
-    .mobile-nav-arrow:active:not(:disabled) {
-        background: rgba(143, 216, 255, 0.22);
+    .mobile-nav-arrow.is-visible:active:not(:disabled) {
+        background: rgba(143, 216, 255, 0.18);
         transform: translateY(-50%) scaleX(0.93);
     }
 
+    /* Disabled arrows stay hidden — no point showing a ghost button */
     .mobile-nav-arrow:disabled {
-        opacity: 0.18;
-        cursor: default;
+        opacity: 0 !important;
         pointer-events: none;
     }
 
