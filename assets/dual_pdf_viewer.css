@@ -74,8 +74,8 @@ body {
     z-index: 999;
 }
 
-.top-reveal-zone:hover ~ .header,
-.top-reveal-zone:active ~ .header {
+.top-reveal-zone:hover~.header,
+.top-reveal-zone:active~.header {
     transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
@@ -329,7 +329,7 @@ body {
     flex-wrap: nowrap;
 }
 
-.pages-container.dual-page-container .page-wrapper + .page-wrapper {
+.pages-container.dual-page-container .page-wrapper+.page-wrapper {
     margin-left: -1px;
 }
 
@@ -413,7 +413,65 @@ body {
     font-size: 0.9rem;
 }
 
+/* ── Mobile floating nav arrows (hidden on desktop) ─────────────────────── */
+.mobile-nav-arrow {
+    display: none;
+}
+
 @media (max-width: 768px) {
+
+    /* Show floating arrows only on mobile */
+    .mobile-nav-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 950;
+        width: 2.8rem;
+        height: 6rem;
+        border: none;
+        background: rgba(8, 13, 26, 0.28);
+        backdrop-filter: blur(10px) saturate(1.4);
+        -webkit-backdrop-filter: blur(10px) saturate(1.4);
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 2.4rem;
+        font-weight: 300;
+        line-height: 1;
+        cursor: pointer;
+        transition: background 0.2s ease, opacity 0.22s ease, transform 0.18s ease;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .mobile-nav-prev {
+        left: 0;
+        border-radius: 0 16px 16px 0;
+        border-left: none;
+        padding-right: 0.2rem;
+    }
+
+    .mobile-nav-next {
+        right: 0;
+        border-radius: 16px 0 0 16px;
+        border-right: none;
+        padding-left: 0.2rem;
+    }
+
+    .mobile-nav-arrow:active:not(:disabled) {
+        background: rgba(143, 216, 255, 0.22);
+        transform: translateY(-50%) scaleX(0.93);
+    }
+
+    .mobile-nav-arrow:disabled {
+        opacity: 0.18;
+        cursor: default;
+        pointer-events: none;
+    }
+
+    /* ── Existing mobile overrides ──────────────────────────────────────── */
     .header {
         padding: 0.85rem 0.85rem 0.95rem;
         align-items: stretch;

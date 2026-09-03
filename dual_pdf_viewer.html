@@ -14,6 +14,10 @@
 
 <body>
     <div id="topRevealZone" class="top-reveal-zone" aria-hidden="true"></div>
+    <!-- Mobile-only floating nav arrows (hidden on desktop via CSS) -->
+    <button id="mobilePrevBtn" class="mobile-nav-arrow mobile-nav-prev" disabled
+        aria-label="Previous page">&#8249;</button>
+    <button id="mobileNextBtn" class="mobile-nav-arrow mobile-nav-next" disabled aria-label="Next page">&#8250;</button>
     <div class="header">
         <div class="header-left">
             <div class="title">📚 Book Viewer</div>
@@ -100,6 +104,8 @@
         const bookBadge = document.getElementById('bookBadge');
         const header = document.querySelector('.header');
         const topRevealZone = document.getElementById('topRevealZone');
+        const mobilePrevBtn = document.getElementById('mobilePrevBtn');
+        const mobileNextBtn = document.getElementById('mobileNextBtn');
 
         const params = new URLSearchParams(window.location.search);
         const bookName = normalizeBookFolder(params.get('book'));
@@ -116,24 +122,20 @@
         rotateBtn.addEventListener('click', rotatePages);
         zoomInBtn.addEventListener('click', zoomIn);
         zoomOutBtn.addEventListener('click', zoomOut);
+        mobilePrevBtn.addEventListener('click', showPrevPage);
+        mobileNextBtn.addEventListener('click', showNextPage);
 
         // ── Touch helpers ──────────────────────────────────────────────────────
         const getTouchDistance = (a, b) => Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
         const getTouchCenter = (a, b) => ({ x: (a.clientX + b.clientX) / 2, y: (a.clientY + b.clientY) / 2 });
 
-        // ── Smooth pinch-to-zoom state ─────────────────────────────────────────
-        let pinchStartDist = null;   // finger distance at gesture start
-        let pinchStartScale = null;   // PDF scale at gesture start
-        let pinchLiveRatio = 1;      // last applied CSS ratio (for commit)
-
-        // ── Swipe-to-navigate state ────────────────────────────────────────────
-        let swipeStartX = null;
-        let swipeStartY = null;
-        let swipeStartTime = null;
+        // ── Smooth pinch-to-zoom state ──────────────────────────────────────
+        let pinchStartDist = null;
+        let pinchStartScale = null;
+        let pinchLiveRatio = 1;
 
         mainContent.addEventListener('touchstart', (e) => {
             if (e.touches.length === 2) {
-                // Begin pinch — snapshot distance & current scale
                 pinchStartDist = getTouchDistance(e.touches[0], e.touches[1]);
                 pinchStartScale = scale;
                 pinchLiveRatio = 1;
@@ -142,11 +144,6 @@
                     x: mainContent.scrollLeft + center.x,
                     y: mainContent.scrollTop + center.y
                 };
-                swipeStartX = null; // cancel any swipe in progress
-            } else if (e.touches.length === 1) {
-                swipeStartX = e.touches[0].clientX;
-                swipeStartY = e.touches[0].clientY;
-                swipeStartTime = Date.now();
             }
         }, { passive: true });
 
@@ -163,7 +160,6 @@
 
         mainContent.addEventListener('touchend', (e) => {
             if (pinchStartDist !== null && e.touches.length < 2) {
-                // Commit: clear CSS preview, re-render once at new quality scale
                 viewerContainer.style.transform = '';
                 const newScale = Math.min(Math.max(pinchStartScale * pinchLiveRatio, 0.5), 3.0);
                 if (Math.abs(newScale - scale) > 0.01) {
@@ -175,21 +171,6 @@
                 pinchStartDist = null;
                 pinchStartScale = null;
                 pinchLiveRatio = 1;
-                swipeStartX = null;
-                return;
-            }
-
-            // ── Swipe-to-navigate (1-finger horizontal swipe) ─────────────────
-            if (e.changedTouches.length === 1 && swipeStartX !== null) {
-                const dx = e.changedTouches[0].clientX - swipeStartX;
-                const dy = e.changedTouches[0].clientY - swipeStartY;
-                const dt = Date.now() - swipeStartTime;
-                // Must be fast, clearly horizontal, and travel far enough
-                if (dt < 600 && Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-                    if (dx < 0) showNextPage();
-                    else showPrevPage();
-                }
-                swipeStartX = null;
             }
         }, { passive: true });
 
@@ -197,8 +178,8 @@
             viewerContainer.style.transform = '';
             pinchStartDist = null;
             pinchStartScale = null;
-            swipeStartX = null;
         }, { passive: true });
+
 
         const activateHeader = () => {
             header.classList.remove('is-hidden');
@@ -663,8 +644,12 @@
 
         function updateNavigationButtons() {
             const hasDocument = pdfDoc || bookMode;
-            prevBtn.disabled = !hasDocument || currentPage <= 1;
-            nextBtn.disabled = !hasDocument || (!bookMode && currentPage >= totalPages) || (bookMode && !(currentPage === 1 || bookHasMore || currentPage + 1 < bookPages.length));
+            const atFirst = !hasDocument || currentPage <= 1;
+            const atLast = !hasDocument || (!bookMode && currentPage >= totalPages) || (bookMode && !(currentPage === 1 || bookHasMore || currentPage + 1 < bookPages.length));
+            prevBtn.disabled = atFirst;
+            nextBtn.disabled = atLast;
+            mobilePrevBtn.disabled = atFirst;
+            mobileNextBtn.disabled = atLast;
             exportPngBtn.disabled = !hasDocument;
             exportJpgBtn.disabled = !hasDocument;
             exportPdfBtn.disabled = !hasDocument;
