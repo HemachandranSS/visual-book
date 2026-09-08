@@ -34,7 +34,7 @@ const personalFinanceBooks = [
   'https://hemachandranss.github.io/books7/books/visual-books/The_intelligent_investor_-_Benjamin_Graham.pdf',
   'https://hemachandranss.github.io/books7/books/visual-books/The_Millionaire_Next_Door__The_Surprising_-_Thomas_Stanley.pdf',
   'https://hemachandranss.github.io/books7/books/visual-books/The_millionare_fastlane_-_MJ_Demarco.pdf',
-  'https://hemachandranss.github.io/books7/books/visual-books/The_psychological_of_money_Indonesian_Edition_-_Morgan_housel.pdf',
+  'https://hemachandranss.github.io/books7/books/visual-books/The_psychology_of_money_-_Morgan_housel.pdf.pdf',
   'https://hemachandranss.github.io/books7/books/visual-books/The_richest_man_of_Babylon_-_George_clason.pdf',
   'https://hemachandranss.github.io/books7/books/visual-books/The_Science_of_Algorithmic_Trading_and_Portfolio_Management_-_Robert_Kissell.pdf',
   'https://hemachandranss.github.io/books7/books/visual-books/The_Subtle_Art_of_Intraday_Trading_-_Indrazith_Shantharaj.pdf',
