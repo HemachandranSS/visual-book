@@ -4,838 +4,385 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books</title>
-    <link rel="stylesheet" href="assets/index.css">
+    <title>Master Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --accent-1: #3b82f6;
+            --accent-2: #8b5cf6;
+            --accent-3: #ec4899;
+            --accent-4: #10b981;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.15) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.15) 0px, transparent 50%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.05em;
+        }
+
+        p.subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            z-index: 1;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, var(--accent-color), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card:hover::before {
+            opacity: 0.15;
+        }
+
+        .icon-wrapper {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover .icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+            background: var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-color);
+            opacity: 0.8;
+        }
+
+        .card h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            transition: color 0.3s ease;
+        }
+
+        .card:hover h2 {
+            color: #fff;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+            font-weight: 300;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover .card-footer {
+            opacity: 1;
+        }
+
+        .card-footer svg {
+            width: 20px;
+            height: 20px;
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-footer svg {
+            transform: translateX(5px);
+        }
+
+        .card-digit {
+            --accent-color: var(--accent-1);
+        }
+
+        .card-osfy {
+            --accent-color: var(--accent-2);
+        }
+
+        .card-finance {
+            --accent-color: var(--accent-3);
+        }
+
+        .card-visual {
+            --accent-color: var(--accent-4);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Ambient glowing orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: -1;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-1);
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-2);
+            bottom: -150px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--accent-3);
+            top: 40%;
+            left: 30%;
+            opacity: 0.2;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(50px, 30px) scale(1.1);
+            }
+
+            100% {
+                transform: translate(-30px, 50px) scale(0.9);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 2rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="assets/login.css" />
+    <script src="assets/login.js"></script>
 </head>
 
 <body>
-    <main class="shell">
-        <section class="hero">
-            <div>
-                <h1>Books</h1>
-                <!-- <p class="lede">Pick a book folder to open its numbered PDF pages in the viewer. The viewer expects files like `1.pdf`, `2.pdf`, continuing through the last page in that folder.</p> -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <header>
+        <h1>Master Directory</h1>
+        <p class="subtitle">Navigate through your curated collection of magazines, financial planners, and visual
+            resources seamlessly.</p>
+    </header>
+
+    <div class="grid">
+
+        <a href="pages/visual_index.html" class="card card-visual">
+            <div class="icon-wrapper">
+                🎨
             </div>
-            <div id="count" class="count"></div>
-        </section>
-
-        <section class="section">
-            <div class="section-head">
-                <h2 class="section-title">Visual Books</h2>
-                <div id="visualCount" class="section-note"></div>
+            <h2>Visual Books</h2>
+            <p>Browse through your collection of visually rich ebooks and pictorial guides.</p>
+            <div class="card-footer">
+                Explore Hub
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
             </div>
-            <section id="visualGrid" class="grid">
-
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Pregnancy_Encyclopedia_-_Paula_Amato" target="_blank">
-                    <h2 class="card-title">Pregnancy_Encyclopedia</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/pregnancy_day_by_day_4th_edition_-_dk" target="_blank">
-                    <h2 class="card-title">Pregnancy Day By Day</h2>
-                </a>
-
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/baby_play_for_every_day" target="_blank">
-                    <h2 class="card-title">Baby Play For Every Day</h2>
-                    <!-- <div class="card-meta">Open numbered PDFs from <strong>visual-books/baby_play_for_every_day/</strong> as a visual book</div> -->
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Made_for_Baby_-_DK" target="_blank">
-                    <h2 class="card-title">Made for Baby</h2>
-                    <!-- <div class="card-meta">Open numbered PDFs from <strong>visual-books/baby_play_for_every_day/</strong> as a visual book</div> -->
-                </a>
-
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Scientists_-_Dorling_Kindersley" target="_blank">
-                    <h2 class="card-title">Scientists Dorling Kindersley</h2>
-                    <!-- <div class="card-meta">Open numbered PDFs from <strong>visual-books/Scientists_-_Dorling_Kindersley/</strong> as a visual book</div> -->
-                </a>
-               
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/jack_maker_lab_28_super_cool_projects_build_invent" target="_blank">
-                    <h2 class="card-title">Maker Lab: 28 Super Cool Projects to Build, Invent</h2>
-                    <!-- <div class="card-meta">Open numbered PDFs from <strong>visual-books/jack_maker_lab_28_super_cool_projects_build_invent/</strong> as a visual book</div> -->
-                </a>
-
-
-                  <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/first_children_s_encyclopedia" target="_blank">
-                    <h2 class="card-title">First Children's Encyclopedia</h2>
-                    <!-- <div class="card-meta">Open numbered PDFs from <strong>visual-books/jack_maker_lab_28_super_cool_projects_build_invent/</strong> as a visual book</div> -->
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/the-new-childrens-encyclopedia-visual-encyclopedia" target="_blank">
-                    <h2 class="card-title">First Children Visual Encyclopedia</h2>
-                    <!-- <div class="card-meta">Open numbered PDFs from <strong>visual-books/jack_maker_lab_28_super_cool_projects_build_invent/</strong> as a visual book</div> -->
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/100_people_who_made_history" target="_blank">
-                    <h2 class="card-title">100 People Who Made History</h2>
-                    <!-- <div class="card-meta">Open numbered PDFs from <strong>visual-books/jack_maker_lab_28_super_cool_projects_build_invent/</strong> as a visual book</div> -->
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/children_first_childrens_dictionary" target="_blank">
-                    <h2 class="card-title">Childrens Dictionary</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Night_sky_Explore_nature" target="_blank">
-                    <h2 class="card-title">Night Sky Explore Nature</h2>
-                </a>
-
-                  <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/my_encyclopedia_of_very_important_sports" target="_blank">
-                    <h2 class="card-title">Encyclopedia Of Very Important Sports</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/1000_words_nature" target="_blank">
-                    <h2 class="card-title">1000 Words Nature</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/did_you_know_amazing_answer_to_the_questions" target="_blank">
-                    <h2 class="card-title">Did You Know? Amazing Answers to the Questions</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/dk_children_big_questions" target="_blank">
-                    <h2 class="card-title">Big Questions</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/cars_trains_ships_and_planes" target="_blank">
-                    <h2 class="card-title">Cars, Trains, Ships, and Planes</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/picture-encyclopedia" target="_blank">
-                    <h2 class="card-title">Picture Encyclopedia</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/the_steam_team_explains_more_than_10" target="_blank">
-                    <h2 class="card-title">The STEAM Team (Key Science Concepts) </h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/our_world_in_pictures_countries_cultures_people" target="_blank">
-                    <h2 class="card-title">Our World In Pictures Countries Cultures People</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/dk_my_top_to_bottom_body_book" target="_blank">
-                    <h2 class="card-title">Body: Top to Bottom</h2>
-                </a>
-
-                  <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Ann_Swanson_Science_of_Yoga_Understand_the_Anat" target="_blank">
-                    <h2 class="card-title">Science of Yoga</h2>
-                 </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/me_and_my_body" target="_blank">
-                    <h2 class="card-title">Me and My Body</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/The_Concise_Human_Body_Book_New_Edition_-_DK_UserUpload_Net" target="_blank">
-                    <h2 class="card-title">The Concise Human Body Book</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/human_body_facts_at_your_fingertips" target="_blank">
-                    <h2 class="card-title">Human Body Facts At Your finger Tips</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/human-body-a-visual-encyclopedia-1st-american" target="_blank">
-                    <h2 class="card-title">Human Body: A Visual Encyclopedia</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Human_Body_DK_Eyewitness_Science" target="_blank">
-                    <h2 class="card-title">Human Body: Eyewitness Science</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/The_Visual_Dictionary_of_The_Human_Being" target="_blank">
-                    <h2 class="card-title">Human Being: Visual Dictionary</h2>
-                </a>                
-
-
-                <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/How_It_Works_DK_-_How_the_Brain_Works_The_Facts_Visually_Explained-DK_2020" target="_blank">
-                    <h2 class="card-title">How The Brain Works The Facts Visually Explained</h2>
-                </a>
-
-                  <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/DK_-Rita-Carter_-The-Human-Brain-Book_-An-Illustr_z-lib_org" target="_blank">
-                    <h2 class="card-title">Brain: Structure, Function and Disorders</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/DK_How_to_be_a_Genius_Your_Brain_and_How_to_Train_It" target="_blank">
-                    <h2 class="card-title">How to be a Genius: Brain and How to Train It</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/great_things_to_do_outside" target="_blank">
-                    <h2 class="card-title">Great Things To Do Outside</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/my_encyclopedia_of_very_important_animals" target="_blank">
-                    <h2 class="card-title">Encyclopedia of Very Important Animals</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/life_cycles_everything_from_start_to_finish" target="_blank">
-                    <h2 class="card-title">Everything from Start to Finish Life Cycles</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/dk_children_s_illustrated_animal_atlas" target="_blank">
-                    <h2 class="card-title">Childrens Illustrated Animal Atals</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/the_animal_atlas" target="_blank">
-                    <h2 class="card-title">The Animal Atals</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/the_bird_atlas" target="_blank">
-                    <h2 class="card-title">The Bird Atals</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/the_most_fantastic_atlas" target="_blank">
-                    <h2 class="card-title">The Most Fantastic Atals</h2>
-                </a>
-
-                  <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/dk_children_s_illustrated_history_atlas" target="_blank">
-                    <h2 class="card-title">The Illustrated History Atals</h2>
-                </a>
-
-                
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/weather_and_the_seasons" target="_blank">
-                    <h2 class="card-title">Weather And The Seasons</h2>
-                </a>
-
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/woodfores" target="_blank">
-                    <h2 class="card-title">Wood Land And Forest</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/life_as_we_know_it" target="_blank">
-                    <h2 class="card-title">Life As We Know It</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/mills_a_dkfindout_oceans" target="_blank">
-                    <h2 class="card-title">Find Out Oceans</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/365_things_to_do_with_paper" target="_blank">
-                    <h2 class="card-title">365 Things To Do With Paper</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/domoney_d_my_house_plant_changed_my_life" target="_blank">
-                    <h2 class="card-title">My House Plant Changed My Life</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/the_crafter_s_year" target="_blank">
-                    <h2 class="card-title">Crafters Year</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/dk_children_lets_sew" target="_blank">
-                    <h2 class="card-title">Let's Sew</h2>
-                </a>
-
-                  <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/cooking_step_by_step" target="_blank">
-                    <h2 class="card-title">Cooking Step By Step</h2>
-                </a>
-
-                  <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/my_first_vegetarian_cookbook" target="_blank">
-                    <h2 class="card-title">Vegetarian Cookbook</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/gladiators_riveting_reads" target="_blank">
-                    <h2 class="card-title">Gladiators Riveting Reads</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/macfarlane_t_dragon_world" target="_blank">
-                    <h2 class="card-title">Dragon World</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/leonardo_da_vinci_life_stories" target="_blank">
-                    <h2 class="card-title">Leonardo Da Vinci Life Stories</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/queen_elizabeth_iilife_stories" target="_blank">
-                    <h2 class="card-title">Queen Elizabeth - II, Life Stories</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/hilton_h_ed_stuff_to_know_when_you_start_school" target="_blank">
-                    <h2 class="card-title">Stuff to Know When You Start School</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/lost_in_the_clouds" target="_blank">
-                    <h2 class="card-title">Lost In The Clouds</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/disney_princess_craft_book" target="_blank">
-                    <h2 class="card-title">Disney Princess Craft Book</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/dk_readers_prelevel_1_in_the_park" target="_blank">
-                    <h2 class="card-title">In The Park</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Avengers_The_Ultimate_Guide" target="_blank">
-                    <h2 class="card-title">Avengers The Ultimate Guide</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/a_first_bible_story_book" target="_blank">
-                    <h2 class="card-title">A First Bible Story Book</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/dk_children_my_very_first_bible_stories" target="_blank">
-                    <h2 class="card-title">Very First Bible Stories</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/dk_my_little_picture_bible" target="_blank">
-                    <h2 class="card-title">Little Picture Bible</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Alphabet_Poems" target="_blank">
-                    <h2 class="card-title">Alphabet Poems</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/InteractiveLeveledBooksICanDailyTasks" target="_blank">
-                    <h2 class="card-title">Things I Can Do</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/babys_first_chinese_new_year" target="_blank">
-                    <h2 class="card-title">First Chinese New Year</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/english_for_everyone_junior_5_words_a_day_learn" target="_blank">
-                    <h2 class="card-title">English For Everyone 5 Words A Day</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/help_your_kids_with_times_tables" target="_blank">
-                    <h2 class="card-title">Math Kids Time Tables</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/50_states_of_the_united_states_of_america" target="_blank">
-                    <h2 class="card-title">50 States Of The United States Of America</h2>
-                </a>
-
-                  <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Help_your_kids_with_English" target="_blank">
-                    <h2 class="card-title">Help Your Kids With English</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Help_Your_kids_with_Math" target="_blank">
-                    <h2 class="card-title">Help Your Kids With Math</h2>
-                </a>
-
-                  <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/How_To_Be_Good_At_Math" target="_blank">
-                    <h2 class="card-title">How to Be Good At Math</h2>
-                </a>
-
-                  <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/Whats_the_Point_of_Math_by_DK_z-lib_org" target="_blank">
-                    <h2 class="card-title">Whats the point of Math</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/DK_Goldsmith_How_to_Be_a_Math_Genius" target="_blank">
-                    <h2 class="card-title">How to Be a Math Genius</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/simple-maths" target="_blank">
-                    <h2 class="card-title">Simple Maths</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/Math_Maker_Lab__DK" target="_blank">
-                    <h2 class="card-title">Math Maker Lab</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Kniga_Help_Your_Kids_with_Computer_Coding" target="_blank">
-                    <h2 class="card-title">Help Your Kids With Computer Coding</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Help_Your_Kids_with_Language_Arts" target="_blank">
-                    <h2 class="card-title">Help Your Kids With Language Arts</h2>
-                </a>
-                 </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Help_Your_Kids_with_Music" target="_blank">
-                    <h2 class="card-title">Help Your Kids With Music</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Help_Your_Kids_with_Computer" target="_blank">
-                    <h2 class="card-title">Help Your Kids With Computer</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Help_Your_Kids_with_Adolescence" target="_blank">
-                    <h2 class="card-title">Help Your Kids With Adolescence</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/dk_eyewitness_books_ocean" target="_blank">
-                    <h2 class="card-title">Eyewitness Book Ocean</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/dk_google_online_oceans" target="_blank">
-                    <h2 class="card-title">Google Online Oceans</h2>
-                </a>
-
-                  <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/dk_smithsonian_ocean" target="_blank">
-                    <h2 class="card-title">Ocean</h2>
-                </a>
-               
-                
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Where_on_Earth_-_Dorling_Kindersley" target="_blank">
-                    <h2 class="card-title">Where on Earth?</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/DK_-_Big_Book_of_Knowledge" target="_blank">
-                    <h2 class="card-title">Big Book Of Knowledge</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Natural_Wonders_of_the_World_By_DK" target="_blank">
-                    <h2 class="card-title">Natural Wonders of the World</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Plant_DK_Eye_Wonder_by_Fleur_Star" target="_blank">
-                    <h2 class="card-title">Eye Wonder: Plant</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Christopher_Brickell_-_Encyclopedia_of_Plants_and_Flowers-DK_Publishing_2019" target="_blank">
-                    <h2 class="card-title">Encyclopedia of Plants and Flowers</h2>
-                </a>
-                  <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Scientists_Who_Changed_History" target="_blank">
-                    <h2 class="card-title">Scientists Who changed History</h2>
-                </a>
-
-                
-                 </a>
-                  <a
-                   class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Geography_of_the_World_By_DK" target="_blank">
-                    <h2 class="card-title">Geography Of The World</h2>
-                </a>
-
-                 <a
-                   class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/DK_Publishing_-_Complete_Flags_of_the_World_5th_edition_Smithsonian_Handbooks_-_2008" target="_blank">
-                    <h2 class="card-title">World: Flags</h2>
-                </a>
-
-                  <a
-                   class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Geography_A_Visual_Encyclopedia" target="_blank">
-                    <h2 class="card-title">Geography: Visual Encyclopedia</h2>
-                </a>
-
-                 <a
-                   class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Where_on_Earth_Geography_As_Youve_Never_Seen_It_Before_by_DK" target="_blank">
-                    <h2 class="card-title">Earth: Geography As You've Never Seen It Before</h2>
-                </a>
-                 <a
-                   class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/1dorling_kindersley_earth" target="_blank">
-                    <h2 class="card-title">Find Out: Earth</h2>
-                </a>
-
-                <a
-                   class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Dorling_Kindersley_Limited_-_Atlas" target="_blank">
-                    <h2 class="card-title">Atlas</h2>
-                </a>
-
-
-                  <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/DK_-_Wonders_of_Nature_Ben_Hoare" target="_blank">
-                    <h2 class="card-title">Wonders of Nature</h2>
-                </a>
-                 
-                  <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/dk_first_space_encyclopedia" target="_blank">
-                    <h2 class="card-title">First Space Encyclopedia</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/dk_see_how_they_go_spaceship" target="_blank">
-                    <h2 class="card-title">Spaceship: See How They Go</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/dk_space_visual_encyclopedia" target="_blank">
-                    <h2 class="card-title">Space Visual Encylopedia</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/The_Mysteries_of_the_Universe_Discover_the_best-kept_secrets_of_space_by_Will_Gater_z-lib_org" target="_blank">
-                    <h2 class="card-title">The Mysteries of the Universe</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/The_Stars_The_Definitive_Visual_Guide_to_the_Cosmos" target="_blank">
-                    <h2 class="card-title">The Stars, Visual Guide</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Starfinder_The_Complete_Beginners_Guide_to_Exploring_the_Night_Sky_by_Carole_Stott" target="_blank">
-                    <h2 class="card-title">Star Finder: Guide to Exploring the Night Sky</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Universe_Third_Edition_by_DK" target="_blank">
-                    <h2 class="card-title">Universe</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Simply_Quantum_Physics_Miezan_van_Zyl_Project_Editor" target="_blank">
-                    <h2 class="card-title">Simply Quantum Physics</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Quantum-Physics" target="_blank">
-                    <h2 class="card-title">Quantum Physics</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/How_Money_Works_-_The_Facts_Visually_Explained_2017" target="_blank">
-                    <h2 class="card-title">How Money Works</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/How_Business_Works" target="_blank">
-                    <h2 class="card-title">How Business Works</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/DK-Essential-Managers-Innovation" target="_blank">
-                    <h2 class="card-title">Essential Managers: Innovation</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/How_to_Start_Your_Own_Business_The_Facts_Visually_Explained_DK" target="_blank">
-                    <h2 class="card-title">How to Start Your Own Business</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/The_Law_Book_by_DK" target="_blank">
-                    <h2 class="card-title">The Law Book</h2>
-                </a>
-                  <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/Glynis_Barnes-Mellish_-_Watercolor_Workshop_-_2006" target="_blank">
-                    <h2 class="card-title">Water Color Workshop</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books/visual-books/An_Introduction_to_Oil_Painting_DK_Art_School" target="_blank">
-                    <h2 class="card-title">Oil Painting</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/Norse_Myths" target="_blank">
-                    <h2 class="card-title">Norse Myths</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/A_History_of_Magic_Witchcraft_and_the_Occult_-_DK" target="_blank">
-                    <h2 class="card-title">A History of Magic Witchcraft and the Occult</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/Aircraft_The_Definitive_Visual_History_New_Edition_-_DK" target="_blank">
-                    <h2 class="card-title">Aircraft: The Visual History</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/Animal_-_David_Burnie" target="_blank">
-                    <h2 class="card-title">Animal</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/Computer_Coding_Python_Projects_for_Kids_-_Carol_Vorderman" target="_blank">
-                    <h2 class="card-title">Computer Coding: Python Projects</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/Encyclopedia_of_Garden_Plants_for_Every_Location_-_DK" target="_blank">
-                    <h2 class="card-title">Encyclopedia of Garden Plants for Every Location</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/Encyclopedia_Of_Herbal_Medicine_-_Andrew_Chevallier" target="_blank">
-                    <h2 class="card-title">Encyclopedia of Herbal Medicine</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/First_Animal_Encyclopedia_-_DK" target="_blank">
-                    <h2 class="card-title">Encyclopedia: First Animal</h2>
-                </a>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/science_squad" target="_blank">
-                    <h2 class="card-title">Science Squad</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Help_Your_kids_with_Science" target="_blank">
-                    <h2 class="card-title">Help Your Kids With Science</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/help_your_kids_with_geography" target="_blank">
-                    <h2 class="card-title">Help Your Kids With Geography</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/help_your_kids_with_growing_up" target="_blank">
-                    <h2 class="card-title">Help Your Kids Growing UP</h2>
-                </a>
-                  <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/DK_-_1000_Words_-_Science" target="_blank">
-                    <h2 class="card-title">1000 Words Science</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books/books/visual-books/Super_Science_Encyclopedia_How_Science_Shapes_Our_World_by_Dorling_Kindersley" target="_blank">
-                    <h2 class="card-title">Super Science Encyclopedia: How Science Shapes Our World</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/First_Science_Encyclopedia_Revised_Edition_-_DK" target="_blank">
-                    <h2 class="card-title">Encyclopedia: Science</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/Timelines_of_Science_-_Ultimate_Visual_Guide_-_DK_Smithsonian" target="_blank">
-                    <h2 class="card-title">Timeline of Science: An Ultimate Visual Guide</h2>
-                </a>
-
-                
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/1dk_science_year_by_year_a_visual_history_from_stone_tools_to" target="_blank">
-                    <h2 class="card-title">Science: Year By Year</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/DK_Smithsonian_Science_33__Science_as_You_39_ve_Neve" target="_blank">
-                    <h2 class="card-title">Science: Never Seen Before</h2>
-                </a>
-
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/DK_-_First_How_Things_Work_Encyclopedia" target="_blank">
-                    <h2 class="card-title">Encyclopedia: First How Things Works</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/DK_How_to_be_good_at_science_technology_engineering" target="_blank">
-                    <h2 class="card-title">How To Be Good At Science, Technology and Engineering</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/DK_Findout_33_Engineering_-_Emily_Hunt" target="_blank">
-                    <h2 class="card-title">Findout: Engineering</h2>
-                </a>
-
-                  <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/How_Super_Cool_Tech_Works_-_Dorling_Kindersley_UserUpload_Net" target="_blank">
-                    <h2 class="card-title">How Super Cool Tech Works</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/The_Periodic_Table_Book" target="_blank">
-                    <h2 class="card-title">The Periodic Table Book</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Periodic_Table_-_Facts_at_Your_Fingertips_By_DK" target="_blank">
-                    <h2 class="card-title">Periodic Table: Facts At Your Finger Tips</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/DK_Children_-_The_Elements" target="_blank">
-                    <h2 class="card-title">The Elements</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/The_Rock_Gem_Book__And_Other_Treasures_of_the_Natural_World_by_DK_Smithsonian_Dan_Green_z-lib_org" target="_blank">
-                    <h2 class="card-title">The Rocker, Gem and Other Treasures</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/Flight_The_Complete_History_of_Aviation_-_RG_Grant" target="_blank">
-                    <h2 class="card-title">Flight: History of Aviation</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/Great_Fruit_n_Vegetable_Guide_-_DK" target="_blank">
-                    <h2 class="card-title">Great Fruits And Vegetables</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/History_A_Visual_Encyclopedia_-_DK" target="_blank">
-                    <h2 class="card-title">A Visual Encyclopedia: History</h2>
-                </a>
-                   <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/History_-_The_DK_Definitive_Visual_Guide_-_Adam_Hart-Davis" target="_blank">
-                    <h2 class="card-title">A Definitive Visual Guide: History</h2>
-                </a>
-                    <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Timelines_of_History_-_DK_Publishing" target="_blank">
-                    <h2 class="card-title">Timelines of History</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Back_to_Life_-_DK" target="_blank">
-                    <h2 class="card-title">World History: Never Seen Before</h2>
-                </a>
-                  <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Timelines_of_World_History_-_DK" target="_blank">
-                    <h2 class="card-title">Timelines of World History</h2>
-                </a>
-
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/DK_-_Civilization" target="_blank">
-                    <h2 class="card-title">Civilization</h2>
-                </a>
-
-
-
-                 </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/The_Military_History_Book_-_DK" target="_blank">
-                    <h2 class="card-title">The Military History Book</h2>
-                </a>
-                 
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Women_Our_History" target="_blank">
-                    <h2 class="card-title">Women: History</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/World_War_I_The_Definitive_Visual_History" target="_blank">
-                    <h2 class="card-title">World War - 1</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/World_War_II_The_Definitive_Visual_History" target="_blank">
-                    <h2 class="card-title">World War - 2</h2>
-                </a>
-
-
-                <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/Illustrated_Family_Encyclopedia_-_DK_Publishing" target="_blank">
-                    <h2 class="card-title">Family Encylopedia</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/Indian_Railways_A_Visual_Journey_-_DK" target="_blank">
-                    <h2 class="card-title">Indian Railways: A Visual Journey</h2>
-                </a>
-                
-                <a class="card" href="dual_pdf_viewer.html?book=books1/books/visual-books/100_Inventions_That_Made_History_-_DK" target="_blank">
-                    <h2 class="card-title">100 Inventions That Made History</h2>
-                </a>
-                <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Dorling_Kindersley_Inventions_A_Visual_Encyclop" target="_blank">
-                    <h2 class="card-title">Visual Encyclopedia: Inventions</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Plant_-_DK_Eyewitness" target="_blank">
-                    <h2 class="card-title">Plants</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Wildlife_of_the_World_-_DK_Don_E_Wilson" target="_blank">
-                    <h2 class="card-title">Wildlife of the World</h2>
-                </a>
-            
-                <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Trees_Leaves_Flowers_n_Seeds_-_DK" target="_blank">
-                    <h2 class="card-title">Trees Leaves Flowers And Seeds</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Ultimate_Food_Journeys_-_DK_Eyewitness_Travel" target="_blank">
-                    <h2 class="card-title">Ultimate Food Journeys</h2>
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books2/books/visual-books/Picturepedia_An_Encyclopedia_on_Every_Page__8213_DK" target="_blank">
-                    <h2 class="card-title">Picturepedia: Encyclopedia</h2>
-                </a>
-
-                </a>
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/Ultimate_English_Visual_Dictionary_Dorling_Kindersley" target="_blank">
-                    <h2 class="card-title">Ultimate Visual Dictionary</h2>
-                </a>
-                  <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/The_Visual_Encyclopedia_By_DK" target="_blank">
-                    <h2 class="card-title">Visual Encyclopedia</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/The_Dorling_Kindersley_Visual_Encyclopedia" target="_blank">
-                    <h2 class="card-title">Old Visual Encyclopedia</h2>
-                </a>
-
-                 <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/How_To_Play_Chess_-_Dorling_Kindersley" target="_blank">
-                    <h2 class="card-title">How to Play Chess</h2>
-                </a>
-
-
-                <!--    -->
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/History_of_the_World_Map_by_Map_DK_Publishing" target="_blank">
-                <h2 class="card-title">History of the World Map by Map</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/Super_Simple_Biology" target="_blank">
-                <h2 class="card-title">Super Simple Biology</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/SuperSimple_Chemistry_-_DK_UserUpload_Net" target="_blank">
-                <h2 class="card-title">Super Simple Chemistry</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/Super_Simple_Physics_-_DK" target="_blank">
-                <h2 class="card-title">Super Simple Physics</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/The_Amazon_-_Tom_Jackson_DK_Eyewitness" target="_blank">
-                <h2 class="card-title">The Amazon</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/The_Animal_Book_A_Visual_Encyclopedia_of_Life_on_Earth" target="_blank">
-                <h2 class="card-title">The Animal Book</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/THE_BODY_ATLAS_-_A_PICTORIAL_GUIDE_TO_THE_HUMAN_BODY_-_1ST_ED__2020_Giuliano_Fornari_Steve_Parker" target="_blank">
-                <h2 class="card-title">The Body Atlas</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/DK_Life_Stories_Albert_Einstein_-_Wil_Mara" target="_blank">
-                <h2 class="card-title">Albert Einstein</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/How_Food_Works_-_DK" target="_blank">
-                <h2 class="card-title">How Food Works</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/How_Management_Works_The_Concepts_Visually_Explained_by_DK" target="_blank">
-                <h2 class="card-title">How Management Works</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/How_to_be_a_Global_Citizen_Be_Informed_Get_Involved_by_Dorling_Kindersley" target="_blank">
-                <h2 class="card-title">How to Be a Global Citizen</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/Journey_An_Illustrated_History_of_Travel_DK_Simon_Adams" target="_blank">
-                <h2 class="card-title">Journey: An Illustrated History of Travel</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/Medical_Symptoms_Visual_Guide_The_Easy_Way_to_Identify_Medical_Problems_2nd_Edition_DK_Dorling_Kindersley" target="_blank">
-                <h2 class="card-title">Medical Symptoms Visual Guide</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/My_Encyclopedia_of_Very_Important_Things" target="_blank">
-                <h2 class="card-title">My Encyclopedia of Very Important Things</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/Philosophy_A_Visual_Encyclopedia_DK" target="_blank">
-                <h2 class="card-title">Philosophy: A Visual Encyclopedia</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/The_Illustrated_Mahabharata_The_Definitive_Guide_to_Indias_Greatest_Epic_DK" target="_blank">
-                <h2 class="card-title">The Illustrated Mahabharata</h2>
-                </a>
-
-                <!-- <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/The_Poetry_Book_-_DK" target="_blank">
-                <h2 class="card-title">The Poetry Book</h2>
-                </a> -->
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/The_Religions_Book" target="_blank">
-                <h2 class="card-title">The Religions Book</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/Whats_the_Point_of_Philosophy_-_DK" target="_blank">
-                <h2 class="card-title">What's the Point of Philosophy?</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books3/books/visual-books/What_s_the_Point_of_Science_by_DK" target="_blank">
-                <h2 class="card-title">What's the Point of Science?</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/Jewel_A_Celebration_of_Earth_s_Treasures" target="_blank">
-                <h2 class="card-title">Jewel A Celebration of Earth's Treasures</h2>
-                </a>
-
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/Composers_DK" target="_blank">
-                <h2 class="card-title">Composers</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/Dinosaurs_-_A_Visual_Encyclopedia_-_DK_-_2011" target="_blank">
-                <h2 class="card-title">Dinosaurs - A Visual Encyclopedia - 2011</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/DK_CAREERS_-_THE_GRAPHIC_GUIDE_TO_FIND_THE_PERFECT_JOB_FOR_YOU_-_1ST_ED__2015_Allison_Singer" target="_blank">
-                <h2 class="card-title"> Careers - The Graphic Guide to Find the Perfect Job for You</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/DK_Findout_33_Coding_-_James_Floyd_Kelly" target="_blank">
-                <h2 class="card-title"> Findout! Coding</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/DKfindout_Dinosaurs_-_DK" target="_blank">
-                <h2 class="card-title">findout! Dinosaurs</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/DKfindout_Energy_-_DK" target="_blank">
-                <h2 class="card-title">findout! Energy</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/DKfindout_Stone_Age_-_Klint_Janulis" target="_blank">
-                <h2 class="card-title">findout! Stone Age</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/dk-tank-the-definitive-visual-history-of-armored-v" target="_blank">
-                <h2 class="card-title">Tank: The Definitive Visual History of Armored Vehicles</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/DK_-_Under_Your_Feet" target="_blank">
-                <h2 class="card-title">Under Your Feet</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/Energizing_Workout_-_DK" target="_blank">
-                <h2 class="card-title">Energizing Workout</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/Fashion_The_Definitive_Visual_Guide_Caryn_Franklin" target="_blank">
-                <h2 class="card-title">Fashion: The Definitive Visual Guide</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/Find_My_Favorite_Animals_-_DK" target="_blank">
-                <h2 class="card-title">Find My Favorite Animals</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/Firearms_-_An_Illustrated_History_DK_Smithsonian_-_2014" target="_blank">
-                <h2 class="card-title">Firearms: An Illustrated History</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/How_People_Live_-_DK_Publishing" target="_blank">
-                <h2 class="card-title">How People Live</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/murray_stuart_mars_dk_eyewitness_books" target="_blank">
-                <h2 class="card-title">Mars</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/My_Encyclopedia_of_Very_Important_Dinosaurs_For_Little_Dinosaur_Lovers_Who_Want_to_Know_Everything_by_DK_Englishare" target="_blank">
-                <h2 class="card-title">My Encyclopedia of Very Important Dinosaurs</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/Quilt_Step_by_Step_-_DK" target="_blank">
-                <h2 class="card-title">Quilt Step by Step</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/The_Civil_War_-_DK" target="_blank">
-                <h2 class="card-title">The Civil War</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/The_Mandalorian_Handbook_-_DK_Matt_Jones" target="_blank">
-                <h2 class="card-title">The Mandalorian Handbook</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/The_Marvel_Encyclopedia" target="_blank">
-                <h2 class="card-title">The Marvel Encyclopedia</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/The_Movie_Book_Big_Ideas_Simply_Explained_by_Danny_Leigh_Louis_Baxter_John_Farndon" target="_blank">
-                <h2 class="card-title">The Movie Book: Big Ideas Simply Explained</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/The_Vietnam_War_2025_Edition_-_DK" target="_blank">
-                <h2 class="card-title">The Vietnam War</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/think_of_a_number_-_ball_j" target="_blank">
-                <h2 class="card-title">Think of a Number</h2>
-                </a>
-
-                <a class="card" href="dual_pdf_viewer.html?book=books6/books/visual-books/Whales_and_Dolphins_-_DK_Eye_Wonder" target="_blank">
-                <h2 class="card-title">Whales and Dolphins</h2>
-                </a>
-            </section>
-        </section>
-
-        <div class="empty" style="display:none;">No visual book folders were found in `visual-books/`.</div>
-        <div class="footer">Click any book to open it in the dual-page viewer.</div>
-    </main>
-
-    <script src="assets/index.js"></script>
+        </a>
+
+
+        <a href="pages/digit_index.html" class="card card-digit">
+            <div class="icon-wrapper">
+                📱
+            </div>
+            <h2>Digit Magazine</h2>
+            <p>Access the archive of Digit magazine issues. Stay updated with the latest in technology and gadgets.</p>
+            <div class="card-footer">
+                Explore Hub
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </div>
+        </a>
+
+        <a href="pages/osfy_index.html" class="card card-osfy">
+            <div class="icon-wrapper">
+                🐧
+            </div>
+            <h2>Open Source For You</h2>
+            <p>Your ultimate destination for Linux and open-source software, trends, tutorials, and insights.</p>
+            <div class="card-footer">
+                Explore Hub
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </div>
+        </a>
+
+        <a href="pages/personal_finance_index.html" class="card card-finance">
+            <div class="icon-wrapper">
+                💰
+            </div>
+            <h2>Personal Finance</h2>
+            <p>Comprehensive tools and indices for your personal financial planning and asset management.</p>
+            <div class="card-footer">
+                Explore Hub
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </div>
+        </a>
+
+
+    </div>
+
+    <script>
+        // Optional subtle entry animation stagger on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${0.2 + (index * 0.1)}s`;
+            });
+        });
+    </script>
 </body>
 
 </html>
