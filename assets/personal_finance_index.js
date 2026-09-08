@@ -9,7 +9,12 @@ const personalFinanceBooks = [
 'https://hemachandranss.github.io/books6/books/visual-books/Fundraising_Decoded_-_ZebraLearn.pdf',
 'https://hemachandranss.github.io/books6/books/visual-books/Basics_of_Equity_Research.pdf',
 'https://hemachandranss.github.io/books6/books/visual-books/Screener.pdf',
-'https://hemachandranss.github.io/books6/books/visual-books/Options_Trading_Essentials.pdf'
+'https://hemachandranss.github.io/books6/books/visual-books/Options_Trading_Essentials.pdf',
+'https://hemachandranss.github.io/books7/books/visual-books/The_Money_Guide.pdf',
+'https://hemachandranss.github.io/books7/books/visual-books/Generative AI%20360%20degree.pdf',
+'https://hemachandranss.github.io/books7/books/visual-books/The_Consulting_Way.pdf',
+'https://hemachandranss.github.io/books7/books/visual-books/Startupology.pdf',
+'https://hemachandranss.github.io/books7/books/visual-books/Employee%20Management.pdf'
 ];
 
 const normalizeBookPath = (value) => {
