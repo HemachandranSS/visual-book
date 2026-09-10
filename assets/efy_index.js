@@ -99,7 +99,7 @@ const electronicsForYou = [
   "https://hemachandranss.github.io/books8/books/visual-books/EFY_sep_2016.pdf",
   "https://hemachandranss.github.io/books8/books/visual-books/EFY_oct_2016.pdf",
   "https://hemachandranss.github.io/books8/books/visual-books/EFY_nov_2016.pdf",
-  "https://hemachandranss.github.io/books8/books/visual-books/EFY_dec_2016.pdf"
+  "https://hemachandranss.github.io/books8/books/visual-books/EFY_dec_2016.pdf",
 
 
   "https://hemachandranss.github.io/books9/books/visual-books/EFY_jan_2017.pdf",
@@ -205,7 +205,31 @@ const electronicsForYou = [
   "https://hemachandranss.github.io/books9/books/visual-books/EFYSep2024.pdf",
   "https://hemachandranss.github.io/books9/books/visual-books/EFYOct2024.pdf",
   "https://hemachandranss.github.io/books9/books/visual-books/EFYNov2024.pdf",
-  "https://hemachandranss.github.io/books9/books/visual-books/EFYDec2024.pdf"
+  "https://hemachandranss.github.io/books9/books/visual-books/EFYDec2024.pdf",
+
+
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYJan2025.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYFeb2025.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYMarch2025.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFY-Apr-2025.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYMay2025.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYJune2025.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYJuly2025.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYAug2025.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYSep2025.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYOct2025.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYNov2025.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYDec2025.pdf",
+
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYJan2026.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYFeb2026.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYMar2026.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYApr2026.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYMay2026.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYJune2026.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYJuly2026.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYAug2026.pdf",
+  "https://hemachandranss.github.io/books10/books/visual-books/EFYSep2026.pdf"
 ];
 
 const normalizeBookPath = (value) => {
