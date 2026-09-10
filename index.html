@@ -15,8 +15,13 @@
             --accent-2: #8b5cf6;
             --accent-3: #ec4899;
             --accent-4: #10b981;
+            --accent-5: #f59e0b;
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         * {
@@ -200,6 +205,10 @@
             --accent-color: var(--accent-4);
         }
 
+        .card-efy {
+            --accent-color: var(--accent-5);
+        }
+
         @keyframes fadeInDown {
             from {
                 opacity: 0;
@@ -226,7 +235,7 @@
 
         /* Ambient glowing orbs */
         .orb {
-            position: absolute;
+            position: fixed;
             border-radius: 50%;
             filter: blur(80px);
             opacity: 0.4;
@@ -291,8 +300,8 @@
             }
         }
     </style>
-    <link rel="stylesheet" href="assets/login.css" />
-    <script src="assets/login.js"></script>
+    <!-- <link rel="stylesheet" href="assets/login.css" />
+    <script src="assets/login.js"></script> -->
 </head>
 
 <body>
@@ -341,6 +350,22 @@
             </div>
         </a>
 
+          <a href="pages/efy_index.html" class="card card-efy">
+            <div class="icon-wrapper">
+                ⚡
+            </div>
+            <h2>Electronics For You</h2>
+            <p>Dive into the premier electronics, circuits, and technical projects magazine archive.</p>
+            <div class="card-footer">
+                Explore Hub
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </div>
+        </a>
+
         <a href="pages/osfy_index.html" class="card card-osfy">
             <div class="icon-wrapper">
                 🐧
@@ -373,6 +398,7 @@
             </div>
         </a>
 
+      
 
     </div>
 
