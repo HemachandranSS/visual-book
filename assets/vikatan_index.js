@@ -1,6 +1,9 @@
 const vikatanBooks = [
   "https://hemachandranss.github.io/books10/books/visual-books/நாணயம்_விகடன்_Sep_04_2026.pdf",
-  "https://hemachandranss.github.io/books10/books/visual-books/நாணயம்_விகடன்_Sep_11_2026.pdf"
+  "https://hemachandranss.github.io/books10/books/visual-books/நாணயம்_விகடன்_Sep_11_2026.pdf",
+  'https://hemachandranss.github.io/books10/books/visual-books/ஆனந்த_விகடன்_Sep_10_2025.pdf',
+  'https://hemachandranss.github.io/books10/books/visual-books/பசுமை_விகடன்_Sep_11_2025.pdf'
+
 ];
 
 const normalizeBookPath = (value) => {
