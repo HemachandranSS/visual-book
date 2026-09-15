@@ -204,7 +204,23 @@ const visualBooks = [
   "https://hemachandranss.github.io/books6/books/visual-books/The_Movie_Book_Big_Ideas_Simply_Explained_by_Danny_Leigh_Louis_Baxter_John_Farndon",
   "https://hemachandranss.github.io/books6/books/visual-books/The_Vietnam_War_2025_Edition_-_DK",
   "https://hemachandranss.github.io/books6/books/visual-books/think_of_a_number_-_ball_j",
-  "https://hemachandranss.github.io/books6/books/visual-books/Whales_and_Dolphins_-_DK_Eye_Wonder"
+  "https://hemachandranss.github.io/books6/books/visual-books/Whales_and_Dolphins_-_DK_Eye_Wonder",
+  "https://hemachandranss.github.io/books10/books/visual-books/Children_39_s_Illustrated_World_Atlas_New_Edition.pdf",
+    "https://hemachandranss.github.io/books10/books/visual-books/DK_Animal_Atlas-The_Worlds_Wildlife_As_You_Have_Never_Seen_It_Before-2021.pdf",
+    "https://hemachandranss.github.io/books10/books/visual-books/How_Animals_Work_-_David_Burnie_UserUpload_Net.pdf",
+    "https://hemachandranss.github.io/books10/books/visual-books/The_Little_Book_of_History_-_DK.pdf",
+    "https://hemachandranss.github.io/books10/books/visual-books/english_for_everyone_level_1_course_book_beginner.pdf",
+    "https://hemachandranss.github.io/books10/books/visual-books/English_for_Everyone_DK_-_English_for_Everyone_Level_2_Beginner_Course_Book-DK_Publishing_2016.pdf",
+    "https://hemachandranss.github.io/books10/books/visual-books/English_for_Everyone_Course_Book_Level_3_Intermediate_-_DK.pdf",
+    "https://hemachandranss.github.io/books10/books/visual-books/English_for_Everyone_Course_Book_Level_4_Advanced_-_Dorling_Kindersley.pdf",
+    "https://hemachandranss.github.io/books10/books/visual-books/english_for_everyone_practice_book_level_1_beginner.pdf",
+    "https://hemachandranss.github.io/books10/books/visual-books/english_for_everyone_junior_beginners_course_compressed.pdf",
+    "https://hemachandranss.github.io/books10/books/visual-books/english_for_everyone_illustrated_english_dictionary.pdf",
+    "https://hemachandranss.github.io/books10/books/visual-books/english_for_everyone_english_vocabulary_builder_DK.pdf",
+    "https://hemachandranss.github.io/books10/books/visual-books/English_for_Everyone_English_Grammar_-_Dorling_Kindersley.pdf",
+    "https://hemachandranss.github.io/books10/books/visual-books/dk_english_for_everyone_level_2_beginner_practice_book.pdf",
+    "https://hemachandranss.github.io/books10/books/visual-books/English_for_Everyone_Business_English_Practice_Book_Level_2_-_Dorling_Kindersley_UserUpload_Net.pdf",
+    "https://hemachandranss.github.io/books10/books/visual-books/DK_English_for_Everyone_-_Course_Book_Level_4_Advanced_-_2016.pdf"
 ];
 
 const normalizeBookPath = (value) => {
