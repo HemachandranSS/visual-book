@@ -220,7 +220,22 @@ const visualBooks = [
     "https://hemachandranss.github.io/books10/books/visual-books/English_for_Everyone_English_Grammar_-_Dorling_Kindersley.pdf",
     "https://hemachandranss.github.io/books10/books/visual-books/dk_english_for_everyone_level_2_beginner_practice_book.pdf",
     "https://hemachandranss.github.io/books10/books/visual-books/English_for_Everyone_Business_English_Practice_Book_Level_2_-_Dorling_Kindersley_UserUpload_Net.pdf",
-    "https://hemachandranss.github.io/books10/books/visual-books/DK_English_for_Everyone_-_Course_Book_Level_4_Advanced_-_2016.pdf"
+    "https://hemachandranss.github.io/books10/books/visual-books/DK_English_for_Everyone_-_Course_Book_Level_4_Advanced_-_2016.pdf",
+    'https://hemachandranss.github.io/books10/books/visual-books/Greek-Myths-DK-Readers-Level-3.pdf',
+    'https://hemachandranss.github.io/books10/books/visual-books/Greek_Myths.pdf',
+    'https://hemachandranss.github.io/books10/books/visual-books/Hindi-English_Bilingual_Visual_Dictionary_3rd_Edition_-_facebook_com_LinguaLIB.pdf',
+    'https://hemachandranss.github.io/books10/books/visual-books/Life_Cycles_Everything_from_Start_to_Finish.pdf',
+    'https://hemachandranss.github.io/books10/books/visual-books/Look_I_m_A_Scientist_by_DK.pdf',
+    'https://hemachandranss.github.io/books10/books/visual-books/Manmade_Wonders_of_the_World.pdf',
+    'https://hemachandranss.github.io/books10/books/visual-books/On_this_Day_-_Dorling_Kindersley.pdf',
+    'https://hemachandranss.github.io/books10/books/visual-books/Publishing_Great_Paintings__The_World_39_s_Mast_z-lib_org.pdf',
+    'https://hemachandranss.github.io/books10/books/visual-books/Shakespeare_Eyewitness_Books.pdf',
+    'https://hemachandranss.github.io/books10/books/visual-books/Super_Dinosaur_Encyclopedia_The_Biggest_Fastest_Coolest_Prehistoric_Creatures (1).pdf',
+    'https://hemachandranss.github.io/books10/books/visual-books/The_Book_of_Brilliant_Bugs.pdf',
+    'https://hemachandranss.github.io/books10/books/visual-books/The_Cook_39_s_Herb_Garden_z-lib_org.pdf',
+    'https://hemachandranss.github.io/books10/books/visual-books/The_Natural_History_Book_The_Ultimate_Visual_Guide_to_Everything_on_Earth_by_DK.pdf',
+    'https://hemachandranss.github.io/books10/books/visual-books/The_Tea_Book_-_Experience_the_World_39_s_Finest_Teas.pdf',
+    'https://hemachandranss.github.io/books10/books/visual-books/Weather_-_Explore_nature_with_fun_facts_and_activities.pdf'
 ];
 
 const normalizeBookPath = (value) => {
