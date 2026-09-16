@@ -168,7 +168,7 @@
             if (e.touches.length === 2 && pinchStartDist !== null) {
                 e.preventDefault();
                 const dist = getTouchDistance(e.touches[0], e.touches[1]);
-                const ratio = Math.min(Math.max(dist / pinchStartDist, 0.5 / pinchStartScale), 3.0 / pinchStartScale);
+                const ratio = Math.min(Math.max(dist / pinchStartDist, 0.5 / pinchStartScale), 1.8 / pinchStartScale);
                 pinchLiveRatio = ratio;
                 viewerContainer.style.transform = `scale(${ratio})`;
             }
@@ -177,7 +177,7 @@
         mainContent.addEventListener('touchend', (e) => {
             if (pinchStartDist !== null && e.touches.length < 2) {
                 viewerContainer.style.transform = '';
-                const newScale = Math.min(Math.max(pinchStartScale * pinchLiveRatio, 0.5), 3.0);
+                const newScale = Math.min(Math.max(pinchStartScale * pinchLiveRatio, 0.5), 1.8);
                 if (Math.abs(newScale - scale) > 0.01) {
                     scale = newScale;
                     hasZoomed = true;
@@ -551,6 +551,11 @@
         }
 
         function swapPagesContainer(nextContainer) {
+            const oldCanvases = pagesContainer.querySelectorAll('canvas');
+            oldCanvases.forEach(canvas => {
+                canvas.width = 0;
+                canvas.height = 0;
+            });
             pagesContainer.replaceChildren(...nextContainer.children);
             pagesContainer.style.display = 'flex';
         }
@@ -590,7 +595,7 @@
             if (!preserveAnchor) {
                 captureZoomAnchor();
             }
-            scale = Math.min(scale * mobileZoomFactor, 3);
+            scale = Math.min(scale * mobileZoomFactor, 1.8);
             hasZoomed = true;
             mainContent.classList.add('zoomed-state');
             rerenderCurrentView();
