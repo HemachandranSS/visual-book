@@ -1,4 +1,6 @@
 const technologyBooks = [
+    "https://hemachandranss.github.io/books11/books/visual-books/Django_in_Action_-_Christopher_Trudeau.pdf",
+    "https://hemachandranss.github.io/books11/books/visual-books/Django_Visual_Guide_-_Ben_Bloomfield.pdf"
 ];
 
 const normalizeBookPath = (value) => {
