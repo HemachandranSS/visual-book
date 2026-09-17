@@ -17,7 +17,7 @@ const normalizeBookPath = (value) => {
 
     try {
         const url = new URL(value, window.location.href);
-        const pathname = url.pathname
+        const pathname = url.pathnames
             .replace(/^\/+/, '')
             .replace(/\/+$/, '');
 
