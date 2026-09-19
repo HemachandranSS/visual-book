@@ -1,6 +1,13 @@
 const technologyBooks = [
     "https://hemachandranss.github.io/books11/books/visual-books/Django_in_Action_-_Christopher_Trudeau.pdf",
-    "https://hemachandranss.github.io/books11/books/visual-books/Django_Visual_Guide_-_Ben_Bloomfield.pdf"
+    "https://hemachandranss.github.io/books11/books/visual-books/Django_Visual_Guide_-_Ben_Bloomfield.pdf",
+    'https://hemachandranss.github.io/books11/books/visual-books/Eric Matthes - Python Crash Course-No Starch Press (2023)',
+    'https://hemachandranss.github.io/books11/books/visual-books/Beyond_the_Basic_Stuff_with_Python_-_Al_Sweigart',
+    'https://hemachandranss.github.io/books11/books/visual-books/Dive_into_algorithms_-_Bradford_Tuckfield',
+    'https://hemachandranss.github.io/books11/books/visual-books/Object-Oriented_Python_Master_OOP_by_Building_Games_and_GUIs_-_Irv_Kalb',
+    'https://hemachandranss.github.io/books11/books/visual-books/Python_Flash_Cards_-_Eric_Matthes',
+    'https://hemachandranss.github.io/books11/books/visual-books/The_Recursive_Book_of_Recursion_-_Al_Sweigart',
+    'https://hemachandranss.github.io/books11/books/visual-books/The_Big_Book_of_Small_Python_Projects_-_Al_Sweigart'
 ];
 
 const normalizeBookPath = (value) => {
