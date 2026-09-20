@@ -91,8 +91,34 @@ const indiaTodayGroupBooks = [
     'https://hemachandranss.github.io/books13/books/visual-books/business_today_2025_September_14.pdf',
     'https://hemachandranss.github.io/books13/books/visual-books/business_today_2025_September_28.pdf',
     'https://hemachandranss.github.io/books13/books/visual-books/business_today_2025_October_12.pdf',
-    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2025_October_26.pdf'
-];
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2025_October_26.pdf',
+
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2025_November_09.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2025_November_23.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2025_December_07.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2025_December_21.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_January_04.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_January_18.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_February_01.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_February_15.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_March_01.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_March_15.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_March_29.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_April_12.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_April_26.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_May_10.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_May_24.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_June_07.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_June_21.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_July_05.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_July_19.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_August_02.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_August_16.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_August_30.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_September_13.pdf',
+    'https://hemachandranss.github.io/books13/books/visual-books/business_today_2026_September_27.pdf'
+]
+    ;
 
 const normalizeBookPath = (value) => {
     if (!value) return '';
