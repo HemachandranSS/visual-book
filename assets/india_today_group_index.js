@@ -173,7 +173,20 @@ const indiaTodayGroupBooks = [
     'https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_June_09.pdf',
     'https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_June_16.pdf',
     'https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_June_23.pdf',
-    'https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_June_30.pdf'
+    'https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_June_30.pdf',
+    "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_July_07",
+    "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_July_14",
+    "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_July_21",
+    "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_July_28",
+    "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_August_04",
+    "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_August_11",
+    "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_August_18",
+    "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_August_25",
+    "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_September_01",
+    "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_September_08",
+    "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_September_15",
+    "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_September_22",
+    "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_September_29"
 ]
     ;
 
