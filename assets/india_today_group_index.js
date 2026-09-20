@@ -186,9 +186,22 @@ const indiaTodayGroupBooks = [
     "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_September_08",
     "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_September_15",
     "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_September_22",
-    "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_September_29"
-]
-    ;
+    "https://hemachandranss.github.io/books14/books/visual-books/india_today_2008_September_29",
+    "https://hemachandranss.github.io/books15/books/visual-books/india_today_2008_October_06",
+    "https://hemachandranss.github.io/books15/books/visual-books/india_today_2008_October_13",
+    "https://hemachandranss.github.io/books15/books/visual-books/india_today_2008_October_20",
+    "https://hemachandranss.github.io/books15/books/visual-books/india_today_2008_October_27",
+    "https://hemachandranss.github.io/books15/books/visual-books/india_today_2008_November_03",
+    "https://hemachandranss.github.io/books15/books/visual-books/india_today_2008_November_10",
+    "https://hemachandranss.github.io/books15/books/visual-books/india_today_2008_November_17",
+    "https://hemachandranss.github.io/books15/books/visual-books/india_today_2008_November_24",
+    "https://hemachandranss.github.io/books15/books/visual-books/india_today_2008_December_01",
+    "https://hemachandranss.github.io/books15/books/visual-books/india_today_2008_December_08",
+    "https://hemachandranss.github.io/books15/books/visual-books/india_today_2008_December_15",
+    "https://hemachandranss.github.io/books15/books/visual-books/india_today_2008_December_22",
+    "https://hemachandranss.github.io/books15/books/visual-books/india_today_2008_December_29"
+
+];
 
 const normalizeBookPath = (value) => {
     if (!value) return '';
