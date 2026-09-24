@@ -13,7 +13,8 @@ const vikatanBooks = [
     'https://hemachandranss.github.io/books11/books/visual-books/ஜூனியர்_விகடன்_Sep_19_2026.pdf',
     'https://hemachandranss.github.io/books16/books/visual-books/Vikatan_Plus_Sep_21_2026.pdf',
     'https://hemachandranss.github.io/books16/books/visual-books/அவள்_விகடன்_Sep_22_2026.pdf',
-    'https://hemachandranss.github.io/books16/books/visual-books/ஜூனியர்_விகடன்_Sep_23_2026.pdf'
+    'https://hemachandranss.github.io/books16/books/visual-books/ஜூனியர்_விகடன்_Sep_23_2026.pdf',
+    'https://hemachandranss.github.io/books16/books/visual-books/ஆனந்த_விகடன்_Sep_24_2026.pdf'
 
 ];
 
