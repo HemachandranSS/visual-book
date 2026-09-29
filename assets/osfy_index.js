@@ -228,7 +228,8 @@ const books6Files = [
   "OSFYAug2026.pdf",
   "OSFYJuly2026.pdf",
   "OSFYJune2026.pdf",
-  'OSFYSep2026.pdf'
+  'OSFYSep2026.pdf',
+  'OSFYOct2026.pdf'
 ];
 
 const osfyBooks = [
