@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Viewer</title>
+    <link rel="stylesheet" href="../assets/video_viewer.css">
+</head>
+
+<body>
+    <div id="topRevealZone" class="top-reveal-zone" aria-hidden="true"></div>
+    <!-- Mobile-only floating nav arrows (hidden on desktop via CSS) -->
+    <button id="mobilePrevBtn" class="mobile-nav-arrow mobile-nav-prev" disabled
+        aria-label="Previous video">&#8249;</button>
+    <button id="mobileNextBtn" class="mobile-nav-arrow mobile-nav-next" disabled
+        aria-label="Next video">&#8250;</button>
+
+    <div class="header">
+        <div class="header-left">
+            <div class="title">🎬 Video Viewer</div>
+            <div id="subtitle" class="subtitle">Open a folder containing mp4 files</div>
+        </div>
+        <div class="controls">
+            <div id="folderBadge" class="book-badge" style="display:none;"></div>
+
+            <div class="nav-controls">
+                <button id="prevBtn" class="nav-btn" disabled>← Previous</button>
+                <div id="pageInfo" class="page-info">-</div>
+                <button id="nextBtn" class="nav-btn" disabled>Next →</button>
+            </div>
+
+            <div class="zoom-controls">
+                <button id="zoomOut" class="zoom-btn">−</button>
+                <button id="zoomIn" class="zoom-btn">+</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="viewer-container" id="zoomContainer">
+            <div id="welcomeMessage" class="welcome-message">
+                <div class="welcome-icon">🎬</div>
+                <div class="welcome-text">
+                    Select a video folder via the ?folder= URL parameter to start watching.<br>
+                    E.g., ?folder=path/to/videos
+                </div>
+            </div>
+            <div id="loadingMessage" class="loading" style="display: none;">
+                Loading Video...
+            </div>
+            <div id="videoContainer" class="video-container" style="display: none;">
+                <video id="videoPlayer1" class="video-player" playsinline></video>
+                <video id="videoPlayer2" class="video-player" playsinline
+                    style="opacity: 0; pointer-events: none;"></video>
+
+                <div class="custom-controls" id="customControls">
+                    <div class="progress-bar-container" id="progressContainer">
+                        <div class="progress-bar-bg"></div>
+                        <div class="progress-bar-fill" id="progressFill"></div>
+                        <div class="progress-bar-handle" id="progressHandle"></div>
+                    </div>
+                    <div class="controls-row">
+                        <button class="control-btn" id="playPauseBtn" title="Play/Pause (Space)">▶</button>
+                        <button class="control-btn skip-btn" id="skipBackBtn" title="Rewind 10s (←)">⟲10</button>
+                        <button class="control-btn skip-btn" id="skipFwdBtn" title="Forward 10s (→)">10⟳</button>
+                        <button class="control-btn" id="muteBtn" title="Mute/Unmute">🔊</button>
+                        <div class="time-display" id="timeDisplay">0:00 / 0:00</div>
+                        <div style="flex:1"></div>
+                        <button class="control-btn" id="fullscreenBtn" title="Fullscreen">⛶</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/video_viewer.js"></script>
+</body>
+
+</html>
