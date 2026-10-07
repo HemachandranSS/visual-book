@@ -19,7 +19,14 @@ const vikatanBooks = [
     'https://hemachandranss.github.io/books16/books/visual-books/பசுமை_விகடன்_Sep_25_2026.pdf',
     'https://hemachandranss.github.io/books16/books/visual-books/ஜூனியர்_Sep_26_2026.pdf',
     'https://hemachandranss.github.io/books16/books/visual-books/Vikatan_Plus_Sep_28_2026.pdf',
-    'https://hemachandranss.github.io/books16/books/visual-books/சக்தி_விகடன்_Sep_29_2026.pdf'
+    'https://hemachandranss.github.io/books16/books/visual-books/சக்தி_விகடன்_Sep_29_2026.pdf',
+    'https://hemachandranss.github.io/books16/books/visual-books/ஜூனியர்_Sep_30_2026.pdf',
+    'https://hemachandranss.github.io/books16/books/visual-books/ஆனந்த_விகடன்_Oct_01_2026.pdf',
+    'https://hemachandranss.github.io/books16/books/visual-books/நாணயம்_விகடன்_Oct_02_2026.pdf',
+    'https://hemachandranss.github.io/books16/books/visual-books/ஜூனியர்_Oct_03_2026.pdf',
+    'https://hemachandranss.github.io/books16/books/visual-books/Vikatan_Plus_Oct_05_2026.pdf',
+    'https://hemachandranss.github.io/books16/books/visual-books/அவள்_விகடன்_Oct_06_2026.pdf',
+    'https://hemachandranss.github.io/books16/books/visual-books/ஜூனியர்_Oct_07_2026.pdf'
 
 ];
 

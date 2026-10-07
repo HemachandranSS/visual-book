@@ -69,7 +69,8 @@ const sportstarBooks = [
     'https://hemachandranss.github.io/books11/books/visual-books/Sportstar_15-08-2026.pdf',
     'https://hemachandranss.github.io/books11/books/visual-books/Sportstar_29-08-2026.pdf',
     'https://hemachandranss.github.io/books11/books/visual-books/Sportstar_12-09-2026.pdf',
-    'https://hemachandranss.github.io/books11/books/visual-books/Sportstar_26-09-2026.pdf'
+    'https://hemachandranss.github.io/books11/books/visual-books/Sportstar_26-09-2026.pdf',
+    'https://hemachandranss.github.io/books11/books/visual-books/Sportstar_10-10-2026.pdf'
 ];
 
 const normalizeBookPath = (value) => {
