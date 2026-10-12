@@ -35,6 +35,15 @@
                 <button id="nextBtn" class="nav-btn" disabled>Next →</button>
             </div>
             <div class="export-controls">
+                <button id="copyImageBtn" class="export-btn copy-btn" disabled
+                    title="Copy dual page image to clipboard">
+                    <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copy Image</span>
+                </button>
                 <button id="exportPngBtn" class="export-btn" disabled>Export PNG</button>
                 <button id="exportJpgBtn" class="export-btn" disabled>Export JPG</button>
                 <button id="exportPdfBtn" class="export-btn" disabled>Export PDF</button>
@@ -90,6 +99,7 @@
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const pageInfo = document.getElementById('pageInfo');
+        const copyImageBtn = document.getElementById('copyImageBtn');
         const exportPngBtn = document.getElementById('exportPngBtn');
         const exportJpgBtn = document.getElementById('exportJpgBtn');
         const exportPdfBtn = document.getElementById('exportPdfBtn');
@@ -116,6 +126,7 @@
         fileInput.addEventListener('change', handleFileSelect);
         prevBtn.addEventListener('click', showPrevPage);
         nextBtn.addEventListener('click', showNextPage);
+        copyImageBtn.addEventListener('click', copyDualPageImage);
         exportPngBtn.addEventListener('click', () => exportCurrentSpread('png'));
         exportJpgBtn.addEventListener('click', () => exportCurrentSpread('jpg'));
         exportPdfBtn.addEventListener('click', () => exportCurrentSpread('pdf'));
@@ -671,6 +682,7 @@
             exportJpgBtn.disabled = !hasDocument;
             exportPdfBtn.disabled = !hasDocument;
             rotateBtn.disabled = !hasDocument;
+            copyImageBtn.disabled = !hasDocument;
         }
 
         function clampBookPageToTotal() {
@@ -809,6 +821,71 @@
                 pdf.addImage(dataUrl, 'PNG', 0, 0, canvasWidth, canvasHeight);
                 pdf.save(`${baseName}.pdf`);
             }
+        }
+
+        function getMergedSpreadCanvas() {
+            const canvases = Array.from(pagesContainer.querySelectorAll('canvas'));
+            if (!canvases.length) return null;
+
+            const mergedCanvas = document.createElement('canvas');
+            const mergedContext = mergedCanvas.getContext('2d');
+            const width = canvases.reduce((sum, canvas) => sum + canvas.width, 0);
+            const height = Math.max(...canvases.map((canvas) => canvas.height));
+
+            mergedCanvas.width = width;
+            mergedCanvas.height = height;
+            mergedContext.fillStyle = '#ffffff';
+            mergedContext.fillRect(0, 0, width, height);
+
+            let offsetX = 0;
+            for (const canvas of canvases) {
+                mergedContext.drawImage(canvas, offsetX, 0);
+                offsetX += canvas.width;
+            }
+            return mergedCanvas;
+        }
+
+        async function copyDualPageImage() {
+            const mergedCanvas = getMergedSpreadCanvas();
+            if (!mergedCanvas) return;
+
+            try {
+                mergedCanvas.toBlob(async (blob) => {
+                    if (!blob) {
+                        alert('Could not generate image to copy.');
+                        return;
+                    }
+                    try {
+                        if (navigator.clipboard && window.ClipboardItem) {
+                            await navigator.clipboard.write([
+                                new ClipboardItem({ 'image/png': blob })
+                            ]);
+                            showCopySuccess();
+                        } else {
+                            throw new Error('Clipboard API unsupported');
+                        }
+                    } catch (clipErr) {
+                        console.error('Clipboard copy error:', clipErr);
+                        alert('Unable to copy image directly to clipboard in this browser context.');
+                    }
+                }, 'image/png');
+            } catch (err) {
+                console.error('Error during image copy:', err);
+            }
+        }
+
+        function showCopySuccess() {
+            if (!copyImageBtn) return;
+            const originalContent = copyImageBtn.innerHTML;
+            copyImageBtn.innerHTML = `
+                <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>Copied!</span>
+            `;
+            setTimeout(() => {
+                copyImageBtn.innerHTML = originalContent;
+            }, 2000);
         }
 
         function buildExportBaseName() {
