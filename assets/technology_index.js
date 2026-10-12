@@ -7,7 +7,8 @@ const technologyBooks = [
     'https://hemachandranss.github.io/books11/books/visual-books/Object-Oriented_Python_Master_OOP_by_Building_Games_and_GUIs_-_Irv_Kalb',
     'https://hemachandranss.github.io/books11/books/visual-books/Python_Flash_Cards_-_Eric_Matthes',
     'https://hemachandranss.github.io/books11/books/visual-books/The_Recursive_Book_of_Recursion_-_Al_Sweigart',
-    'https://hemachandranss.github.io/books11/books/visual-books/The_Big_Book_of_Small_Python_Projects_-_Al_Sweigart'
+    'https://hemachandranss.github.io/books11/books/visual-books/The_Big_Book_of_Small_Python_Projects_-_Al_Sweigart',
+    'https://hemachandranss.github.io/books17/books/visual-books/Amazon_Web_Services_in_Action_Third_Edition_-_Andreas_Wittig'
 ];
 
 const normalizeBookPath = (value) => {
