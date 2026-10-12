@@ -2,6 +2,10 @@ const miscellaneousBooks = [
     "Why_Bharat_Matters_-_S_Jaishankar.pdf",
     "The_India_Way__Strategies_for_an_Uncertain_-_S_Jaishankar.pdf",
     "Vishwa_Shastra_India_and_the_World_-_Dhruva_Jaishankar.pdf",
+    "21 Lessons for the 21st Century - Yuval Noah Harari.pdf",
+    "Homo Deus  A Brief History of Tomorrow - Yuval Noah Harari.pdf",
+    "Nexus - Yuval Noah Harari.pdf",
+    "Sapiens Tenth Anniversary Edition - Yuval Noah Harari.pdf"
 ];
 
 const normalizeBookPath = (value) => {
