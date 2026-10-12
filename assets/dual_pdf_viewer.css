@@ -195,6 +195,19 @@ body {
     background: linear-gradient(180deg, rgba(255, 177, 110, 0.32), rgba(225, 133, 49, 0.2));
 }
 
+.copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.copy-btn .copy-icon {
+    width: 14px;
+    height: 14px;
+    stroke-width: 2.2;
+    flex-shrink: 0;
+}
+
 .rotate-controls {
     background: linear-gradient(180deg, rgba(255, 107, 138, 0.16), rgba(255, 107, 138, 0.08));
     border-color: rgba(255, 107, 138, 0.22);
