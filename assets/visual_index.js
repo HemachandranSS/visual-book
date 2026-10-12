@@ -247,7 +247,15 @@ const visualBooks = [
     "https://hemachandranss.github.io/books11/books/visual-books/DK_-_See_How_They_Grow_33_Penguin.pdf",
     "https://hemachandranss.github.io/books11/books/visual-books/Pig_See_How_They_Grow.pdf",
     "https://hemachandranss.github.io/books11/books/visual-books/Pony_See_How_They_Grow.pdf",
-    "https://hemachandranss.github.io/books11/books/visual-books/Puppy_See_How_They_Grow.pdf"
+    "https://hemachandranss.github.io/books11/books/visual-books/Puppy_See_How_They_Grow.pdf",
+    "https://hemachandranss.github.io/books17/books/visual-books/Battle_at_Sea_3_000_Years_of_Naval_Warfare.pdf",
+    "https://hemachandranss.github.io/books17/books/visual-books/How_Technology_Works_by_DK.pdf",
+    "https://hemachandranss.github.io/books17/books/visual-books/polish_english_bilingual_visual_dictionary.pdf",
+    "https://hemachandranss.github.io/books17/books/visual-books/Reptiles_Eye_Wonder_By_DK.pdf",
+    "https://hemachandranss.github.io/books17/books/visual-books/Soldier_A_Visual_History_of_the_Fighting_Man.pdf",
+    "https://hemachandranss.github.io/books17/books/visual-books/Soup_Wholesome_Seasonal_Fresh_-_DK_Publishing.pdf",
+    "https://hemachandranss.github.io/books17/books/visual-books/Spanish_English_Bilingual_Visual_Dictionary_-_Dorling_Kindersley.pdf",
+    "https://hemachandranss.github.io/books17/books/visual-books/The_Ecology_Book_2nd_Edition_-_DK.pdf"
 ];
 
 const normalizeBookPath = (value) => {
