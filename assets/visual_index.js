@@ -7,7 +7,6 @@ const visualBooks = [
     'books/visual-books/children_first_childrens_dictionary',
     'books/visual-books/Night_sky_Explore_nature',
     'books/visual-books/my_encyclopedia_of_very_important_sports',
-    'books/visual-books/1000_words_nature',
     'books/visual-books/did_you_know_amazing_answer_to_the_questions',
     'books/visual-books/dk_children_big_questions',
     'books/visual-books/cars_trains_ships_and_planes',
