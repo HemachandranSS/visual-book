@@ -5,7 +5,13 @@ const miscellaneousBooks = [
     "21 Lessons for the 21st Century - Yuval Noah Harari.pdf",
     "Homo Deus  A Brief History of Tomorrow - Yuval Noah Harari.pdf",
     "Nexus - Yuval Noah Harari.pdf",
-    "Sapiens Tenth Anniversary Edition - Yuval Noah Harari.pdf"
+    "Sapiens Tenth Anniversary Edition - Yuval Noah Harari.pdf",
+    "Conflict_in_Myanmar_-_Nick_Cheesman.pdf",
+    "From_Chanakya_To_Modi_-_Aparna_Pande.pdf",
+    "International_Relations_-_Peu_Ghosh.pdf",
+    "The_History_of_Myanmar_-_Topich_William_J.pdf",
+    "The_Rohingyas_-_Azeem_Ibrahim.pdf"
+
 ];
 
 const normalizeBookPath = (value) => {

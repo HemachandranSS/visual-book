@@ -255,7 +255,9 @@ const visualBooks = [
     "https://hemachandranss.github.io/books17/books/visual-books/Soldier_A_Visual_History_of_the_Fighting_Man.pdf",
     "https://hemachandranss.github.io/books17/books/visual-books/Soup_Wholesome_Seasonal_Fresh_-_DK_Publishing.pdf",
     "https://hemachandranss.github.io/books17/books/visual-books/Spanish_English_Bilingual_Visual_Dictionary_-_Dorling_Kindersley.pdf",
-    "https://hemachandranss.github.io/books17/books/visual-books/The_Ecology_Book_2nd_Edition_-_DK.pdf"
+    "https://hemachandranss.github.io/books17/books/visual-books/The_Ecology_Book_2nd_Edition_-_DK.pdf",
+    "https://hemachandranss.github.io/books17/books/visual-books/1000_Words_Nature_Build_Nature_Vocabulary_and_Literacy_Skills",
+    "https://hemachandranss.github.io/books17/books/visual-books/Illustrated_Maths_Dictionary_xvmon.pdf",
 ];
 
 const normalizeBookPath = (value) => {
