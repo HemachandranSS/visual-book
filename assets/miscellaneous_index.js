@@ -10,7 +10,11 @@ const miscellaneousBooks = [
     "From_Chanakya_To_Modi_-_Aparna_Pande.pdf",
     "International_Relations_-_Peu_Ghosh.pdf",
     "The_History_of_Myanmar_-_Topich_William_J.pdf",
-    "The_Rohingyas_-_Azeem_Ibrahim.pdf"
+    "The_Rohingyas_-_Azeem_Ibrahim.pdf",
+    "11th Std Economics English Medium.pdf",
+    "12th_Std_Economics_EM_optimised.pdf",
+    "Indian_Economy_key_concept_by_sankarganesh_k_-_Sankarganesh_k.pdf",
+    "Indian_Economy_-_Ramesh_Singh.pdf"
 
 ];
 
