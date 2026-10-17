@@ -8,6 +8,9 @@ const label = videoCount === 1 ? 'Video' : 'Videos';
 document.getElementById('count').textContent = `${videoCount} ${label}`;
 document.getElementById('visualCount').textContent = `${videoCount} ${label}`;
 
+const agenticCountEl = document.getElementById('agenticCount');
+if (agenticCountEl) agenticCountEl.textContent = `5 Videos`;
+
 if (videoCount === 0) {
     if (emptyState) emptyState.style.display = 'block';
     if (visualGrid) visualGrid.style.display = 'none';
