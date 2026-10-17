@@ -15,7 +15,55 @@ const miscellaneousBooks = [
     "12th_Std_Economics_EM_optimised.pdf",
     "Indian_Economy_key_concept_by_sankarganesh_k_-_Sankarganesh_k.pdf",
     "Indian_Economy_-_Ramesh_Singh.pdf",
-    "upsc_solved_till_2025.pdf"
+    "upsc_solved_till_2025.pdf",
+
+    // TN School Books 2020 Edition - 1st Standard
+    "1st_Std_Maths_Environmental_Science_Term_1_English_Medium.pdf",
+    "1st_Std_Maths_Environmental_Science_Term-1_Tamil_Medium.pdf",
+    "1st_Std_Maths_Environmental_Science_Term_2_English_Medium.pdf",
+    "1st_Std_Maths_Environmental_Science_Term-2_Tamil_Medium.pdf",
+    "1st Std_Maths_Environmental_Science_Term_3_English_Medium.pdf",
+    "1st_Std_Maths_Environmental_Science_Term_3_Tamil_Medium.pdf",
+    "1st_Std_Tamil_CBSE.pdf",
+    "1st_Std_Tamil_English_Term_1.pdf",
+    "1st_Std_Tamil_English_Term-3.pdf",
+    "repeat-1st_Std_Tamil_English_Term_1.pdf",
+
+    // TN School Books 2020 Edition - 2nd Standard
+    "2nd_Std_Maths_Environmental_Science_Term_1_English_Medium.pdf",
+    "2nd_Std_Maths_Environmental_Science_Term_1_Tamil_Medium.pdf",
+    "2nd_Std_Maths_Environmental_Science_Term_2_English_Medium.pdf",
+    "2nd_Std_Maths_Environmental_Science_Term_2_Tamil_Medium.pdf",
+    "2nd_Std_Maths_Environmental_Science_Term_3_English_Medium.pdf",
+    "2nd_Std_Maths_Environmental_Science_Term_3_Tamil_Medium.pdf",
+    "2nd_Std_Tamil_CBSE.pdf",
+    "2nd_Std_Tamil_English_Term_1.pdf",
+    "2nd_Std_Tamil_English_Term_2.pdf",
+    "2nd_Std_Tamil_English_Term_3.pdf",
+
+    // TN School Books 2020 Edition - 3rd Standard
+    "3rd_Std_Maths_Science_Social_Science_Term_1_English_Medium.pdf",
+    "3rd_Std_Maths_Science_Social_Science_Term_1_Tamil_Medium.pdf",
+    "3rd_Std_Maths_Science_Social_Science_Term_2_English_Medium.pdf",
+    "3rd_Std_Maths_Science_Social_Science_Term_2_Tamil_Medium.pdf",
+    "3rd_Std_Maths_Science_Social_Science_Term_3_English_Medium.pdf",
+    "3rd_Std_Maths_Science_Social_Science_Term_Tamil_Medium.pdf",
+    "3rd_Std_Tamil_CBSE.pdf",
+    "3rd_Std_Tamil_English_Term_1.pdf",
+    "3rd_Std_Tamil_English_Term_2.pdf",
+    "3rd_Std_Tamil_English_Term_3.pdf",
+
+    // TN School Books 2020 Edition - 4th Standard
+    "4th_Std_Maths_Science_Social_Science_Term_1_English_Medium.pdf",
+    "4th_Std_Maths_Science_Social_Science_Term_1_Tamil_Medium.pdf",
+    "4th_Std_Maths_Science_Social_Science_Term_2_English_Medium.pdf",
+    "4th_Std_Maths_Science_Social_Science_Term_2_Tamil_Medium.pdf",
+    "4th_Std_Maths_Science_Social_Science_Term_3_English_Medium.pdf",
+    "4th_Std_Maths_Science_Social_Science_Term_3_Tamil_Medium.pdf",
+    "4th_Std_Tamil_CBSE.pdf",
+    "4th_Std_Tamil_English_Term_1.pdf",
+    "4th_Std_Tamil_English_Term_2.pdf",
+    "4th_Std_Tamil_English_Term_3.pdf"
 
 ];
 
@@ -58,6 +106,9 @@ if (visualCountEl) visualCountEl.textContent = `${bookCount} ${label}`;
 
 const upscCountEl = document.getElementById('upscCount');
 if (upscCountEl) upscCountEl.textContent = `1 Book`;
+
+const tnCountEl = document.getElementById('tnCount');
+if (tnCountEl) tnCountEl.textContent = `40 Books`;
 
 // Show the "no books" empty state when the list is empty,
 // and hide the grid.
