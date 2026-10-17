@@ -14,7 +14,8 @@ const miscellaneousBooks = [
     "11th Std Economics English Medium.pdf",
     "12th_Std_Economics_EM_optimised.pdf",
     "Indian_Economy_key_concept_by_sankarganesh_k_-_Sankarganesh_k.pdf",
-    "Indian_Economy_-_Ramesh_Singh.pdf"
+    "Indian_Economy_-_Ramesh_Singh.pdf",
+    "upsc_solved_till_2025.pdf"
 
 ];
 
@@ -54,6 +55,9 @@ if (countEl) countEl.textContent = `${bookCount} ${label}`;
 
 const visualCountEl = document.getElementById('visualCount');
 if (visualCountEl) visualCountEl.textContent = `${bookCount} ${label}`;
+
+const upscCountEl = document.getElementById('upscCount');
+if (upscCountEl) upscCountEl.textContent = `1 Book`;
 
 // Show the "no books" empty state when the list is empty,
 // and hide the grid.
