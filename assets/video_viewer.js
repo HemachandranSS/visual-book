@@ -16,6 +16,8 @@ let headerPinned = false;
 let controlsHideTimer = null;
 let catalogToken = 0;
 let loadToken = 0;
+let nextArmed = false;
+let suppressBufferingUntil = 0;
 const streamControllers = new Map();
 
 const SPEEDS = [1, 1.25, 1.5, 1.75, 2];
@@ -225,17 +227,25 @@ document.addEventListener('keydown', (e) => {
     player.addEventListener('ended', () => {
         if (player === getActive()) playSeamlessNext();
     });
+    player.addEventListener('timeupdate', () => armNextPart(player));
     player.addEventListener('error', () => handlePlayerError(player));
     player.addEventListener('play', syncControls);
     player.addEventListener('pause', syncControls);
     player.addEventListener('waiting', () => {
-        if (player === getActive()) showBuffering(true);
+        if (player !== getActive() || performance.now() < suppressBufferingUntil) return;
+        const waitStarted = performance.now();
+        setTimeout(() => {
+            if (player === getActive() && player.readyState < 3 && performance.now() - waitStarted >= 180) {
+                showBuffering(true);
+            }
+        }, 200);
     });
     player.addEventListener('playing', () => {
         if (player === getActive()) showBuffering(false);
     });
     player.addEventListener('canplay', () => {
         if (player === getActive()) showBuffering(false);
+        else primePlayer(player);
     });
 });
 
@@ -399,6 +409,7 @@ function loadVideo(index, seekTime) {
     }
 
     cancelStreamFetch(index);
+    nextArmed = false;
     const token = ++loadToken;
     currentVideoIndex = index;
     updatePageInfo();
@@ -526,8 +537,10 @@ function fetchStreamInBackground(player, index) {
             revokeObjectUrl(player);
             const objectUrl = URL.createObjectURL(blob);
             player.dataset.objectUrl = objectUrl;
+            player.dataset.primed = '';
             player.src = objectUrl;
             player.load();
+            primePlayer(player);
         })
         .catch((error) => {
             if (!stillCurrent()) return;
@@ -535,28 +548,33 @@ function fetchStreamInBackground(player, index) {
             if (player.dataset.fetching === String(index)) delete player.dataset.fetching;
             if (error.name === 'AbortError' || currentVideoIndex + 1 !== index) return;
             if (!player.getAttribute('src')) {
+                player.dataset.primed = '';
                 player.src = url;
                 player.load();
+                primePlayer(player);
             }
         });
 }
 
 function adoptBackgroundPlayer(index, seekTime) {
     const token = ++loadToken;
+    nextArmed = false;
     const incoming = getInactive();
     const outgoing = getActive();
-    parkPlayer(outgoing);
-    revokeObjectUrl(outgoing);
-    outgoing.removeAttribute('src');
-    outgoing.load();
 
     activePlayer = activePlayer === 1 ? 2 : 1;
     currentVideoIndex = index;
     incoming.dataset.loadToken = String(token);
-    incoming.classList.remove('is-idle');
     incoming.muted = isMuted;
     incoming.volume = volume;
     incoming.playbackRate = playbackRate;
+    suppressBufferingUntil = performance.now() + 400;
+    incoming.classList.remove('is-idle');
+    outgoing.classList.add('is-idle');
+    outgoing.pause();
+    revokeObjectUrl(outgoing);
+    outgoing.removeAttribute('src');
+    outgoing.load();
     updatePageInfo();
     updateNavigationButtons();
     setPlayerStatus('');
@@ -579,6 +597,69 @@ function adoptBackgroundPlayer(index, seekTime) {
     }
 }
 
+function primePlayer(player) {
+    if (!player.getAttribute('src')) return;
+    if (player.dataset.primed === '1' || player.dataset.priming === '1') return;
+    if (player === getActive()) return;
+    player.dataset.priming = '1';
+    player.muted = true;
+
+    const finish = () => {
+        player.dataset.primed = '1';
+        delete player.dataset.priming;
+    };
+    const kick = () => {
+        if (player === getActive() || nextArmed) {
+            delete player.dataset.priming;
+            return;
+        }
+        player.play().then(() => {
+            if (player === getActive() || nextArmed) {
+                finish();
+                return;
+            }
+            player.pause();
+            if (player.currentTime > 0.001) {
+                player.addEventListener('seeked', finish, { once: true });
+                try {
+                    player.currentTime = 0;
+                } catch {
+                    finish();
+                }
+                return;
+            }
+            finish();
+        }).catch(() => {
+            delete player.dataset.priming;
+        });
+    };
+
+    if (player.readyState >= 2) kick();
+    else player.addEventListener('canplay', kick, { once: true });
+}
+
+function armNextPart(player) {
+    if (player !== getActive() || nextArmed) return;
+    if (!Number.isFinite(player.duration) || player.duration === 0) return;
+    const remaining = player.duration - player.currentTime;
+    if (remaining <= 0 || remaining > 0.05) return;
+
+    const next = getInactive();
+    const nextIndex = currentVideoIndex + 1;
+    if (catalogResolved && totalVideos > 0 && nextIndex > totalVideos) return;
+    if (Number(next.dataset.chunkIndex) !== nextIndex || next.readyState < 3 || !next.getAttribute('src')) return;
+
+    nextArmed = true;
+    next.muted = true;
+    next.volume = volume;
+    next.playbackRate = playbackRate;
+    if (next.paused) {
+        next.play().catch(() => {
+            nextArmed = false;
+        });
+    }
+}
+
 function cancelStreamFetch(index) {
     const controller = streamControllers.get(index);
     if (!controller) return;
@@ -596,28 +677,51 @@ function revokeObjectUrl(player) {
 function playSeamlessNext() {
     if (catalogResolved && totalVideos > 0 && currentVideoIndex >= totalVideos) return;
 
-    const inactive = getInactive();
+    const prev = getActive();
+    const next = getInactive();
     const nextIndex = currentVideoIndex + 1;
-    if (inactive.dataset.chunkIndex !== String(nextIndex) || inactive.readyState < 2) {
+    if (Number(next.dataset.chunkIndex) !== nextIndex || next.readyState < 2 || !next.getAttribute('src')) {
+        nextArmed = false;
         loadVideo(nextIndex);
         return;
     }
 
-    const active = getActive();
-    parkPlayer(active);
+    const finish = () => {
+        if (getActive() !== prev) return;
+        suppressBufferingUntil = performance.now() + 400;
+        next.playbackRate = playbackRate;
+        next.volume = volume;
+        next.classList.remove('is-idle');
+        prev.classList.add('is-idle');
+        next.muted = isMuted;
+        if (next.paused) next.play().catch(() => {});
+        prev.pause();
+        activePlayer = next === videoPlayer1 ? 1 : 2;
+        currentVideoIndex = nextIndex;
+        nextArmed = false;
+        updatePageInfo();
+        updateNavigationButtons();
+        preloadNextInBackground();
+    };
 
-    inactive.classList.remove('is-idle');
-    inactive.muted = isMuted;
-    inactive.volume = volume;
-    inactive.playbackRate = playbackRate;
-    if (inactive.currentTime > 0.35) inactive.currentTime = 0;
-    inactive.play().catch(() => {});
+    if (!next.paused && next.readyState >= 2) {
+        finish();
+        return;
+    }
 
-    activePlayer = activePlayer === 1 ? 2 : 1;
-    currentVideoIndex = nextIndex;
-    updatePageInfo();
-    updateNavigationButtons();
-    preloadNextInBackground();
+    next.muted = true;
+    next.volume = volume;
+    next.playbackRate = playbackRate;
+    next.play().then(() => {
+        if (typeof next.requestVideoFrameCallback === 'function') {
+            next.requestVideoFrameCallback(() => finish());
+        } else {
+            requestAnimationFrame(finish);
+        }
+    }).catch(() => {
+        nextArmed = false;
+        loadVideo(nextIndex);
+    });
 }
 
 function getGlobalTime() {

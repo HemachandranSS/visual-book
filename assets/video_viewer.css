@@ -296,7 +296,7 @@ body {
     object-fit: contain;
     background: #000;
     opacity: 1;
-    transition: opacity 80ms linear;
+    transform: translateZ(0);
 }
 
 .video-player.is-idle {
