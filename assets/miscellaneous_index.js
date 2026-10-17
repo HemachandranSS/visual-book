@@ -63,7 +63,123 @@ const miscellaneousBooks = [
     "4th_Std_Tamil_CBSE.pdf",
     "4th_Std_Tamil_English_Term_1.pdf",
     "4th_Std_Tamil_English_Term_2.pdf",
-    "4th_Std_Tamil_English_Term_3.pdf"
+    "4th_Std_Tamil_English_Term_3.pdf",
+
+    // TN School Books 2020 Edition - 5th Standard
+    "5th_Std_Maths_Science_Social_Science_Term_1_English_Medium.pdf",
+    "5th_Std_Maths_Science_Social_Science_Term_1_Tamil_Medium.pdf",
+    "5th_Std_Maths_Science_Social_Science_Term_2_English_Medium.pdf",
+    "5th_Std_Maths_Science_Social_Science_Term_2_Tamil_Medium.pdf",
+    "5th_Std_Maths_Science_Social_Science_Term_3_English_Medium.pdf",
+    "5th_Std_Maths_Science_Social_Science_Term_3_Tamil_Medium.pdf",
+    "5th_Std_Tamil_CBSE.pdf",
+    "5th_Std_Tamil_English_Term_1.pdf",
+    "5th_Std_Tamil_English_Term 2.pdf",
+    "5th_Std_Tamil_English_Term_3.pdf",
+
+    // TN School Books 2020 Edition - 6th Standard
+    "6th_Maths_T1_EM.pdf",
+    "6th_Maths_T1_TM.pdf",
+    "6th_Maths_T2_EM.pdf",
+    "6th_Maths_T2_TM.pdf",
+    "6th_Maths_T3_EM.pdf",
+    "6th_Maths_T3_TM.pdf",
+    "6th_Science_&_Social_T1_EM.pdf",
+    "6th_Science_&_Social_T1_TM.pdf",
+    "6th_Science_&_Social_T2_EM.pdf",
+    "6th_Science_&_Social_T2_TM.pdf",
+    "6th_Science_&_Social_T3_EM.pdf",
+    "6th_Science_&_Social_T3_TM.pdf",
+    "6th_Std_Tamil_CBSE.pdf",
+    "6th_Std_Tamil_English_Term 3.pdf",
+    "6th_Tamil_English_T1.pdf",
+    "6th_Tamil_English_T2.pdf",
+
+    // TN School Books 2020 Edition - 7th Standard
+    "7th_Maths_T1_EM.pdf",
+    "7th_Maths_T1_TM.pdf",
+    "7th_Maths_T2_EM_Book_optimised.pdf",
+    "7th_Maths_T2_TM_Book_optimised.pdf",
+    "7th_Maths_T3_EM.pdf",
+    "7th_Maths_T3_TM.pdf",
+    "7th_Science_&_Social_T1_EM.pdf",
+    "7th_Science_&_Social_T1_TM.pdf",
+    "7th_Science_&_Social_T2_EM_Book_optimised.pdf",
+    "7th_Science_&_Social_T2_TM_Book_Optimised.pdf",
+    "7th_Science_&_Social_T3_EM.pdf",
+    "7th_Science_&_Social_T3_TM.pdf",
+    "7th Std Tamil CBSE.pdf",
+    "7th_Tamil_English_T1.pdf",
+    "7th_Tamil_English_Term_2_Book_optimised.pdf",
+    "7th_Tamil_English_T3.pdf",
+
+    // TN School Books 2020 Edition - 8th Standard
+    "8th_Std_English_optimised.pdf",
+    "8th_Std_Mathematics_EM_optimised.pdf",
+    "8th_Std_Mathematics_TM_optimised.pdf",
+    "8th_Std_Science_EM_optimised.pdf",
+    "8th_Std_Social_Science_EM_optimised.pdf",
+    "8th_Std_Social_Science_TM_optimised.pdf",
+    "8th Std Tamil.pdf",
+
+    // TN School Books 2020 Edition - 9th Standard
+    "9th_Std_English_optimised.pdf",
+    "9th_Std_Mathematics_EM_optimised.pdf",
+    "9th_Std_Mathematics_TM_optimised.pdf",
+    "9th_Std_Science_EM_optimised.pdf",
+    "9th_Std_Science_TM_optimised.pdf",
+    "9th_Std_Social_Science_EM_optimised.pdf",
+    "9th_Std_Social_Science_TM_optimised.pdf",
+    "9th_Std_Tamil_optimised.pdf",
+
+    // TN School Books 2020 Edition - 10th Standard
+    "10th_Std_English_optimised.pdf",
+    "10th_Std_Mathematics_EM_optimised.pdf",
+    "10th_Std_Mathematics_TM_optimised.pdf",
+    "10th_Std_Science_EM_optimised.pdf",
+    "10th_Std_Science_TM_optimised.pdf",
+    "10th_Std_Social_Science_EM_optimised.pdf",
+    "10th_Std_Social_Science_TM_optimised.pdf",
+    "10th_Tamil_optimised.pdf",
+
+    // TN School Books 2020 Edition - 11th Standard
+    "11th Std - Auditing Practical English Medium.pdf",
+    "11th Std Communicative English.pdf",
+    "11th Std General English.pdf",
+    "11th Std Mathematics Vol-1 English Medium.pdf",
+    "11th Std Mathematics Vol-2 English Medium.pdf",
+    "11th Std Business Mathematics & Statistics English Medium.pdf",
+    "11th Std Statistics English Medium.pdf",
+    "11th Std Physics Vol-1 English Medium.pdf",
+    "11th Std Physics Vol-2 English Medium.pdf",
+    "11th Std Chemistry EM Vol-1 Errata_2021.pdf",
+    "11th Std Chemistry EM Vol-2 Erratta_2021.pdf",
+    "11th Std Biology-Botany English Medium.pdf",
+    "11th Std Biology-Zoology English Medium.pdf",
+    "11th Std Botany English Medium.pdf",
+    "11th Std Zoology English Medium.pdf",
+    "11th Std Bio-Chemistry English Medium.pdf",
+    "11th Std Microbiology English Medium.pdf",
+    "11th Std Computer Science English Medium.pdf",
+    "11th Std Computer Applications English Medium.pdf",
+    "11th Std Computer Technology English Medium.pdf",
+    "11th Std Commerce English Medium.pdf",
+    "11th Std Economics English Medium.pdf",
+    "11th Std History English Medium.pdf",
+    "11th Std Geography English Medium.pdf",
+    "11th Std Political Science English Medium.pdf",
+    "11th Std Home Science English Medium.pdf",
+    "11th Std Nutrition and Dietetics English Medium.pdf",
+    "11th Std Food Service Management English Medium.pdf",
+    "11th Std - Basic Civil Engineering English Medium 06.11.2020.pdf",
+    "11th Std - Basic Electrical Engineering EM 09.11.2020.pdf",
+    "11th Std - Basic Electronics Engineering EM 10.11.2020.pdf",
+    "11th Std - Basic Mechanical Engineering EM 09.11.2020.pdf",
+    "XI Std - Basic Automobile Engg EM Errata 06.11.2020.pdf",
+    "11th Std - OMS & Typography Computer Applications EM 12.11.2020.pdf",
+    "11th Std Nursing General English Medium.pdf",
+    "11th Std Nursing Vocational English Medium.pdf",
+    "11th Std Textiles and Dress Designing English Medium.pdf"
 
 ];
 
@@ -108,7 +224,7 @@ const upscCountEl = document.getElementById('upscCount');
 if (upscCountEl) upscCountEl.textContent = `1 Book`;
 
 const tnCountEl = document.getElementById('tnCount');
-if (tnCountEl) tnCountEl.textContent = `40 Books`;
+if (tnCountEl) tnCountEl.textContent = `142 Books`;
 
 // Show the "no books" empty state when the list is empty,
 // and hide the grid.
