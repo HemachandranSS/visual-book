@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Book Viewer</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -25,14 +25,15 @@
         </div>
         <div class="controls">
             <div id="bookBadge" class="book-badge" style="display:none;"></div>
+            <div class="nav-controls">
+                <button id="prevBtn" class="nav-btn" disabled>← Previous</button>
+                <div id="pageInfo" class="page-info" aria-live="polite">-</div>
+                <button id="nextBtn" class="nav-btn" disabled>Next →</button>
+            </div>
+            <div class="tool-strip">
             <div class="file-input-wrapper">
                 <input type="file" id="pdfFile" class="file-input" accept=".pdf">
                 <label for="pdfFile" class="file-label">Choose PDF File</label>
-            </div>
-            <div class="nav-controls">
-                <button id="prevBtn" class="nav-btn" disabled>← Previous</button>
-                <div id="pageInfo" class="page-info">-</div>
-                <button id="nextBtn" class="nav-btn" disabled>Next →</button>
             </div>
             <div class="export-controls">
                 <button id="exportPngBtn" class="export-btn" disabled>Export PNG</button>
@@ -43,13 +44,14 @@
                 <button id="rotateBtn" class="rotate-btn" disabled title="Rotate page 90° clockwise">⟳</button>
             </div>
             <div class="zoom-controls">
-                <button id="zoomOut" class="zoom-btn">−</button>
-                <button id="zoomIn" class="zoom-btn">+</button>
+                <button id="zoomOut" class="zoom-btn" aria-label="Zoom out">−</button>
+                <button id="zoomIn" class="zoom-btn" aria-label="Zoom in">+</button>
+            </div>
             </div>
         </div>
     </div>
 
-    <div class="main-content">
+    <div class="main-content fit-view">
         <div class="viewer-container">
             <div id="welcomeMessage" class="welcome-message">
                 <div class="welcome-icon">📖</div>
@@ -148,13 +150,19 @@
         let pinchStartDist = null;
         let pinchStartScale = null;
         let pinchLiveRatio = 1;
+        let pinchFitRatio = 1;
+        let pinchMinScale = 0.5;
+        const fitBaseScale = scale;
+        let fitScale = 0;
 
         mainContent.addEventListener('touchstart', (e) => {
             // Any tap on the content area reveals the nav arrows briefly
             showMobileArrows();
             if (e.touches.length === 2) {
                 pinchStartDist = getTouchDistance(e.touches[0], e.touches[1]);
-                pinchStartScale = scale;
+                pinchFitRatio = fitRatio();
+                pinchStartScale = scale * pinchFitRatio;
+                pinchMinScale = pinchFitRatio < 1 ? pinchStartScale : Math.min(0.5, fitScale || 0.5);
                 pinchLiveRatio = 1;
                 const center = getTouchCenter(e.touches[0], e.touches[1]);
                 zoomAnchor = {
@@ -168,7 +176,7 @@
             if (e.touches.length === 2 && pinchStartDist !== null) {
                 e.preventDefault();
                 const dist = getTouchDistance(e.touches[0], e.touches[1]);
-                const ratio = Math.min(Math.max(dist / pinchStartDist, 0.5 / pinchStartScale), 3.0 / pinchStartScale);
+                const ratio = Math.min(Math.max(dist / pinchStartDist, pinchMinScale / pinchStartScale), 3.0 / pinchStartScale);
                 pinchLiveRatio = ratio;
                 viewerContainer.style.transform = `scale(${ratio})`;
             }
@@ -177,8 +185,19 @@
         mainContent.addEventListener('touchend', (e) => {
             if (pinchStartDist !== null && e.touches.length < 2) {
                 viewerContainer.style.transform = '';
-                const newScale = Math.min(Math.max(pinchStartScale * pinchLiveRatio, 0.5), 3.0);
-                if (Math.abs(newScale - scale) > 0.01) {
+                const newScale = Math.min(Math.max(pinchStartScale * pinchLiveRatio, pinchMinScale), 3.0);
+                if (pinchFitRatio < 1) {
+                    if (newScale > pinchStartScale * 1.01) {
+                        leaveFitView();
+                        scale = newScale;
+                        hasZoomed = true;
+                        mainContent.classList.add('zoomed-state');
+                        rerenderCurrentView();
+                    }
+                } else if (fitScale && newScale <= fitScale * 1.01) {
+                    returnToFitView();
+                    rerenderCurrentView();
+                } else if (Math.abs(newScale - scale) > 0.01) {
                     scale = newScale;
                     hasZoomed = true;
                     mainContent.classList.add('zoomed-state');
@@ -219,6 +238,7 @@
 
         ['mousemove', 'pointermove'].forEach((eventName) => {
             document.addEventListener(eventName, (event) => {
+                if (event.pointerType === 'touch') return;
                 if (event.clientY <= 10) {
                     unpinHeader();
                 } else {
@@ -237,6 +257,8 @@
                 header.classList.add('is-hidden');
             }
         });
+        topRevealZone.addEventListener('touchstart', unpinHeader, { passive: true });
+        header.addEventListener('touchstart', activateHeader, { passive: true });
         header.classList.add('is-hidden');
         clearTimeout(headerHideTimer);
 
@@ -586,10 +608,37 @@
             }
         }
 
+        function fitRatio() {
+            if (!mainContent.classList.contains('fit-view')) return 1;
+            const canvas = pagesContainer.querySelector('.page-canvas');
+            if (!canvas || !canvas.width || !canvas.clientWidth) return 1;
+            return Math.min(1, canvas.clientWidth / canvas.width);
+        }
+
+        function leaveFitView() {
+            if (!mainContent.classList.contains('fit-view')) return;
+            if (!pagesContainer.querySelector('.page-canvas')) return;
+            const ratio = fitRatio();
+            mainContent.classList.remove('fit-view');
+            if (ratio < 1) {
+                scale *= ratio;
+                fitScale = scale;
+            }
+        }
+
+        function returnToFitView() {
+            mainContent.classList.add('fit-view');
+            scale = fitBaseScale;
+            fitScale = 0;
+            hasZoomed = false;
+            zoomAnchor = null;
+        }
+
         function zoomIn(preserveAnchor = false) {
             if (!preserveAnchor) {
                 captureZoomAnchor();
             }
+            leaveFitView();
             scale = Math.min(scale * mobileZoomFactor, 3);
             hasZoomed = true;
             mainContent.classList.add('zoomed-state');
@@ -597,6 +646,13 @@
         }
 
         function zoomOut(preserveAnchor = false) {
+            if (fitRatio() < 1) return;
+            const nextScale = Math.max(scale / mobileZoomFactor, 0.5);
+            if (fitScale && (nextScale <= fitScale * 1.01 || nextScale >= scale)) {
+                returnToFitView();
+                rerenderCurrentView();
+                return;
+            }
             if (!preserveAnchor) {
                 captureZoomAnchor();
             }

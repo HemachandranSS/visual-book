@@ -157,6 +157,7 @@ const unpinHeader = () => {
 };
 
 document.addEventListener('pointermove', (event) => {
+    if (event.pointerType === 'touch') return;
     if (event.clientY <= 72) {
         unpinHeader();
         return;
@@ -172,6 +173,8 @@ topRevealZone.addEventListener('mouseenter', unpinHeader);
 topRevealZone.addEventListener('mouseleave', () => {
     if (!header.matches(':hover')) header.classList.add('is-hidden');
 });
+topRevealZone.addEventListener('touchstart', unpinHeader, { passive: true });
+header.addEventListener('touchstart', activateHeader, { passive: true });
 header.classList.add('is-hidden');
 
 document.addEventListener('keydown', (e) => {
