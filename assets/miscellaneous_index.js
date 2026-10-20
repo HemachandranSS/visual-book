@@ -18,21 +18,36 @@ const miscellaneousBooks = [
     "A_Peoples_Tragedy_-_Orlando_Figes.pdf",
     "A_Nation_to_Protect_Leading_India_through_the_Covid_crisis_-_Priyam_Gandhi-Mody.pdf",
     "AKBAR_OF_HINDUSTAN_-_PARVATI_SHARMA.pdf",
+    "Ashoka_in_Ancient_India_-_Nayanjot_Lahiri.pdf",
+    "Babur_the_chessboard_king_-_Aabhas_maldahiyar.pdf",
+    "Barons_of_Banking_-_Bhaktiar_Dadabhoy.pdf",
+    "Bhagat_Singh_A_Life_in_Revolution_-_Satvinder_S_Juss.pdf",
     "Drones_Journey_to_Fifth_Generation_-_Kaushik_Kumar.pdf",
     "Essays_on_Indian_Philosophy_-_Shri_Krishna_Saksena.pdf",
+    "History_of_India__A_Captivating_Guide_to_A_-_Captivating_History.pdf",
     "History_of_modern_india_-_Bipan_chandra.pdf",
+    "I_do_what_I_do_-_Raghuram_Rajan.pdf",
     "Incredible_Indians_75_People_Who_Shaped_Modern_India_-_Ashwitha_Jayakumar.pdf",
     "India_and_Pakistan_-_Stanley_Wolpert.pdf",
+    "India_Pakistan_and_the_Bomb_Debating_Nuclear_Stability_in_South_Asia_-_S_Paul_Kapur.pdf",
     "India_that_is_bharat_-_Jsai_Deepak.pdf",
     "Indian_Philosophy_A-Z_-_Christopher_Bartley.pdf",
     "Indian_Polity_8th_edition_-_M_Laxmikanth.pdf",
     "In_the_service_of_the_republic_-_vijay_kelkar_and_ajay_shah.pdf",
+    "Kashmirs_Untold_Story_Declassified_-_iqbal_chand_malhotra.pdf",
+    "Nehru_The_Debates_That_Defined_India_-_Adeel_Hussain.pdf",
+    "Ninety_Days_The_True_Story_of_the_Hunt_for_Rajiv_Gandhis_Assassins_-_Anirudhya_Mitra.pdf",
     "Ratan_Tata_A_Life_-_Thomas_Mathew.pdf",
     "RAW_-_Yatish_Yadav.pdf",
     "Ready_To_Fire_-_Nambi_Narayanan.pdf",
     "Swadeshi_Steam_-_A_R_Venkatachalapathy.pdf",
+    "The_Big_Reverse_-_Meera_Sanyal.pdf",
+    "The_History_of_the_Renaissance_World__From_-_Susan_Wise_Bauer.pdf",
+    "The_Taj_Mahal_-_Charles_River_Editors.pdf",
     "The_Ten_Trillion_Dream_-_Subhash_Chandra_Garg.pdf",
     "Who_Moved_My_Interest_Rate_-_Duvvuri_subbarao.pdf",
+    "why_i_killed_gandhi_-_Nathuram_godse.pdf",
+    "World_History_-_Adam_Brown.pdf",
     "upsc_solved_till_2025.pdf",
 
     // TN School Books 2020 Edition - 1st Standard
@@ -395,13 +410,13 @@ const tnCountEl = document.getElementById('tnCount');
 if (tnCountEl) tnCountEl.textContent = `264 Books`;
 
 const historyCountEl = document.getElementById('historyCount');
-if (historyCountEl) historyCountEl.textContent = `4 Books`;
+if (historyCountEl) historyCountEl.textContent = `10 Books`;
 
 const biographiesCountEl = document.getElementById('biographiesCount');
-if (biographiesCountEl) biographiesCountEl.textContent = `4 Books`;
+if (biographiesCountEl) biographiesCountEl.textContent = `6 Books`;
 
 const generalCountEl = document.getElementById('generalCount');
-if (generalCountEl) generalCountEl.textContent = `5 Books`;
+if (generalCountEl) generalCountEl.textContent = `7 Books`;
 
 // Show the "no books" empty state when the list is empty,
 // and hide the grid.
