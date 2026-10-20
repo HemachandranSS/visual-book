@@ -8,7 +8,9 @@ const technologyBooks = [
     'https://hemachandranss.github.io/books11/books/visual-books/Python_Flash_Cards_-_Eric_Matthes',
     'https://hemachandranss.github.io/books11/books/visual-books/The_Recursive_Book_of_Recursion_-_Al_Sweigart',
     'https://hemachandranss.github.io/books11/books/visual-books/The_Big_Book_of_Small_Python_Projects_-_Al_Sweigart',
-    'https://hemachandranss.github.io/books17/books/visual-books/Amazon_Web_Services_in_Action_Third_Edition_-_Andreas_Wittig'
+    'https://hemachandranss.github.io/books17/books/visual-books/Amazon_Web_Services_in_Action_Third_Edition_-_Andreas_Wittig',
+    'https://hemachandranss.github.io/books21/books/visual-books/EXCEL_2023__An_Illustrated_Step-by-Step_Guide_for_Beginners_-_Kyle_McAnthony',
+    'https://hemachandranss.github.io/books21/books/visual-books/Excel_Your_All-in-One_Illustrated_Guide_-_Michael_Venturino'
 ];
 
 const normalizeBookPath = (value) => {

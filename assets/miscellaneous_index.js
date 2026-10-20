@@ -15,6 +15,13 @@ const miscellaneousBooks = [
     "12th_Std_Economics_EM_optimised.pdf",
     "Indian_Economy_key_concept_by_sankarganesh_k_-_Sankarganesh_k.pdf",
     "Indian_Economy_-_Ramesh_Singh.pdf",
+    "A_Peoples_Tragedy_-_Orlando_Figes.pdf",
+    "Drones_Journey_to_Fifth_Generation_-_Kaushik_Kumar.pdf",
+    "Essays_on_Indian_Philosophy_-_Shri_Krishna_Saksena.pdf",
+    "Indian_Philosophy_A-Z_-_Christopher_Bartley.pdf",
+    "Indian_Polity_8th_edition_-_M_Laxmikanth.pdf",
+    "In_the_service_of_the_republic_-_vijay_kelkar_and_ajay_shah.pdf",
+    "The_Ten_Trillion_Dream_-_Subhash_Chandra_Garg.pdf",
     "upsc_solved_till_2025.pdf",
 
     // TN School Books 2020 Edition - 1st Standard
@@ -375,6 +382,9 @@ if (upscCountEl) upscCountEl.textContent = `1 Book`;
 
 const tnCountEl = document.getElementById('tnCount');
 if (tnCountEl) tnCountEl.textContent = `264 Books`;
+
+const generalCountEl = document.getElementById('generalCount');
+if (generalCountEl) generalCountEl.textContent = `3 Books`;
 
 // Show the "no books" empty state when the list is empty,
 // and hide the grid.
