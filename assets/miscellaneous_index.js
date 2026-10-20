@@ -16,12 +16,23 @@ const miscellaneousBooks = [
     "Indian_Economy_key_concept_by_sankarganesh_k_-_Sankarganesh_k.pdf",
     "Indian_Economy_-_Ramesh_Singh.pdf",
     "A_Peoples_Tragedy_-_Orlando_Figes.pdf",
+    "A_Nation_to_Protect_Leading_India_through_the_Covid_crisis_-_Priyam_Gandhi-Mody.pdf",
+    "AKBAR_OF_HINDUSTAN_-_PARVATI_SHARMA.pdf",
     "Drones_Journey_to_Fifth_Generation_-_Kaushik_Kumar.pdf",
     "Essays_on_Indian_Philosophy_-_Shri_Krishna_Saksena.pdf",
+    "History_of_modern_india_-_Bipan_chandra.pdf",
+    "Incredible_Indians_75_People_Who_Shaped_Modern_India_-_Ashwitha_Jayakumar.pdf",
+    "India_and_Pakistan_-_Stanley_Wolpert.pdf",
+    "India_that_is_bharat_-_Jsai_Deepak.pdf",
     "Indian_Philosophy_A-Z_-_Christopher_Bartley.pdf",
     "Indian_Polity_8th_edition_-_M_Laxmikanth.pdf",
     "In_the_service_of_the_republic_-_vijay_kelkar_and_ajay_shah.pdf",
+    "Ratan_Tata_A_Life_-_Thomas_Mathew.pdf",
+    "RAW_-_Yatish_Yadav.pdf",
+    "Ready_To_Fire_-_Nambi_Narayanan.pdf",
+    "Swadeshi_Steam_-_A_R_Venkatachalapathy.pdf",
     "The_Ten_Trillion_Dream_-_Subhash_Chandra_Garg.pdf",
+    "Who_Moved_My_Interest_Rate_-_Duvvuri_subbarao.pdf",
     "upsc_solved_till_2025.pdf",
 
     // TN School Books 2020 Edition - 1st Standard
@@ -383,8 +394,14 @@ if (upscCountEl) upscCountEl.textContent = `1 Book`;
 const tnCountEl = document.getElementById('tnCount');
 if (tnCountEl) tnCountEl.textContent = `264 Books`;
 
+const historyCountEl = document.getElementById('historyCount');
+if (historyCountEl) historyCountEl.textContent = `4 Books`;
+
+const biographiesCountEl = document.getElementById('biographiesCount');
+if (biographiesCountEl) biographiesCountEl.textContent = `4 Books`;
+
 const generalCountEl = document.getElementById('generalCount');
-if (generalCountEl) generalCountEl.textContent = `3 Books`;
+if (generalCountEl) generalCountEl.textContent = `5 Books`;
 
 // Show the "no books" empty state when the list is empty,
 // and hide the grid.
