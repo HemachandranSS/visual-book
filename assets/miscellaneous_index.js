@@ -48,6 +48,30 @@ const miscellaneousBooks = [
     "Who_Moved_My_Interest_Rate_-_Duvvuri_subbarao.pdf",
     "why_i_killed_gandhi_-_Nathuram_godse.pdf",
     "World_History_-_Adam_Brown.pdf",
+    "AB_the_autobiography_-_A_B_de_Villiers.pdf",
+    "ALASTAIR_COOK_THE_AUTOBIOGRAPHY_-_Sir_Alastair_Cook.pdf",
+    "An_American_Life_The_Autobiography_-_Ronald_Reagan.pdf",
+    "An_Autobiography_-_Jawaharlal_Nehru.pdf",
+    "An_Autobiography_-_MK_Gandhi.pdf",
+    "A_Soldiers_General-An_Autobiography_-_General_Retd_J_J_Singh.pdf",
+    "Beckham_-_David_Beckham.pdf",
+    "Colleagues_in_Genius_-_Albert_Einstein.pdf",
+    "Four_stars_of_destiny_-_General_Manoj_Mukund_Naravane.pdf",
+    "Game_Changer_by_Shahid_Afridi_-_Shahid_Afridi.pdf",
+    "I_dare_-_kiran_bedi.pdf",
+    "In_memory_yet_green___the_autobiography_of_-_Isaac_Asimov.pdf",
+    "Jimmy_Anderson_The_Autobiography_-_Jimmy_Anderson.pdf",
+    "Julian_Assange_-_The_Unauthorised_Autobiography_-_Julian_Assange.pdf",
+    "Long Walk to freedom - Nelson Mandela.pdf",
+    "My_Inventions__The_Autobiography_of_Nikola_-_Nikola_Tesla.pdf",
+    "Playing_It_My_Way__My_Autobiography_-_Sachin_Tendulkar.pdf",
+    "Spare_-_Prince_Harry.pdf",
+    "The_Autobiography_of_Benjamin_Franklin_-_Benjamin_Franklin.pdf",
+    "The_Autobiography_of_Martin_Luther_King_JR_-_Clayborne_Carson.pdf",
+    "The_Kargil_Girl_An_autobiography_-_Gunjan_Saxena.pdf",
+    "The_Race_of_My_Life_An_Autobiography_-_Milkha_Singh.pdf",
+    "To_the_Point_The_No-Holds-Barred_Autobiography_-_Herschelle_Gibbs.pdf",
+    "Wings_of_Fire__An_Autobiography_-_APJ_Abdul_Kalam.pdf",
     "upsc_solved_till_2025.pdf",
 
     // TN School Books 2020 Edition - 1st Standard
@@ -409,11 +433,14 @@ if (upscCountEl) upscCountEl.textContent = `1 Book`;
 const tnCountEl = document.getElementById('tnCount');
 if (tnCountEl) tnCountEl.textContent = `264 Books`;
 
+const economicsCountEl = document.getElementById('economicsCount');
+if (economicsCountEl) economicsCountEl.textContent = `8 Books`;
+
 const historyCountEl = document.getElementById('historyCount');
 if (historyCountEl) historyCountEl.textContent = `10 Books`;
 
 const biographiesCountEl = document.getElementById('biographiesCount');
-if (biographiesCountEl) biographiesCountEl.textContent = `6 Books`;
+if (biographiesCountEl) biographiesCountEl.textContent = `30 Books`;
 
 const generalCountEl = document.getElementById('generalCount');
 if (generalCountEl) generalCountEl.textContent = `7 Books`;
