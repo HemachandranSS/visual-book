@@ -26,7 +26,95 @@ const technologyBooks = [
     'https://hemachandranss.github.io/books21/books/visual-books/Hotwire_Native_for_Rails_Developers_-_Joe_Masilotti',
     'https://hemachandranss.github.io/books21/books/visual-books/modern-front-end-development-for-rails-second-edition-hotwire-stimulus-turbo-and-react',
     'https://hemachandranss.github.io/books21/books/visual-books/High_Performance_PostgreSQL_for_Rails_Reliable_Scalable_Maintainable_Database_Applications_-_Andrew_Atkinson',
-    'https://hemachandranss.github.io/books21/books/visual-books/docker-for-rails-developers-build-ship-and-run-your-applications-everywhere'
+    'https://hemachandranss.github.io/books21/books/visual-books/docker-for-rails-developers-build-ship-and-run-your-applications-everywhere',
+    'https://hemachandranss.github.io/books22/books/visual-books/84_Amazing_Maths_Games_-_Anna_Claybourne',
+    'https://hemachandranss.github.io/books22/books/visual-books/Acing_the_Frontend_Interview_MEAP_V1_-_Jennifer_Fu',
+    'https://hemachandranss.github.io/books22/books/visual-books/Agile_Metrics_in_Action_-_Christopher_Davis',
+    'https://hemachandranss.github.io/books22/books/visual-books/AI_Agents_in_Action_-_Micheal_Lanham',
+    'https://hemachandranss.github.io/books22/books/visual-books/AI_and_Machine_Learning_in_Action_-_Aniket_Jain',
+    'https://hemachandranss.github.io/books22/books/visual-books/Akka_in_Action_2nd_Ed_-_Francisco_Lopez-Sancho_Abraham',
+    'https://hemachandranss.github.io/books22/books/visual-books/Algorithms_and_Data_Structures_in_Action_M_-_Marcello_La_Rocca',
+    'https://hemachandranss.github.io/books22/books/visual-books/Amazon_Web_Services_in_Action_Third_Edition_-_Andreas_Wittig',
+    'https://hemachandranss.github.io/books22/books/visual-books/API_Security_in_Action_MEAP_V10_-_Neil_Madden',
+    'https://hemachandranss.github.io/books22/books/visual-books/ASPNET_Core_in_Action_Third_Edition_-_Andrew_Lock',
+    'https://hemachandranss.github.io/books22/books/visual-books/ASPNET_Core_Razor_Pages_In_Action_-_Mike_Brind',
+    'https://hemachandranss.github.io/books22/books/visual-books/Authorization_in_Action_MEAP_6_-_Phillip_J_Windley',
+    'https://hemachandranss.github.io/books22/books/visual-books/Bayesian_Optimization_in_Action_MEAP_V05_-_Quan_Nguyen',
+    'https://hemachandranss.github.io/books22/books/visual-books/BDD_in_Action_-_John_Ferguson_Smart',
+    'https://hemachandranss.github.io/books22/books/visual-books/Beginning_Arduino_Programming_-_Brian_Evans',
+    'https://hemachandranss.github.io/books22/books/visual-books/Blockchain_in_Action_-_Bina_Ramamurthy',
+    'https://hemachandranss.github.io/books22/books/visual-books/Build_AI-Enhanced_Web_Apps_-_Theo_Despoudis',
+    'https://hemachandranss.github.io/books22/books/visual-books/C_Concurrency_in_Action_-_Anthony_Williams',
+    'https://hemachandranss.github.io/books22/books/visual-books/C_in_Action_Learn_with_Projects_-_Govind_Kumawat',
+    'https://hemachandranss.github.io/books22/books/visual-books/Cloud_Native_Spring_in_Action_-_Thomas_Vitale',
+    'https://hemachandranss.github.io/books22/books/visual-books/Cloud_Observability_in_Action_-_Michael_Hausenblas',
+    'https://hemachandranss.github.io/books22/books/visual-books/CoffeeScript_in_Action_-_Patrick_Lee',
+    'https://hemachandranss.github.io/books22/books/visual-books/Contract_Testing_in_Action_With_Pact_PactFlow_-_Marie_Cruz',
+    'https://hemachandranss.github.io/books22/books/visual-books/CORS_in_Action_-_Monsur_Hossain',
+    'https://hemachandranss.github.io/books22/books/visual-books/D3js_in_Action_-_Elijah_Meeks',
+    'https://hemachandranss.github.io/books22/books/visual-books/Databricks_ML_in_Action_-_Packt_Publishing',
+    'https://hemachandranss.github.io/books22/books/visual-books/Data_Mesh_in_Action_-_Jacek_Majchrzak',
+    'https://hemachandranss.github.io/books22/books/visual-books/Deep_Reinforcement_Learning_in_Action_-_Alexander_Zai',
+    'https://hemachandranss.github.io/books22/books/visual-books/Digital_Twins_in_Action_MEAP_3_-_Greg_Biegel',
+    'https://hemachandranss.github.io/books22/books/visual-books/Django_in_Action_-_Christopher_Trudeau',
+    'https://hemachandranss.github.io/books22/books/visual-books/DuckDB_in_Action_-_Mark_Needham',
+    'https://hemachandranss.github.io/books22/books/visual-books/Elasticsearch_in_Action_-_Madhusudhan_Konda',
+    'https://hemachandranss.github.io/books22/books/visual-books/Elasticsearch_in_Action_Second_Edition_-_Madhusudhan_Konda',
+    'https://hemachandranss.github.io/books22/books/visual-books/Elixir_in_Action_3rd_Edition_-_Sasa_Juric',
+    'https://hemachandranss.github.io/books22/books/visual-books/ENIAC_in_Action_-_Thomas_Haigh',
+    'https://hemachandranss.github.io/books22/books/visual-books/Entity_Framework_Core_in_Action_-_Jon_P_Smith',
+    'https://hemachandranss.github.io/books22/books/visual-books/F_in_Action_-_Isaac_Abraham',
+    'https://hemachandranss.github.io/books22/books/visual-books/GCP_in_Action_A_practical_guide_-_Raymond_Blum',
+    'https://hemachandranss.github.io/books22/books/visual-books/Generative_AI_in_Action_Final_Release_-_Amit_Bahree',
+    'https://hemachandranss.github.io/books22/books/visual-books/Go_in_Action_Second_Edition_MEAP_V5_-_Joel_Holmes',
+    'https://hemachandranss.github.io/books22/books/visual-books/Google_Anthos_in_Action_-_Antonio_Gulli',
+    'https://hemachandranss.github.io/books22/books/visual-books/Graph_Neural_Networks_in_Action_-_Keita_Broadwater',
+    'https://hemachandranss.github.io/books22/books/visual-books/gRPC_Microservices_in_Go_-_Huseyin_Babal',
+    'https://hemachandranss.github.io/books22/books/visual-books/Hugging_Face_in_Action_MEAP_V5_-_Wei-Meng_Lee',
+    'https://hemachandranss.github.io/books22/books/visual-books/Java_8_in_Action_-_Raoul-Gabriel_Urma',
+    'https://hemachandranss.github.io/books22/books/visual-books/JavaScript_Nodejs_React_MongoDB_VS_Code_-_Yuko_Takahashi',
+    'https://hemachandranss.github.io/books22/books/visual-books/Kafka_Streams_in_Action_2nd_Ed_-_Bill_Bejeck',
+    'https://hemachandranss.github.io/books22/books/visual-books/Knowledge_Graphs_and_LLMs_in_Action_MEAP_-_Alessandro_Negro',
+    'https://hemachandranss.github.io/books22/books/visual-books/Kotlin_in_Action_2nd_Edition_-_Sebastian_Aigner',
+    'https://hemachandranss.github.io/books22/books/visual-books/Kotlin_in_Action_-_Dmitry_Jemerov_Svetlana_Isakova',
+    'https://hemachandranss.github.io/books22/books/visual-books/Kubernetes_in_Action_2nd_Edition_MEAP_v16_-_Marko_Luksa',
+    'https://hemachandranss.github.io/books22/books/visual-books/Linear_Algebra_in_Action_-_Harry_Dym',
+    'https://hemachandranss.github.io/books22/books/visual-books/Machine_Learning_in_Action_-_Peter_Harrington',
+    'https://hemachandranss.github.io/books22/books/visual-books/MERN_Stack_Web_Development_For_Beginners_-_Nathan_Sebhastian',
+    'https://hemachandranss.github.io/books22/books/visual-books/Microsoft_Azure_in_Action_-_Lars_Klint',
+    'https://hemachandranss.github.io/books22/books/visual-books/Microsoft_Semantic_Kernel_in_Action_MEAP_v3_-_Daniel_Costea',
+    'https://hemachandranss.github.io/books22/books/visual-books/Modern_Full-Stack_React_Projects_-_Daniel_Bugl',
+    'https://hemachandranss.github.io/books22/books/visual-books/Modern_Java_in_Action_-_Raoul-Gabriel_Urma',
+    'https://hemachandranss.github.io/books22/books/visual-books/MongoDB_in_Action_Third_Edition_MEAP_v8_-_Arek_Borucki',
+    'https://hemachandranss.github.io/books22/books/visual-books/Natural_Language_Processing_in_Action_2E_-_Hobson_Lane',
+    'https://hemachandranss.github.io/books22/books/visual-books/Neo4j_in_Action_-_Jonas_Partner',
+    'https://hemachandranss.github.io/books22/books/visual-books/NET_Maui_in_Action_-_Matt_Goldman',
+    'https://hemachandranss.github.io/books22/books/visual-books/NHibernate_in_Action_-_Pierre_Henri_Kuate',
+    'https://hemachandranss.github.io/books22/books/visual-books/Nim_in_Action_-_Dominik_Picheta',
+    'https://hemachandranss.github.io/books22/books/visual-books/Nodejs_Design_Patterns_-_Mario_Casciaro',
+    'https://hemachandranss.github.io/books22/books/visual-books/Nodejs_in_Practice_-_Alex_R_Young',
+    'https://hemachandranss.github.io/books22/books/visual-books/Podman_in_Action_-_Daniel_Walsh',
+    'https://hemachandranss.github.io/books22/books/visual-books/PostGIS_in_action_-_Leo_S_Hsu',
+    'https://hemachandranss.github.io/books22/books/visual-books/Quantum_Computing_for_Developers__A_Java-b_-_Johan_Vos',
+    'https://hemachandranss.github.io/books22/books/visual-books/Quarkus_in_Action_-_Martin_Stefanko',
+    'https://hemachandranss.github.io/books22/books/visual-books/React_in_Depth_-_Morten_Barklund',
+    'https://hemachandranss.github.io/books22/books/visual-books/ReactJS_Absolute_Beginners_A_Complete_Guide_-_Kavi_Shila',
+    'https://hemachandranss.github.io/books22/books/visual-books/Reactjs_in_Action_Building_Modern_Web_-_Anderson_Rogerio',
+    'https://hemachandranss.github.io/books22/books/visual-books/React_Quickly_2nd_Edition_-_Morten_Barklund',
+    'https://hemachandranss.github.io/books22/books/visual-books/Redis_in_Action_-_Josiah_Carlson',
+    'https://hemachandranss.github.io/books22/books/visual-books/Rust_in_Action_-_Tim_McNamara',
+    'https://hemachandranss.github.io/books22/books/visual-books/ScyllaDB_in_Action_-_Bo_Ingram',
+    'https://hemachandranss.github.io/books22/books/visual-books/Software_Exploitation_in_Action_-_Luke_Kaur',
+    'https://hemachandranss.github.io/books22/books/visual-books/Solr_in_Action_-_Trey_Grainger_Timothy_Potter',
+    'https://hemachandranss.github.io/books22/books/visual-books/Spring_AI_in_Action_MEAP_5_-_Craig_Walls',
+    'https://hemachandranss.github.io/books22/books/visual-books/Spring_in_action_6th_edition_-_Craig_Walls',
+    'https://hemachandranss.github.io/books22/books/visual-books/Spring_Microservices_in_Action_-_John_Carnell',
+    'https://hemachandranss.github.io/books22/books/visual-books/Spring_Security_in_Action_2nd_Edition_-_Laurentiu_Spilca',
+    'https://hemachandranss.github.io/books22/books/visual-books/Svelte_and_Sapper_in_Action_-_Mark_Volkmann',
+    'https://hemachandranss.github.io/books22/books/visual-books/The_Creative_Programmer_-_Wouter_Groeneveld',
+    'https://hemachandranss.github.io/books22/books/visual-books/The_Road_to_React_The_Reactjs_19_with_Hooks_in_JavaScript_Book_2025_Edition_-_Robin_Wieruch',
+    'https://hemachandranss.github.io/books22/books/visual-books/Transformers_in_Action_MEAP_v7_-_Nicole_Koenigstein',
+    'https://hemachandranss.github.io/books22/books/visual-books/Unity_in_Action_-_Joe_Hocking'
 ];
 
 const normalizeBookPath = (value) => {
@@ -69,6 +157,36 @@ if (rubyCountEl) rubyCountEl.textContent = '4 Books';
 
 const railsCountEl = document.getElementById('railsCount');
 if (railsCountEl) railsCountEl.textContent = '12 Books';
+
+const cloudCountEl = document.getElementById('cloudCount');
+if (cloudCountEl) cloudCountEl.textContent = '9 Books';
+
+const jsCountEl = document.getElementById('jsCount');
+if (jsCountEl) jsCountEl.textContent = '15 Books';
+
+const javaCountEl = document.getElementById('javaCount');
+if (javaCountEl) javaCountEl.textContent = '12 Books';
+
+const languagesCountEl = document.getElementById('languagesCount');
+if (languagesCountEl) languagesCountEl.textContent = '10 Books';
+
+const databasesCountEl = document.getElementById('databasesCount');
+if (databasesCountEl) databasesCountEl.textContent = '11 Books';
+
+const aiCountEl = document.getElementById('aiCount');
+if (aiCountEl) aiCountEl.textContent = '15 Books';
+
+const testingCountEl = document.getElementById('testingCount');
+if (testingCountEl) testingCountEl.textContent = '4 Books';
+
+const securityCountEl = document.getElementById('securityCount');
+if (securityCountEl) securityCountEl.textContent = '3 Books';
+
+const mathCountEl = document.getElementById('mathCount');
+if (mathCountEl) mathCountEl.textContent = '3 Books';
+
+const computingCountEl = document.getElementById('computingCount');
+if (computingCountEl) computingCountEl.textContent = '6 Books';
 
 // Show the "no books" empty state when the list is empty,
 // and hide the grid.
