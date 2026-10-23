@@ -27,6 +27,12 @@ const technologyBooks = [
     'https://hemachandranss.github.io/books21/books/visual-books/modern-front-end-development-for-rails-second-edition-hotwire-stimulus-turbo-and-react',
     'https://hemachandranss.github.io/books21/books/visual-books/High_Performance_PostgreSQL_for_Rails_Reliable_Scalable_Maintainable_Database_Applications_-_Andrew_Atkinson',
     'https://hemachandranss.github.io/books21/books/visual-books/docker-for-rails-developers-build-ship-and-run-your-applications-everywhere',
+    'https://hemachandranss.github.io/books26/books/visual-books/Basic_Computer_Coding_PHP_2E_-_3G_Editorial_Board',
+    'https://hemachandranss.github.io/books26/books/visual-books/Exploring_PHP_8_-_Paul_Tregoing',
+    'https://hemachandranss.github.io/books26/books/visual-books/Building_Finance_Apps_with_Laravel_-_Martin_Joo',
+    'https://hemachandranss.github.io/books26/books/visual-books/Laravel_11_Cookbook_-_Sanya_Voltra',
+    'https://hemachandranss.github.io/books26/books/visual-books/Laravel_12_Training_Kit_-_Agus_Kurniawan',
+    'https://hemachandranss.github.io/books26/books/visual-books/Ultimate_Laravel_for_Modern_Web_Development_-_Drishti_Jain',
     'https://hemachandranss.github.io/books22/books/visual-books/84_Amazing_Maths_Games_-_Anna_Claybourne',
     'https://hemachandranss.github.io/books22/books/visual-books/Acing_the_Frontend_Interview_MEAP_V1_-_Jennifer_Fu',
     'https://hemachandranss.github.io/books22/books/visual-books/Agile_Metrics_in_Action_-_Christopher_Davis',
@@ -101,6 +107,9 @@ if (rubyCountEl) rubyCountEl.textContent = '4 Books';
 
 const railsCountEl = document.getElementById('railsCount');
 if (railsCountEl) railsCountEl.textContent = '12 Books';
+
+const phpCountEl = document.getElementById('phpCount');
+if (phpCountEl) phpCountEl.textContent = '6 Books';
 
 const cloudCountEl = document.getElementById('cloudCount');
 if (cloudCountEl) cloudCountEl.textContent = '4 Books';
