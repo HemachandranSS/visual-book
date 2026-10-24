@@ -72,6 +72,44 @@ const miscellaneousBooks = [
     "The_Race_of_My_Life_An_Autobiography_-_Milkha_Singh.pdf",
     "To_the_Point_The_No-Holds-Barred_Autobiography_-_Herschelle_Gibbs.pdf",
     "Wings_of_Fire__An_Autobiography_-_APJ_Abdul_Kalam.pdf",
+    "Anti-Judaism_Antisemitism_and_Delegitimizing_Israel_-_Robert_S_Wistrich.pdf",
+    "Asias_New_Geopolitics_Essays_on_Reshaping_the_Indo-Pacific_-_Michael_Auslin.pdf",
+    "Combating_Islamic_Militancy_and_Terrorism_in_Pakistans_Border_Region_-_Nikolas_J_Koppel.pdf",
+    "Crisis_in_the_Middle_East_-_Michael_Scott-Baumann.pdf",
+    "Deadly_Embrace_-_Bruce_Riedel.pdf",
+    "Diary_of_a_Crisis_Israel_in_Turmoil_-_Saul_Friedlander.pdf",
+    "Fateful_Triangle_-_Tanvi_Madan.pdf",
+    "How_China_Sees_India_and_the_World_-_Shyam_Saran.pdf",
+    "How_Long_Will_Israel_Survive__-_Gregg_Carlstrom.pdf",
+    "Illiberal_Europe_-_Leon_Marc.pdf",
+    "India_versus_China_-_Kanti_Bajpai.pdf",
+    "My_Enemys_Enemy_-_Avinash_Paliwal.pdf",
+    "ndia’s_Great_Power_Politics_Managing_China’s_Rise_-_Jo_Inge_Bekkevold_S_Kalyanaraman.pdf",
+    "Storming_the_World_Stage__The_Story_of_Las_-_Stephen_Tankel.pdf",
+    "Terrorism_in_Pakistan_-_N_Elahi.pdf",
+    "The_long_game_-_Vijay_gokhale.pdf",
+    "Youth_and_the_National_Narrative_-_Marie_Lall.pdf",
+    "1948_Arab-Israeli_War_-_Hourly_History.pdf",
+    "1962_The_War_That_Wasnt_-_Shiv_Kunal_Verma.pdf",
+    "A_History_of_the_Cuban_Revolution_-_Aviva_Chomsky.pdf",
+    "A_Wall_of_Our_Own_-_Paul_M_Farber.pdf",
+    "Chinas_India_War_Collision_Course_on_the_Roof_of_the_World_-_Bertil_Lintner.pdf",
+    "Iran_to_India_-_Alka_Patel.pdf",
+    "Nuclear_Folly_-_Serhii_Plokhy.pdf",
+    "Return_of_a_King_-_William_Dalrymple.pdf",
+    "The_Cuban_Missile_Crisis_To_Armageddon_n_Beyond_-_Len_Scott.pdf",
+    "The_Decline_of_Empires_in_South_Asia_-_Heather_A_Campbell.pdf",
+    "The_Indian_Army_at_War_194799_-_Mandeep_Singh.pdf",
+    "The_Khalistan_Conspiracy_-_GBS_Sidhu.pdf",
+    "The_Man_Who_Built_the_Berlin_Wall_-_Nathan_Morley.pdf",
+    "The_Sister_Behind_the_Berlin_Wall_-_Cynthia_Anderson.pdf",
+    "Thirteen_Days_-_Robert_F_Kennedy.pdf",
+    "Where_Is_the_Taj_Mahal_-_Dorothy_Hoobler_Thomas_Hoobler.pdf",
+    "Head_of_the_Mossad_-_Shabtai_Shavit.pdf",
+    "Who_Is_the_Dalai_Lama_Who_Was_-_Dana_Meachen_Rau.pdf",
+    "Who_Was_Gandhi__-_Dana_Meachen_Rau.pdf",
+    "The_New_BJP_-_Nalin_Mehta.pdf",
+    "Why_I_Am_a_Hindu_-_Shashi_Tharoor.pdf",
     "upsc_solved_till_2025.pdf",
 
     // TN School Books 2020 Edition - 1st Standard
@@ -437,13 +475,13 @@ const economicsCountEl = document.getElementById('economicsCount');
 if (economicsCountEl) economicsCountEl.textContent = `8 Books`;
 
 const historyCountEl = document.getElementById('historyCount');
-if (historyCountEl) historyCountEl.textContent = `10 Books`;
+if (historyCountEl) historyCountEl.textContent = `26 Books`;
 
 const biographiesCountEl = document.getElementById('biographiesCount');
-if (biographiesCountEl) biographiesCountEl.textContent = `30 Books`;
+if (biographiesCountEl) biographiesCountEl.textContent = `33 Books`;
 
 const generalCountEl = document.getElementById('generalCount');
-if (generalCountEl) generalCountEl.textContent = `7 Books`;
+if (generalCountEl) generalCountEl.textContent = `9 Books`;
 
 // Show the "no books" empty state when the list is empty,
 // and hide the grid.
