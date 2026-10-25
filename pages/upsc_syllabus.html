@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPSC Syllabus</title>
+    <link rel="stylesheet" href="../assets/index.css">
+    <link rel="stylesheet" href="../assets/login.css" />
+    <script src="../assets/login.js"></script>
+    <style>
+        .syllabus-nav {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 0 0 28px;
+            padding: 10px;
+            border-radius: 18px;
+            background: rgba(7, 11, 22, 0.78);
+            border: 1px solid var(--panel-border);
+            backdrop-filter: blur(16px);
+        }
+
+        .syllabus-nav a {
+            color: var(--muted);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 999px;
+            transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+        }
+
+        .syllabus-nav a:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .stage-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .stage {
+            position: relative;
+            padding: 18px 18px 16px;
+            border-radius: 20px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
+            border: 1px solid var(--panel-border);
+            animation: rise 0.7s ease both;
+            overflow: hidden;
+        }
+
+        .stage:nth-child(2) { animation-delay: 0.12s; }
+        .stage:nth-child(3) { animation-delay: 0.24s; }
+
+        .stage::after {
+            content: "";
+            position: absolute;
+            inset: auto -20% -40% 30%;
+            height: 90px;
+            background: radial-gradient(circle, rgba(141, 214, 255, 0.35), transparent 70%);
+            animation: drift 6s ease-in-out infinite;
+        }
+
+        .stage-kicker {
+            margin: 0 0 6px;
+            color: var(--accent);
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .stage h2 {
+            margin: 0 0 6px;
+            font-size: 1.45rem;
+        }
+
+        .stage p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .pattern-grid,
+        .paper-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .panel {
+            padding: 18px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--panel-border);
+        }
+
+        .panel h3 {
+            margin: 0 0 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            vertical-align: top;
+        }
+
+        .note {
+            margin: 12px 0 0;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        .switcher {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 8px 0 18px;
+        }
+
+        .switcher button {
+            font: inherit;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--panel-border);
+            border-radius: 999px;
+            padding: 8px 14px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .switcher button:hover {
+            transform: translateY(-2px);
+        }
+
+        .switcher button.is-on {
+            background: linear-gradient(90deg, rgba(141, 214, 255, 0.28), rgba(154, 140, 255, 0.28));
+            border-color: rgba(141, 214, 255, 0.7);
+        }
+
+        .sheet {
+            display: none;
+            animation: rise 0.45s ease;
+        }
+
+        .sheet.is-on {
+            display: block;
+        }
+
+        .topic-list {
+            display: grid;
+            gap: 10px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            counter-reset: topic;
+        }
+
+        .topic-list li {
+            counter-increment: topic;
+            display: grid;
+            grid-template-columns: 36px 1fr;
+            gap: 12px;
+            align-items: start;
+            padding: 12px 14px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid transparent;
+            animation: rise 0.5s ease both;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .topic-list li:hover {
+            transform: translateX(6px);
+            border-color: rgba(141, 214, 255, 0.45);
+            background: rgba(141, 214, 255, 0.08);
+        }
+
+        .topic-list li::before {
+            content: counter(topic);
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: rgba(141, 214, 255, 0.16);
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .chips span {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(154, 140, 255, 0.16);
+            border: 1px solid rgba(154, 140, 255, 0.35);
+            font-size: 0.86rem;
+            animation: pop 0.45s ease both;
+        }
+
+        .chips span:nth-child(2) { animation-delay: 0.04s; }
+        .chips span:nth-child(3) { animation-delay: 0.08s; }
+        .chips span:nth-child(4) { animation-delay: 0.12s; }
+        .chips span:nth-child(5) { animation-delay: 0.16s; }
+        .chips span:nth-child(6) { animation-delay: 0.2s; }
+        .chips span:nth-child(7) { animation-delay: 0.24s; }
+        .chips span:nth-child(8) { animation-delay: 0.28s; }
+        .chips span:nth-child(9) { animation-delay: 0.32s; }
+
+        .chips span:hover {
+            animation: none;
+            transform: scale(1.06);
+        }
+
+        .remember {
+            margin-top: 18px;
+            border-radius: 16px;
+            border: 1px solid var(--panel-border);
+            background: rgba(255, 255, 255, 0.04);
+            overflow: hidden;
+        }
+
+        .remember summary {
+            cursor: pointer;
+            padding: 12px 14px;
+            font-weight: 650;
+            list-style: none;
+        }
+
+        .remember summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .remember summary::before {
+            content: "▸ ";
+            color: var(--accent);
+        }
+
+        .remember[open] summary::before {
+            content: "▾ ";
+        }
+
+        .remember[open] .map-grid {
+            animation: rise 0.35s ease;
+        }
+
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 0 14px 14px;
+        }
+
+        .map-card {
+            padding: 12px;
+            border-radius: 14px;
+            background: rgba(141, 214, 255, 0.06);
+        }
+
+        .map-card h4 {
+            margin: 0 0 8px;
+            font-size: 0.95rem;
+        }
+
+        .map-card p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.55;
+            font-size: 0.92rem;
+        }
+
+        .sheet-title {
+            margin: 0 0 6px;
+            font-size: 1.6rem;
+        }
+
+        .sheet-sub {
+            margin: 0 0 16px;
+            color: var(--muted);
+        }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: none; }
+        }
+
+        @keyframes pop {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: none; }
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-24px); }
+        }
+
+        @media (max-width: 800px) {
+            .stage-row,
+            .pattern-grid,
+            .paper-grid,
+            .map-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        .breakdown { margin-top: 18px; }
+        .filter { display: block; margin: 0 0 14px; }
+        .filter input {
+            width: 100%;
+            box-sizing: border-box;
+            font: inherit;
+            color: var(--text);
+            background: rgba(7, 11, 22, 0.55);
+            border: 1px solid var(--panel-border);
+            border-radius: 14px;
+            padding: 12px 14px;
+        }
+        .filter input:focus {
+            outline: 2px solid rgba(141, 214, 255, 0.45);
+            border-color: transparent;
+        }
+        .part-title {
+            margin: 22px 0 10px;
+            font-size: 0.95rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        .branch {
+            margin: 0 0 8px;
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            overflow: hidden;
+        }
+        .branch summary {
+            cursor: pointer;
+            padding: 12px 14px;
+            line-height: 1.45;
+            font-weight: 650;
+        }
+        .branch summary::-webkit-details-marker { display: none; }
+        .branch summary::before { content: "▸ "; color: var(--accent); }
+        .branch[open] summary {
+            background: rgba(141, 214, 255, 0.1);
+            border-bottom: 1px solid var(--panel-border);
+        }
+        .branch[open] summary::before { content: "▾ "; }
+        .branch[open] .clusters { animation: rise 0.35s ease; }
+        .branch-solo { padding: 12px 14px; }
+        .branch-solo p { margin: 0; }
+        .clusters { display: grid; gap: 14px; padding: 14px; }
+        .cluster h4 { margin: 0 0 8px; color: #d6ccff; font-size: 1rem; }
+        .tree { margin: 0; padding: 0; list-style: none; }
+        .tree > li {
+            margin: 6px 0;
+            padding: 8px 10px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.045);
+            border-left: 3px solid rgba(141, 214, 255, 0.55);
+        }
+        .tree > li > span { font-weight: 650; }
+        .tree-sub {
+            margin: 8px 0 0 8px;
+            padding-left: 12px;
+            border-left: 2px solid rgba(154, 140, 255, 0.4);
+        }
+        .tree-sub > li {
+            margin: 4px 0;
+            padding: 0;
+            background: transparent;
+            border-left: 0;
+            color: var(--muted);
+        }
+        .tree-sub > li > span { font-weight: 500; color: var(--text); }
+        .faq-answer { line-height: 1.6; color: var(--muted); }
+        .faq-answer strong { color: var(--text); }
+        .branch[hidden], .part-title[hidden] { display: none; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="shell">
+        <section class="hero">
+            <div>
+                <h1>UPSC Syllabus</h1>
+                <p class="lede">Prelims screens. Mains decides. The interview is the last 275 marks. Prelims marks do not enter the final merit.</p>
+            </div>
+        </section>
+
+        <nav class="syllabus-nav" aria-label="Syllabus sections">
+            <a href="#stages">Stages</a>
+            <a href="#pattern">Pattern</a>
+            <a href="#prelims">Prelims</a>
+            <a href="#mains">Mains</a>
+            <a href="#interview">Interview</a>
+            <a href="#optional">Optional</a>
+            <a href="#faq">FAQ</a>
+            <a href="upsc_mains_questions_index.html">Mains Questions</a>
+        </nav>
+
+        <section id="stages" class="stage-row">
+            <article class="stage">
+                <p class="stage-kicker">Stage 1</p>
+                <h2>Prelims</h2>
+                <p>Two objective papers. GS counts for the cutoff. CSAT is qualifying at 33%.</p>
+            </article>
+            <article class="stage">
+                <p class="stage-kicker">Stage 2</p>
+                <h2>Mains</h2>
+                <p>Nine written papers. Two are qualifying. Seven carry 1750 marks.</p>
+            </article>
+            <article class="stage">
+                <p class="stage-kicker">Stage 3</p>
+                <h2>Interview</h2>
+                <p>Personality test of 275 marks. Final merit is Mains plus interview.</p>
+            </article>
+        </section>
+
+        <section id="pattern" class="section">
+            <div class="section-head">
+                <h2 class="section-title">Exam pattern</h2>
+            </div>
+            <div class="pattern-grid">
+                <div class="panel">
+                    <h3>Prelims</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Paper</th>
+                                <th>Questions</th>
+                                <th>Marks</th>
+                                <th>Negative</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>GS Paper I, 2 hours</td>
+                                <td>100</td>
+                                <td>200</td>
+                                <td>1/3 of 2</td>
+                            </tr>
+                            <tr>
+                                <td>CSAT Paper II, 2 hours</td>
+                                <td>80</td>
+                                <td>200</td>
+                                <td>1/3 of 2.5</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="note">CSAT needs at least 33% of 200. Missing either paper disqualifies the attempt. Appearing in even one paper counts as an attempt.</p>
+                </div>
+                <div class="panel">
+                    <h3>Mains and interview</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Paper</th>
+                                <th>Marks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Indian language, qualifying Paper A</td><td>300</td></tr>
+                            <tr><td>English, qualifying Paper B</td><td>300</td></tr>
+                            <tr><td>Essay</td><td>250</td></tr>
+                            <tr><td>GS I to GS IV</td><td>250 each</td></tr>
+                            <tr><td>Optional Paper I and II</td><td>500</td></tr>
+                            <tr><td>Personality test</td><td>275</td></tr>
+                        </tbody>
+                    </table>
+                    <p class="note">Each written paper is 3 hours. Qualifying papers need 25% before the rest are evaluated. Paper A is a language from the Eighth Schedule. Optional papers are at honours level, or bachelor’s level for Engineering, Medical Science, and Law.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="prelims" class="section">
+            <div class="section-head">
+                <h2 class="section-title">Prelims syllabus</h2>
+            </div>
+            <div class="switcher" data-switch="prelims">
+                <button type="button" class="is-on" data-target="prelims-gs">GS Paper I</button>
+                <button type="button" data-target="prelims-csat">CSAT Paper II</button>
+            </div>
+            <article id="prelims-gs" class="sheet is-on panel">
+                <h3 class="sheet-title">General Studies</h3>
+                <p class="sheet-sub">Seven buckets. Current affairs sits on top of every other bucket.</p>
+                <ol class="topic-list">
+                    <li>Current events of national and international importance.</li>
+                    <li>History of India and Indian National Movement.</li>
+                    <li>Indian and World Geography — physical, social, and economic geography of India and the world.</li>
+                    <li>Indian Polity and Governance — Constitution, political system, Panchayati Raj, public policy, rights issues.</li>
+                    <li>Economic and Social Development — sustainable development, poverty, inclusion, demographics, social sector initiatives.</li>
+                    <li>General issues on environmental ecology, biodiversity, and climate change that do not require subject specialisation.</li>
+                    <li>General Science.</li>
+                </ol>
+                <div class="chips" aria-label="Prelims memory cues">
+                    <span>News</span><span>History</span><span>Map</span><span>Polity</span><span>Economy</span><span>Ecology</span><span>Science</span>
+                </div>
+            </article>
+            <article id="prelims-csat" class="sheet panel">
+                <h3 class="sheet-title">CSAT</h3>
+                <p class="sheet-sub">Qualifying only. Class X level for numeracy and data.</p>
+                <ol class="topic-list">
+                    <li>Comprehension.</li>
+                    <li>Interpersonal skills, including communication skills.</li>
+                    <li>Logical reasoning and analytical ability.</li>
+                    <li>Decision making and problem solving.</li>
+                    <li>General mental ability.</li>
+                    <li>Basic numeracy: numbers and their relations, orders of magnitude, Class X level.</li>
+                    <li>Data interpretation: charts, graphs, tables, data sufficiency, Class X level.</li>
+                </ol>
+            </article>
+        </section>
+
+        <section id="mains" class="section">
+            <div class="section-head">
+                <h2 class="section-title">Mains syllabus</h2>
+            </div>
+            <div class="switcher" data-switch="mains">
+                <button type="button" class="is-on" data-target="gs1">GS I</button>
+                <button type="button" data-target="gs2">GS II</button>
+                <button type="button" data-target="gs3">GS III</button>
+                <button type="button" data-target="gs4">GS IV</button>
+                <button type="button" data-target="essay">Essay</button>
+            </div>
+
+            <article id="gs1" class="sheet is-on panel">
+                <h3 class="sheet-title">GS I</h3>
+                <p class="sheet-sub">Indian heritage and culture, history, and geography of the world and society. 250 marks.</p>
+                <ol class="topic-list">
+                    <li>Indian culture: salient aspects of art forms, literature, and architecture from ancient to modern times.</li>
+                    <li>Modern Indian history from about the middle of the eighteenth century until the present: significant events, personalities, issues.</li>
+                    <li>The freedom struggle: its stages and important contributors from different parts of the country.</li>
+                    <li>Post-independence consolidation and reorganisation within the country.</li>
+                    <li>World history from the 18th century: Industrial Revolution, world wars, redrawing of national boundaries, colonisation, decolonisation, and political philosophies such as communism, capitalism, and socialism, and their effect on society.</li>
+                    <li>Salient features of Indian society, and diversity of India.</li>
+                    <li>Role of women and women’s organisations, population and associated issues, poverty and developmental issues, urbanisation, their problems and remedies.</li>
+                    <li>Effects of globalisation on Indian society.</li>
+                    <li>Social empowerment, communalism, regionalism, and secularism.</li>
+                    <li>Salient features of the world’s physical geography.</li>
+                    <li>Distribution of key natural resources across the world, including South Asia and the Indian subcontinent, and factors behind the location of primary, secondary, and tertiary industries, including in India.</li>
+                    <li>Important geophysical phenomena such as earthquakes, tsunami, volcanic activity, and cyclones; changes in critical geographical features, including water bodies and ice caps, and in flora and fauna, and the effects of such changes.</li>
+                </ol>
+                <div class="chips">
+                    <span>Art and architecture</span><span>Ancient to medieval</span><span>1857 to freedom</span><span>After 1947</span><span>World since 1750</span><span>Society</span><span>Women and population</span><span>Physical geography</span><span>Resources</span>
+                </div>
+                <div class="breakdown"><p class="sheet-sub">Full topic breakdown. Open a heading, or type a word to find it.</p><label class="filter"><input type="search" data-filter placeholder="Filter topics in this paper" aria-label="Filter topics"></label><h3 class="part-title">Art &amp; Culture</h3><details class="branch"><summary>Indian Culture - Salient aspects of Art Forms, Literature and Architecture from ancient to modern times</summary><div class="clusters"><section class="cluster"><h4>Indian Art Forms</h4><ul class="tree"><li><span>Indian Paintings</span><ul class="tree tree-sub"><li><span>Mural Paintings</span></li><li><span>Miniature Paintings</span></li><li><span>Mughal, Rajput, Pahari Paintings</span></li></ul></li><li><span>Dances in India</span><ul class="tree tree-sub"><li><span>Classical Dance Forms</span></li><li><span>Folk Dance Forms</span></li><li><span>Modern Dance</span></li></ul></li><li><span>Music</span><ul class="tree tree-sub"><li><span>Classical Music</span></li><li><span>Folk Music</span></li></ul></li><li><span>Puppetry</span><ul class="tree tree-sub"><li><span>String Puppets</span></li><li><span>Shadow Puppets</span></li><li><span>Rod Puppets</span></li><li><span>Glove puppets</span></li><li><span>Modern Puppetry</span></li><li><span>Tribal Puppetry</span></li></ul></li><li><span>Pottery</span><ul class="tree tree-sub"><li><span>Ochre Coloured Pottery(OCP)</span></li><li><span>Black and Red Ware (BRW)</span></li><li><span>Painted Grey Ware (PGW)</span></li><li><span>Northern Black Polished Ware (NBPW)</span></li><li><span>Glazed and Unglazed Pottery</span></li></ul></li><li><span>Drama/Theatre</span><ul class="tree tree-sub"><li><span>Classical Sanskrit Theatre</span></li><li><span>Regional Theatre</span></li><li><span>Modern Theatre</span></li></ul></li><li><span>Martial Arts</span><ul class="tree tree-sub"><li><span>Thang Ta</span></li><li><span>Gatka</span></li><li><span>Kalaripayattu</span></li><li><span>Mallakhamb</span></li><li><span>Silambam</span></li><li><span>Other Important Martial Arts</span></li></ul></li><li><span>Visual Art</span><ul class="tree tree-sub"><li><span>Sculptures of Harappan Civilization</span></li><li><span>Sculptures of the Mauryan Age</span></li><li><span>Post-Mauryan Period</span></li><li><span>Jain Sculptures</span></li><li><span>Buddhist Sculpture</span></li><li><span>Gupta Sculpture</span></li><li><span>Medieval School of Sculpture</span></li><li><span>Modern Indian Sculpture</span></li></ul></li></ul></section><section class="cluster"><ul class="tree"><li><span>Bhakti &amp; Sufi Movements</span><ul class="tree tree-sub"><li><span>Spread of Bhakti and Sufi Movements</span></li><li><span>Women Poets of Bhakti</span></li></ul></li></ul></section><section class="cluster"><h4>Literature</h4><ul class="tree"><li><span>Classical Sanskrit Literature</span><ul class="tree tree-sub"><li><span>Vedas, Upanishads, Puranas</span></li><li><span>Books written by Kalidasa, Vishakhadatta etc</span></li></ul></li><li><span>Ancient Buddhist Literature</span></li><li><span>Ancient Jainism Literature</span></li><li><span>Early Dravidian Literature (eg Sangam Period)</span></li><li><span>Medieval Literature</span></li><li><span>Trends in Medieval Literature</span></li><li><span>Modern Indian Literature</span></li></ul></section><section class="cluster"><h4>Architecture</h4><ul class="tree"><li><span>Harappan Architecture</span></li><li><span>Mauryan Architecture</span></li><li><span>Post-Mauryan Period Gupta Period</span></li><li><span>Temple Architecture</span><ul class="tree tree-sub"><li><span>Nagara Style</span></li><li><span>Dravida Style</span></li><li><span>Vesara Style</span></li></ul></li><li><span>Cave Architecture</span><ul class="tree tree-sub"><li><span>Buddhist Cave</span></li><li><span>Jaina Caves</span></li><li><span>Gupta Period Caves</span></li></ul></li><li><span>Medieval and Indo-Islamic Architecture</span><ul class="tree tree-sub"><li><span>Imperial Style Delhi Sultanate</span></li><li><span>Provincial Style</span></li><li><span>Mughal Style</span></li><li><span>Sikh Style of Architecture</span></li><li><span>Rajput Architecture</span></li><li><span>Salient features</span></li></ul></li><li><span>Colonial Architecture &amp; Modern Architecture</span><ul class="tree tree-sub"><li><span>European Influence</span></li><li><span>Indo-Saracenic Architecture</span></li><li><span>Post-Independence Period</span></li></ul></li><li><span>Contribution of Buddhism &amp; Jainism to the Development of Indian Architecture</span></li><li><span>Rock Cut Architecture</span><ul class="tree tree-sub"><li><span>South Indian</span></li><li><span>Western Indian</span></li><li><span>Eastern Indian</span></li></ul></li></ul></section></div></details><h3 class="part-title">Ancient History</h3><details class="branch"><summary>Pre-Historic</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Stone Age</span></li><li><span>Chalcolithic Age</span></li><li><span>Iron Age</span></li></ul></section></div></details><details class="branch"><summary>Indus Valley Civilization (IVC)</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Town Planning</span></li><li><span>Harappan Society</span></li><li><span>Characteristics of Major Centers</span></li><li><span>Harappan Art &amp; Architecture</span></li><li><span>Decline of Harappan Culture</span></li></ul></section></div></details><details class="branch"><summary>Vedic Society</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Original Home of Aryans</span></li><li><span>Socio- Economic Characters of Vedic Society</span></li><li><span>Vedic Literature</span></li><li><span>Social Organization and Varna System</span></li><li><span>Religion and Thought</span></li></ul></section></div></details><details class="branch"><summary>Pre-Mauryan Period</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Mahajanpadas</span></li><li><span>Haryanka dynasty</span></li><li><span>Shishunaga dynasty</span></li><li><span>Nanda dynasty</span></li></ul></section></div></details><details class="branch"><summary>Jainism and Buddhism</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Gautam Buddha</span></li><li><span>Mahavira</span></li><li><span>Growth of Jainism and Buddhism</span></li></ul></section></div></details><details class="branch"><summary>Mauryan Empire</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Chandragupta and Bindusara</span></li><li><span>Arthasastra (Book by Kautilya)</span></li><li><span>Megasthenes</span></li><li><span>Asoka and His Successors</span></li><li><span>Asoka’s Inscriptions and Sites</span></li><li><span>Asoka’ a Dhamma</span></li><li><span>Mauryan. Administration, Economy, Society and Art</span></li><li><span>Decline of Maurya</span></li></ul></section></div></details><details class="branch"><summary>Post-Mauryan India</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Arrival of Indo-Greeks, Shakas, Parthians &amp; Kushana</span></li><li><span>Satavahanas and Other Indigenous Dynasties</span></li><li><span>Schools of Art: Gandhara; Mathura; Amravati</span></li><li><span>Imperial Guptas</span><ul class="tree tree-sub"><li><span>Political history of Guptas</span></li><li><span>Gupta Administration</span></li><li><span>Development of Art &amp; Culture</span></li><li><span>Age of Golden age</span></li><li><span>Economic Conditions</span></li><li><span>Urban centres in Gupta period</span></li></ul></li><li><span>Harshavardana</span><ul class="tree tree-sub"><li><span>Sources for Harsha’s Period</span></li><li><span>Early life of Harsha</span></li><li><span>Harsha’s Administration</span></li><li><span>Important Officials of the empire</span></li><li><span>Economy under Harsha</span></li><li><span>Huen Tsang</span></li><li><span>Society</span></li><li><span>Religion</span></li></ul></li><li><span>The Southern Dynasties</span><ul class="tree tree-sub"><li><span>Satavahanas (230 BC TO AD 225)</span></li><li><span>Pallavas (AD 330–796)</span></li><li><span>Chalukyas (AD 535–1190)</span></li><li><span>Pandyas of Madurai (AD 590–1323)</span></li><li><span>Chola Dynasty (AD 850–1310)</span></li><li><span>Rashtrakutas (AD 753–973)</span></li></ul></li></ul></section></div></details><h3 class="part-title">Medieval History</h3><details class="branch"><summary>Delhi Sultanate</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Slave (Ghulam) or Mamluk Dynasty</span></li><li><span>Khilji Dynasty</span></li><li><span>Tughluq dynasty</span></li><li><span>Sayyid Dynasty</span></li><li><span>Lodi dynasty</span></li></ul></section></div></details><div class="branch branch-solo"><p>Struggle for Empire in North India (Afghans, Rajputs and Mughals)</p></div><details class="branch"><summary>Mughals</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Babur</span></li><li><span>Humayun</span></li><li><span>Akbar</span></li><li><span>Jahangir</span></li><li><span>Shah Jahan</span></li><li><span>Aurangzeb</span></li><li><span>Later Mughals</span></li><li><span>Decline of Mughal Empire</span></li></ul></section></div></details><div class="branch branch-solo"><p>Sur Dynasties</p></div><div class="branch branch-solo"><p>Maratha Empire</p></div><details class="branch"><summary>Deccan Sultanate</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Ahmednagar Sultanate</span></li><li><span>Bijapur Sultanate</span></li><li><span>Berar Sultanate</span></li><li><span>Golconda Sultanate</span></li><li><span>Bidar Sultanate</span></li></ul></section></div></details><h3 class="part-title">Modern History</h3><details class="branch"><summary>Modern Indian History from about the middle of the eighteenth century until the present- significant events, personalities, issues The Freedom Struggle — its various stages and important contributors/contributions from different parts of the country</summary><div class="clusters"><section class="cluster"><h4>Important Modern History Events Before 1857</h4><ul class="tree"><li><span>Later Mughals</span></li><li><span>Regional powers in 18th Century</span></li><li><span>Carnatic Wars</span></li><li><span>Battle of Plassey &amp; Buxar</span></li><li><span>Anglo-Mysore War</span></li><li><span>Anglo Punjab War</span></li><li><span>Socio-economic Condition of People</span></li><li><span>European Penetration of India</span></li><li><span>British Conquest of India</span></li><li><span>British Policies &amp; Their Impact – Economic, Administrative &amp; Socio-cultural</span></li><li><span>Socio-cultural Reform Movements</span></li><li><span>Uprisings Against British Pre-1857</span></li></ul></section><section class="cluster"><h4>Revolt of 1857</h4><ul class="tree"><li><span>Causes, Leaders, and Nature of revolt of 1857</span></li><li><span>Suppression of revolt of 1857</span></li><li><span>Consequences of Revolt of 1857</span></li><li><span>Act of Good Governance 1858</span></li></ul></section><section class="cluster"><h4>Growth of Nationalism in India (1858-1905)</h4><ul class="tree"><li><span>Political, Economic &amp; Administrative Unification of the Country</span></li><li><span>Role of Western Education</span></li><li><span>Role of Press</span></li><li><span>Rediscovery of India’s Past</span></li><li><span>Early Political Movements</span></li><li><span>Formation of INC</span></li><li><span>Era of Moderates</span></li></ul></section><section class="cluster"><h4>Growth of Militant Nationalism &amp; Revolutionary Activities (1905-1918)</h4><ul class="tree"><li><span>Swadeshi &amp; Boycott Movement</span></li><li><span>Surat Split</span></li><li><span>International Influence</span></li><li><span>Morley – Minto Reforms</span></li><li><span>Growth of Communalism</span></li></ul></section><section class="cluster"><h4>Beginning of Mass Nationalism (1919-1939)</h4><ul class="tree"><li><span>Mahatma Gandhi – His Ideas &amp; Leadership</span></li><li><span>Montagu-Chelmsford Reforms</span></li><li><span>Rowlatt Act, Satyagrah and Jallianwala Bagh Massacre</span></li><li><span>Non-cooperation &amp; Khilafat Movement</span></li><li><span>Swarajists &amp; No-Changers</span></li><li><span>Emergence of New Forces – Socialistic Ideas, Youth &amp; Trade Unionism</span></li><li><span>Revolutionary Activity</span></li><li><span>Simon Commission &amp; Nehru Report</span></li><li><span>Civil Disobedience Movement</span></li><li><span>Round Table Conferences</span></li><li><span>Communal Award &amp; Poona Pact</span></li><li><span>Participation in Elections to Central Legislature (1934) &amp; Provincial Assemblies (1937)</span></li><li><span>Government of India Act, 1935</span></li></ul></section><section class="cluster"><h4>Towards Freedom &amp; Partition (1939-1947)</h4><ul class="tree"><li><span>National Movement During World War II</span></li><li><span>August Offer</span></li><li><span>Individual Satyagraha</span></li><li><span>Growth of Communalism</span></li><li><span>Peasant Movements</span></li><li><span>State People’s Struggle</span></li><li><span>Cripps Mission</span></li><li><span>Quit India Movement</span></li><li><span>Wavell Plan</span></li><li><span>INA &amp; Subhash Chandra Bose</span></li><li><span>Cabinet Mission</span></li><li><span>Nationalist Upsurge Post-World War II</span></li><li><span>Independence with Partition</span></li></ul></section></div></details><h3 class="part-title">Post-Independence India</h3><details class="branch"><summary>Post-independence Consolidation and Reorganization within the country</summary><div class="clusters"><section class="cluster"><h4>Nation Building</h4><ul class="tree"><li><span>Partition and Its Aftermath</span></li><li><span>Integration of Princely States</span><ul class="tree tree-sub"><li><span>Linguistic Regionalism in India</span></li></ul></li><li><span>Reorganisation of States</span></li><li><span>Issue of Official Language</span></li><li><span>Tribal Consolidation</span></li><li><span>Regional Aspirations</span></li></ul></section><section class="cluster"><h4>Foreign Policy</h4><ul class="tree"><li><span>Non-Aligned Movement</span></li><li><span>Panchsheel</span></li><li><span>Wars with Pakistan &amp; China</span></li><li><span>Nuclear Policy</span></li></ul></section><section class="cluster"><h4>Economy</h4><ul class="tree"><li><span>Planned Development</span></li><li><span>Green Revolution, Operation Flood &amp; Cooperatives</span></li><li><span>Agrarian &amp; Land Reforms</span></li><li><span>Industrial Reforms</span></li><li><span>LPG Reforms</span></li></ul></section><section class="cluster"><h4>Polity</h4><ul class="tree"><li><span>Era of One-Party Dominance</span></li><li><span>Emergence of Opposition Parties</span></li><li><span>Emergency: Crisis of Democratic Order</span></li><li><span>Rise of Regional Parties</span></li><li><span>Coalition Era</span></li></ul></section><section class="cluster"><h4>Social</h4><ul class="tree"><li><span>Popular Movements</span></li><li><span>Communalism</span></li><li><span>Indian Women Since Independence</span><ul class="tree tree-sub"><li><span>Issue of Women and Evolution of Women Movement</span></li></ul></li><li><span>Naxalism</span></li></ul></section><section class="cluster"><h4>Post-Independence Policy of Science And Technology</h4><ul class="tree"><li><span>India’s Policy in the Field of the Science and Technology</span></li><li><span>Impact of Economic Reform on the Science and Technology in India</span></li></ul></section></div></details><h3 class="part-title">World History</h3><details class="branch"><summary>History of the World will include events from 18th century such as Industrial Revolution, world wars, Redrawal of National Boundaries, Colonization, Decolonization, political philosophies like Communism, Capitalism, Socialism etc.— their forms and effect on the society</summary><div class="clusters"><section class="cluster"><h4>Beginning of the Modern World</h4><ul class="tree"><li><span>Renaissance</span></li><li><span>Discovery of Sea Routes</span></li><li><span>Reformation</span></li><li><span>Counter Reformation</span></li><li><span>Industrial Revolution</span></li><li><span>European Nations Settle North America</span></li><li><span>Rise of Slave Trade</span></li><li><span>American War of Independence</span><ul class="tree tree-sub"><li><span>Foundation of American Colonies</span></li><li><span>The Independence of United States of America</span></li><li><span>The American Revolutionary War</span></li><li><span>What was the impact of American Revolution?</span></li><li><span>US Civil War</span></li><li><span>Impact of Civil War on USA</span></li><li><span>Global Impact of US Civil War</span></li><li><span>Impact on India</span></li></ul></li><li><span>French Revolution</span><ul class="tree tree-sub"><li><span>Causes</span></li><li><span>The revolution in France</span></li><li><span>France under Napoleon</span></li><li><span>Impact of revolution</span></li><li><span>Significance of revolution</span></li></ul></li><li><span>Nationalism in Europe</span><ul class="tree tree-sub"><li><span>Rise of the nation- state system</span></li><li><span>Unification of Italy</span></li><li><span>Unification of Germany</span></li></ul></li><li><span>Rise of Capitalism, Colonialism &amp; Imperialism</span><ul class="tree tree-sub"><li><span>Colonialism</span></li><li><span>The age of Imperialism (1870-1914)</span></li><li><span>Imperialism in Asia</span></li><li><span>Analysis of Colonialism</span></li></ul></li></ul></section><section class="cluster"><h4>World War I</h4><ul class="tree"><li><span>Causes of the War</span></li><li><span>Scope &amp; Course of the War</span></li><li><span>Russian Revolution</span><ul class="tree tree-sub"><li><span>Major events in pre-revolution Russia</span></li><li><span>Causes</span></li><li><span>Course of revolution</span></li><li><span>Consequences</span></li><li><span>Aftermath of the war</span></li><li><span>Post-Lenin Russia</span></li></ul></li><li><span>End of the War &amp; Peace Treaties</span></li><li><span>Consequences of the War</span></li><li><span>League of Nations</span></li></ul></section><section class="cluster"><h4>World Between the Two Wars</h4><ul class="tree"><li><span>Europe After the War – Fascism &amp; Nazism</span></li><li><span>The Great Depression</span></li><li><span>Emergence of Soviet Union</span></li><li><span>Nationalist Movements in Asia &amp; Africa</span></li><li><span>US as a Strong Power</span></li></ul></section><section class="cluster"><h4>World War II</h4><ul class="tree"><li><span>Fascist Aggression &amp; Response of Western Democracies</span></li><li><span>Outbreak of the War</span></li><li><span>Theatres of the War</span></li><li><span>US Entry into the War</span></li><li><span>Global Nature of the War</span></li><li><span>The Holocaust</span></li><li><span>Resistance Movements</span></li><li><span>After-effects of the War</span></li></ul></section><section class="cluster"><h4>Decolonialisation &amp; Redrawal of National Boundaries</h4><ul class="tree"><li><span>Europe after World War II</span></li><li><span>Cold War</span></li><li><span>Rise of Asia &amp; Africa</span></li><li><span>Developments in West Asia &amp; North Africa</span></li><li><span>Spread of Communism</span></li><li><span>Korean War</span></li><li><span>Vietnam War</span></li><li><span>Cuban Crisis</span></li><li><span>Collapse of Soviet Union</span></li></ul></section><section class="cluster"><h4>Concept, Types &amp; Social Impact of Political Philosophies</h4><ul class="tree"><li><span>Communism</span></li><li><span>Capitalism</span></li><li><span>Socialism</span></li></ul></section></div></details><h3 class="part-title">Indian Society</h3><details class="branch"><summary>Salient features of Indian Society, Diversity of India</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Features of Indian society</span></li><li><span>Diversity (Types – caste, linguistic, social and religious, race, tribe and ethnicity, culture)</span></li><li><span>Challenges posed by Diversity</span></li><li><span>Unity</span></li><li><span>Pluralism</span></li><li><span>Unity in Diversity</span></li><li><span>Inequality and Exclusion</span></li><li><span>Family System</span></li><li><span>Examples of above.</span></li></ul></section></div></details><details class="branch"><summary>Role of Women and Women’s Organization</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Women’s organizations in Indian history</span></li><li><span>Types of women’s organizations</span></li><li><span>Level of penetration</span></li><li><span>19th Century Social Reform Movements and Early Women&#x27;s Organisations –</span><ul class="tree tree-sub"><li><span>Agrarian Struggles and Revolt</span></li><li><span>Participation in Freedom Struggle</span></li></ul></li><li><span>Women’s organization (With Examples)</span></li><li><span>Problems faced by women’s organizations</span></li><li><span>Is a larger vocal role possible and ways to achieve the same</span></li><li><span>Role of SHGs, Micro finance Institution</span></li></ul></section></div></details><details class="branch"><summary>Population and Associated Issues</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Basic Demography of India</span></li><li><span>Population Trends in India and their Implications</span></li><li><span>Causes and Effects of Over Population</span></li><li><span>Challenges of Population Explosion</span></li><li><span>Changing Age Structure of Indian Population</span></li><li><span>Demogarphic Dividend: Boon or Bane for India</span></li><li><span>Population Aging in India</span></li><li><span>India&#x27;s Population Policy &amp; Initiatives</span></li></ul></section></div></details><details class="branch"><summary>Poverty and Developmental Issues</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Concept of Development and Poverty</span></li><li><span>Types of Poverty</span></li><li><span>Measurement of Poverty – Poverty Line</span></li><li><span>Causes of Poverty</span></li><li><span>Poverty as a Social Problem</span></li><li><span>Socio-economic Spread of Poverty</span></li><li><span>Consequences of Poverty –</span><ul class="tree tree-sub"><li><span>Inequality</span></li><li><span>Continuation of Vicious Cycle</span></li><li><span>Who is worst affected by poverty?</span></li></ul></li><li><span>Problem of Rising Urban Poverty</span></li><li><span>Poverty Alleviation Initiatives</span></li><li><span>Policy shifts from “Trickle Down” Economics to Inclusive or Pro-poor Development to Reduce Poverty</span></li><li><span>Relation between Poverty Reduction and Development: Poverty-Inequality-Development Nexus</span></li></ul></section></div></details><details class="branch"><summary>Urbanization, their problems and their remedies</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Urbanisation Trends in India and Their Implications - Demographic and Social Dimensions</span></li><li><span>Factors Driving Urbanisation</span></li><li><span>State of Service Delivery and Challeges posed by Urbanisation</span></li><li><span>Problems of Urban Areas</span></li><li><span>Social Consequences of Urbanisation</span></li><li><span>Impact of Urbanisation in Rural Areas</span></li><li><span>Urban Planning and Role of Urban Local Bodies (ULBs)</span></li><li><span>Reforms Required and Government Initiatives Taken So Far</span></li><li><span>Problems of Slums</span></li></ul></section></div></details><details class="branch"><summary>Effects of Globalization on Indian society</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Understanding Globalisation – Its Different Dimensions</span></li><li><span>Globalisation &amp; Culture - Homogenisation vs. Glocalisation</span></li><li><span>Factors Driving Globalisation</span></li><li><span>Globalisation &amp; India</span></li><li><span>Impact of Globalisation on India - Socio-cultural, economic, on women, agrarian sector etc.</span></li><li><span>Does Globalisation cause Poverty?</span></li></ul></section></div></details><details class="branch"><summary>Social Empowerment</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Which are the Socially Disadvantaged Groups?</span></li><li><span>Meaning and concept of social empowerment</span></li><li><span>Dimensions of Social Empowerment</span></li><li><span>Why do we need social empowerment?</span></li><li><span>Government Initiatives to Aide Social Empowerment</span></li><li><span>Empowerment in reality and India’s experience</span></li></ul></section></div></details><details class="branch"><summary>Communalism</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Communalism – Its Characteristics</span></li><li><span>Communalism in India in the Past</span></li><li><span>Communalism in Contemporqary India</span></li><li><span>Causes of Communalism</span></li><li><span>Consequences of Communalism</span></li><li><span>Measures to Control &amp; Eradicate Communalism</span></li><li><span>Secularism as an Antidote to Communalism</span></li></ul></section></div></details><details class="branch"><summary>Regionalism</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Concept of Region &amp; Regionalism</span></li><li><span>Different Forms of Regionalism</span></li><li><span>Regionalism in India</span></li><li><span>Causes of Regionalism</span></li><li><span>Concept of &#x27;Sons of Soil&#x27;</span></li><li><span>Consequences of Regionalism</span></li><li><span>Federalism &amp; Regionalism</span></li><li><span>Role of Regional Parties</span></li><li><span>Measures to Contain Regionalism</span></li><li><span>Regionalism in the International Sphere</span></li></ul></section></div></details><details class="branch"><summary>Secularism</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Concept of Secularism</span></li><li><span>Indian Model of Secularism</span></li><li><span>Secularism in India</span></li><li><span>Nature &amp; Practice of Secularism in India</span></li><li><span>Uniform Civil Code</span></li><li><span>Challenges faced by Secularism in India</span></li><li><span>Measures to Make India Truly Secular</span></li></ul></section></div></details><h3 class="part-title">World and Indian Geography</h3><details class="branch"><summary>Salient features of World’s Physical Geography</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Geomorphology</span><ul class="tree tree-sub"><li><span>Origin &amp; Evolution of Earth</span></li><li><span>Interior of the Earth</span></li><li><span>Distribution of Continents &amp; Oceans</span></li><li><span>Plate Tectonic Theory</span></li><li><span>Distribution of Earthquakes &amp; Volcanoes</span></li><li><span>Rocks &amp; Rock Cycle</span></li><li><span>Geomorphic Processes – Endogenic &amp; Exogenic</span></li><li><span>Landforms &amp; their Evolution</span></li><li><span>Geological Time Scale</span></li></ul></li><li><span>Oceanography</span><ul class="tree tree-sub"><li><span>Hydrological Cycle</span></li><li><span>Seafloor Spreading</span></li><li><span>Ocean Floor Configuration</span></li><li><span>Temperature &amp; Salinity of Oceans</span></li><li><span>Movement of Oceans – Waves, Tides, Currents</span></li></ul></li><li><span>Climatology</span><ul class="tree tree-sub"><li><span>Earth’s Atmosphere – Composition &amp; Structure</span></li><li><span>Solar Radiation, Heat Budget &amp; Temperature</span></li><li><span>Atmospheric Circulation &amp; Weather Systems</span></li><li><span>World Climate (examples)</span></li></ul></li><li><span>Soil Geography</span><ul class="tree tree-sub"><li><span>Soil &amp; Soil Contents</span></li><li><span>Process of Soil Formation</span></li><li><span>Soil Forming Factors</span></li><li><span>Types of Soils (examples)</span></li><li><span>Soil Erosion &amp; Conservation</span></li></ul></li></ul></section></div></details><details class="branch"><summary>Distribution of Key Natural Resources across the world (including South Asia and the Indian sub-continent)</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Types of Resources</span><ul class="tree tree-sub"><li><span>On the Basis of Origin, Ownership, Exhaustability etc.</span></li></ul></li><li><span>Land Resources</span><ul class="tree tree-sub"><li><span>Land Utilisation</span></li><li><span>Land Use Pattern</span></li><li><span>Land Degradation &amp; Conservation</span></li></ul></li><li><span>Forest Resources</span><ul class="tree tree-sub"><li><span>Types &amp; Distribution – Grasslands, Forests etc.</span></li><li><span>Causes of Depletion</span></li><li><span>Conservation of Forests</span></li></ul></li><li><span>Water Resources</span><ul class="tree tree-sub"><li><span>Marine &amp; Freshwater</span></li><li><span>Water Scarcity &amp; Need For Conservation</span></li><li><span>Integrated Water Resources Management</span></li></ul></li><li><span>Agricultural Resources</span><ul class="tree tree-sub"><li><span>Types of Farming</span></li><li><span>Cropping Patterns</span></li><li><span>Contribution to Economy, Employment &amp; Output</span></li><li><span>Food Security</span></li></ul></li><li><span>Mineral &amp; Energy Resources</span><ul class="tree tree-sub"><li><span>Classification of Minerals – Ferrous &amp; Non-Ferrous</span></li><li><span>Occurrence of Minerals</span></li><li><span>Conservation of Minerals</span></li><li><span>Classification of Energy Resources – Conventional &amp; Non-Conventional</span></li><li><span>Occurrence of Energy Resources</span></li><li><span>Conservation of Energy Resources</span></li></ul></li></ul></section></div></details><details class="branch"><summary>Factors responsible for the location of primary, secondary, and tertiary sector industries in various parts of the world (including India)</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Classification of Industries</span></li><li><span>Location &amp; Distribution of the Industries on the Basis of</span><ul class="tree tree-sub"><li><span>Raw Material</span></li><li><span>Labour</span></li><li><span>Market</span></li><li><span>Capital</span></li><li><span>Land</span></li><li><span>Grants &amp; Financial Incentives</span></li><li><span>Power</span></li><li><span>Transport</span></li><li><span>Water</span></li><li><span>Communication</span></li></ul></li><li><span>Distribution of Major Industries – Iron &amp; Steel, IT, Cotton Textile</span></li><li><span>Agglomeration &amp; Footloose Industries</span></li></ul></section></div></details><details class="branch"><summary>Important Geophysical Phenomena such as earthquakes, Tsunami, Volcanic activity, cyclone etc., geographical features and their location-changes in critical geographical features (including Water-bodies and Ice-caps) and in flora and fauna and the effects of such changes</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Earthquakes</span><ul class="tree tree-sub"><li><span>Why Does Earth Shake?</span></li><li><span>Earthquake Waves</span></li><li><span>Shadow Zone</span></li><li><span>Types of Earthquake</span></li><li><span>Measuring Earthquake</span></li><li><span>Effects of Earthquake</span></li></ul></li><li><span>Tsunami</span><ul class="tree tree-sub"><li><span>What Causes Tsunami</span></li><li><span>Effect of Tsunami</span></li><li><span>Mitigating the Impact of Tsunami</span></li></ul></li><li><span>Volcanoes</span><ul class="tree tree-sub"><li><span>Types of Volcanoes</span></li><li><span>What Causes Volcanoes?</span></li><li><span>Volcanic Landforms</span></li><li><span>Intrusive volcanic Landforms</span></li><li><span>Extrusive Volcanic Landforms</span></li><li><span>Distribution of Volcanoes</span></li></ul></li><li><span>Cyclone</span><ul class="tree tree-sub"><li><span>Tropical Cyclones</span></li><li><span>Anti-Cyclone</span></li><li><span>Extra Tropical Cyclones</span></li></ul></li><li><span>Factors Causing Changes in Critical Geographical Features</span></li><li><span>Examples of Changing Geographical Features - Melting of Ice Sheets, Desertification etc.</span></li><li><span>Impact of Changing Geographical Features</span></li><li><span>Physical Geography of India</span><ul class="tree tree-sub"><li><span>Physiography of India</span></li><li><span>Drainage System</span></li><li><span>Climate</span></li><li><span>Soils in India</span></li><li><span>Natural Vegetation</span></li></ul></li><li><span>Human Geography</span><ul class="tree tree-sub"><li><span>Demography</span></li><li><span>Urbanization</span></li><li><span>Census</span></li></ul></li><li><span>Economic Geography</span><ul class="tree tree-sub"><li><span>Agriculture</span></li><li><span>Mineral resource</span></li><li><span>Energy resources</span></li><li><span>Industry</span></li><li><span>Transport and Communication</span></li></ul></li></ul></section></div></details></div>
+            </article>
+
+            <article id="gs2" class="sheet panel">
+                <h3 class="sheet-title">GS II</h3>
+                <p class="sheet-sub">Governance, Constitution, polity, social justice, and international relations. 250 marks.</p>
+                <ol class="topic-list">
+                    <li>Indian Constitution: historical underpinnings, evolution, features, amendments, significant provisions, and basic structure.</li>
+                    <li>Functions and responsibilities of the Union and the states, issues and challenges of the federal structure, devolution of powers and finances up to local levels, and challenges therein.</li>
+                    <li>Separation of powers between various organs, dispute redressal mechanisms, and institutions.</li>
+                    <li>Comparison of the Indian constitutional scheme with that of other countries.</li>
+                    <li>Parliament and state legislatures: structure, functioning, conduct of business, powers and privileges, and issues arising out of these.</li>
+                    <li>Structure, organisation, and functioning of the executive and the judiciary; ministries and departments; pressure groups and formal and informal associations and their role in the polity.</li>
+                    <li>Salient features of the Representation of the People Act.</li>
+                    <li>Appointment to various constitutional posts, and powers, functions, and responsibilities of constitutional bodies.</li>
+                    <li>Statutory, regulatory, and various quasi-judicial bodies.</li>
+                    <li>Government policies and interventions for development in various sectors, and issues arising out of their design and implementation.</li>
+                    <li>Development processes and the development industry: the role of NGOs, SHGs, various groups and associations, donors, charities, institutional and other stakeholders.</li>
+                    <li>Welfare schemes for vulnerable sections by the Centre and states, and the performance of these schemes; mechanisms, laws, institutions, and bodies for their protection and betterment.</li>
+                    <li>Issues relating to development and management of social sector services relating to health, education, and human resources.</li>
+                    <li>Issues relating to poverty and hunger.</li>
+                    <li>Important aspects of governance, transparency, and accountability; e-governance applications, models, successes, limitations, and potential; citizens’ charters and institutional measures.</li>
+                    <li>Role of civil services in a democracy.</li>
+                    <li>India and its neighbourhood relations.</li>
+                    <li>Bilateral, regional, and global groupings and agreements involving India and/or affecting India’s interests.</li>
+                    <li>Effect of policies and politics of developed and developing countries on India’s interests, and the Indian diaspora.</li>
+                    <li>Important international institutions, agencies, and fora: their structure and mandate.</li>
+                </ol>
+                <div class="chips">
+                    <span>Constitution</span><span>Federalism</span><span>Parliament</span><span>Executive and courts</span><span>Bodies</span><span>Welfare</span><span>Governance</span><span>Neighbourhood</span><span>Global institutions</span>
+                </div>
+                <div class="breakdown"><p class="sheet-sub">Full topic breakdown. Open a heading, or type a word to find it.</p><label class="filter"><input type="search" data-filter placeholder="Filter topics in this paper" aria-label="Filter topics"></label><h3 class="part-title">Polity</h3><details class="branch"><summary>Indian Constitution</summary><div class="clusters"><section class="cluster"><h4>Historical Underpinning &amp; Evolution</h4><ul class="tree"><li><span>Regulating Act (1773) to Independence Act (1947)</span></li><li><span>Constituent Assembly</span></li><li><span>Objective Resolution</span></li><li><span>Enactment &amp; Enforcement of Constitution</span></li></ul></section><section class="cluster"><h4>Features</h4><ul class="tree"><li><span>Written</span></li><li><span>Flexible &amp; Rigid</span></li><li><span>Federal &amp; Unitary</span></li><li><span>Parliamentary Form of Government (Presidential vs. Parliamentary Type of Government)</span></li></ul></section><section class="cluster"><h4>Amendments</h4><ul class="tree"><li><span>List of Significant Amendments &amp; Their Provisions</span></li><li><span>Procedure for Amending Constitution</span></li></ul></section><section class="cluster"><h4>Significant Provisions</h4><ul class="tree"><li><span>Fundamental Rights</span></li><li><span>Directive Principles of State Policy</span></li><li><span>Judicial Review</span></li><li><span>Universal Adult Franchise</span></li><li><span>Single Citizenship</span></li><li><span>Separation of Powers</span></li></ul></section><section class="cluster"><h4>Basic Structure</h4><ul class="tree"><li><span>The Doctrine</span></li><li><span>Judgments &amp; Cases</span></li></ul></section></div></details><details class="branch"><summary>Functions &amp; Responsibilities of the Union and the States</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>7th Schedule</span></li><li><span>Legislative Functions</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Financial Functions</span></li><li><span>Administrative &amp; Quasi-Judicial Functions</span></li></ul></section></div></details><details class="branch"><summary>Issues &amp; Challenges Pertaining to the Federal Structure</summary><div class="clusters"><section class="cluster"><h4>Federal Structure in India - Is India truly Federal?</h4></section><section class="cluster"><h4>Cooperative &amp; Competitive Federalism</h4></section><section class="cluster"><h4>Centre-State Relations</h4><ul class="tree"><li><span>Legislative Relations</span></li><li><span>Administrative Relations</span></li><li><span>Financial Relations</span></li><li><span>Trends in Centre-State Relations</span></li></ul></section><section class="cluster"><h4>Inter-State Relations</h4><ul class="tree"><li><span>Inter-state Water Disputes</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Inter-State Councils</span></li><li><span>Public Acts, Records and Judicial Proceedings</span></li><li><span>Inter-State Trade and Commerce</span></li><li><span>Zonal Councils</span></li></ul></section><section class="cluster"><h4>Emergency Provisions</h4></section><section class="cluster"><h4>Role of Governor</h4></section><section class="cluster"><h4>Reports of Various Commissions</h4><ul class="tree"><li><span>2nd ARC, Punchhi, Sarkaria, etc.</span></li></ul></section></div></details><details class="branch"><summary>Devolution of Powers &amp; Finances to Local Levels &amp; Challenges Therein</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Role of State Government</span></li><li><span>Role of State Finance Commission</span></li><li><span>11th &amp; 12th Schedule</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Reasons for Ineffective Performance</span></li><li><span>Panchayat Devolution Index ( NITI Aayog)</span></li><li><span>Steps That Can Be Taken to Improve Their Performance</span></li></ul></section></div></details><details class="branch"><summary>Separation of Powers Between Various Organs</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Doctrine of Separation of Power</span></li><li><span>Separation of Power in Indian Constitution</span></li><li><span>Doctrine of Checks &amp; Balances</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Provisions for Checks &amp; Balances in Indian Constitution</span></li><li><span>Related Judgments - Golaknath case, Kesavananda Bharati, Indira Gandhi Vs Raj Narain, Ram Jawaya vs Punjab</span></li></ul></section></div></details><details class="branch"><summary>Dispute Redressal Mechanisms and Institutions</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>RTI</span></li><li><span>PIL</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Tribunals, etc.</span></li></ul></section></div></details><details class="branch"><summary>Comparison of the Indian Constitutional Scheme With That of Other Countries Parliament &amp; State Legislatures</summary><div class="clusters"><section class="cluster"><h4>Structure, Functioning, Conduct of Business, Powers &amp; Privileges</h4><ul class="tree"><li><span>Written Constitution</span></li><li><span>Blend of Rigidity and Flexibility</span></li><li><span>Federal System with Unitary Bias</span></li><li><span>Parliamentary Form of Government</span></li><li><span>Synthesis of Parliamentary Sovereignty and Judicial Supremacy</span></li><li><span>Integrated and Independent Judiciary</span></li><li><span>Fundamental Rights, Directive Principles of State Policy, Fundamental Duties</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Secular State</span></li><li><span>Universal Adult Franchise</span></li><li><span>Single Citizenship</span></li><li><span>Emergency Provisions</span></li><li><span>Three-tier Government</span></li><li><span>Due Process of Law vs. Procedure Established by Law</span></li><li><span>Impeachment of President, etc.</span></li></ul></section></div></details><details class="branch"><summary>Structure, Organization &amp; Functioning of the Executive and the Judiciary</summary><div class="clusters"><section class="cluster"><h4>Executive</h4><ul class="tree"><li><span>Union:</span><ul class="tree tree-sub"><li><span>President</span></li><li><span>Prime Minister</span></li><li><span>Council of Ministers</span></li><li><span>Cabinet Secretariat</span></li></ul></li><li><span>State:</span><ul class="tree tree-sub"><li><span>Governor</span></li><li><span>Chief Minister</span></li><li><span>Council of Ministers</span></li><li><span>Secretariat</span></li></ul></li></ul></section><section class="cluster"><h4>Judiciary</h4><ul class="tree"><li><span>Three-Tier Structure</span></li><li><span>Chief Justice of India</span></li><li><span>SC &amp; HC Judges</span></li><li><span>Jurisdiction</span></li></ul></section></div></details><details class="branch"><summary>Ministries and Departments of the Government</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Cabinet Ministries</span></li><li><span>Other Ministries</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Parliamentary Secretaries</span></li></ul></section></div></details><details class="branch"><summary>Pressure Groups &amp; Formal/informal Associations &amp; Their Role in Polity</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Characteristics of Pressure Groups</span></li><li><span>Pressure Groups &amp; Political Parties</span></li><li><span>Pressure Groups &amp; Interest Groups</span></li><li><span>Types of Pressure Groups</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Functions, Role &amp; Importance of Pressure Groups</span></li><li><span>Techniques/Methods of Pressure Groups</span></li><li><span>Pressure Groups in India</span></li><li><span>Shortcomings of Pressure Groups</span></li></ul></section></div></details><div class="branch branch-solo"><p>Salient Features of Representation of People&#x27;s Act</p></div><details class="branch"><summary>Appointment to Various Constitutional Posts</summary><div class="clusters"><section class="cluster"><h4>Appointment, Powers, Functions &amp; Responsibilities of:</h4><ul class="tree"><li><span>Election Commission</span></li><li><span>Union Public Service Commission</span></li><li><span>State Public Service Commission</span></li><li><span>Finance Commission</span></li><li><span>National Commission for SCs</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>National Commission for STs</span></li><li><span>Special Officer for Linguistic Minorities</span></li><li><span>Comptroller and Auditor General of India</span></li><li><span>Attorney General of India</span></li><li><span>Advocate General of the State</span></li></ul></section></div></details><details class="branch"><summary>Statutory, Regulatory &amp; Quasi-Judicial Bodies</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>NITI Aayog</span></li><li><span>RBI</span></li><li><span>National Human Rights Commission</span></li><li><span>State Human Rights Commission</span></li><li><span>Central Information Commission</span></li><li><span>Central Vigilance Commission</span></li><li><span>Central Bureau of Investigation</span></li><li><span>Lokpal and Lokayuktas</span></li><li><span>National Commission for Women</span></li><li><span>National Commission for Backward Classes</span></li><li><span>National Commission for Minorities</span></li><li><span>Insurance Regulatory and Development Authority</span></li><li><span>Securities and Exchange Board of India</span></li><li><span>Competition Commission of India</span></li><li><span>Telecom Regulatory Authority of India</span></li><li><span>Central Electricity Regulatory Commission</span></li><li><span>Atomic Energy Regulatory Board</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Central Pollution Control Board</span></li><li><span>Medical Council of India</span></li><li><span>Inland Waterways Authority of India</span></li><li><span>Central Ground Water Authority</span></li><li><span>Directorate General of Civil Aviation</span></li><li><span>Pension Fund Regulatory and Development Authority</span></li><li><span>Food Safety and Standards Authority of India</span></li><li><span>Bar Council of India</span></li><li><span>University Grants Commission</span></li><li><span>Financial Stability and Development Council</span></li><li><span>All India Council for Technical Education</span></li><li><span>National Green Tribunal</span></li><li><span>Competition Appellate Tribunal</span></li><li><span>Income-Tax Appellate Tribunal</span></li><li><span>Cyber Appellate Tribunal</span></li><li><span>Intellectual Property Appellate Board</span></li></ul></section></div></details><h3 class="part-title">Governance</h3><details class="branch"><summary>Government Policies &amp; Interventions for Development</summary><div class="clusters"><section class="cluster"><h4>Government Policies &amp; Interventions in Various Sectors</h4><ul class="tree"><li><span>Health, Gender, Education, Poverty, Economic etc</span></li></ul></section><section class="cluster"><h4>Issues Arising Out of Their Design &amp; Implementation</h4><ul class="tree"><li><span>Concerns/Issues</span></li><li><span>Suggestions for Improvement</span></li><li><span>Critical Assessment of Centrally Sponsored Schemes (CSS)</span></li><li><span>Rationalisation of CSS</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Analysis of Main Schemes:</span><ul class="tree tree-sub"><li><span>Beti Bachao Beti Padhao</span></li><li><span>Smart City</span></li><li><span>Swachh Bharat Abhiyan</span></li><li><span>MGNERGA</span></li><li><span>Digital India</span></li><li><span>Make in India</span></li><li><span>Skill India</span></li><li><span>PM Jan Dhan Yojana</span></li><li><span>Start-up India etc.</span></li></ul></li></ul></section></div></details><details class="branch"><summary>Development Processes &amp; the Development Industry</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Role of Social Capital Organisations</span></li><li><span>Indian Context</span></li><li><span>Classification</span></li><li><span>Provisions for the Third Sector in the Indian Constitution</span></li><li><span>National Policy on the Voluntary Sector 2007</span></li></ul></section><section class="cluster"><h4>Non-Governmental Organisations</h4><ul class="tree"><li><span>Role and Impact of Non-governmental Organizations</span></li><li><span>Issue Areas: Accreditation, Legitimacy &amp; Accountability, Foreign Funding etc.</span></li></ul></section><section class="cluster"><h4>Self Help Groups (SHGs)</h4><ul class="tree"><li><span>Need for SHGs</span></li><li><span>Benefits of SHGs</span></li><li><span>Weaknesses of SHGs</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Challenges</span></li><li><span>Measures to Make SHGs Effective</span></li><li><span>Case Studies: Kudumbashree (Kerala), Mahila Arthik Vikas Mahamandal (Maharashtra)</span></li></ul></section><section class="cluster"><h4>Societies, Trusts and Cooperatives</h4><ul class="tree"><li><span>Societies</span></li><li><span>Trust</span></li><li><span>Religious Endowments</span></li><li><span>Cooperatives –</span><ul class="tree tree-sub"><li><span>Need for Cooperatives</span></li><li><span>Constitutional Provisions</span></li><li><span>National Policy on Co-operatives, 2002</span></li><li><span>Issues and Challenges in the Cooperatives Sector</span></li></ul></li></ul></section></div></details><details class="branch"><summary>Important Aspects of Governance, Transparency &amp; Accountability</summary><div class="clusters"><section class="cluster"><h4>Governance</h4><ul class="tree"><li><span>Dimensions of Governance</span></li><li><span>Good Governance (GG)</span></li><li><span>Aspects of GG</span></li><li><span>Barriers to GG</span></li><li><span>Necessary Pre-conditions for GG</span></li><li><span>How to Ensure GG</span></li></ul></section><section class="cluster"><h4>E-Governance</h4><ul class="tree"><li><span>Applications</span></li><li><span>Models</span></li><li><span>Successes</span></li><li><span>Limitations</span></li><li><span>Potential</span></li><li><span>Recent e-governance Initiatives by Government</span></li></ul></section><section class="cluster"><h4>Citizens Charters (CC)</h4><ul class="tree"><li><span>Components of CC</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Features of CC</span></li><li><span>Six Principles of CC</span></li><li><span>Shortcomings of CC</span></li><li><span>Measures to Make CC Effective</span></li><li><span>Sevottam Model</span></li></ul></section><section class="cluster"><h4>Aspects of Transparency</h4></section><section class="cluster"><h4>Elements &amp; Types of Accountability</h4></section><section class="cluster"><h4>Means to ensure Transparency &amp; Accountability</h4><ul class="tree"><li><span>RTI</span></li><li><span>Social Audit</span></li><li><span>Whistleblower Protection Bill</span></li><li><span>Lokpal &amp; Lokayuktas Act</span></li></ul></section></div></details><details class="branch"><summary>Role of Civil Services in a Democracy</summary><div class="clusters"><section class="cluster"><h4>Relationship Between Civil Service And Democracy</h4></section><section class="cluster"><h4>Role Played By Civil Services</h4><ul class="tree"><li><span>Advisory Role in Policy Making</span></li><li><span>Institutionalise Socio-economic change</span></li><li><span>Discharge Delegated Functions</span></li><li><span>Administer Law of the Land</span></li><li><span>Watchdogs</span></li><li><span>Continuity in times of Political Instability</span></li><li><span>Record-Keeping</span></li><li><span>Channel of Communication</span></li></ul></section><section class="cluster"><h4>Ailments/Issues Afflicting Indian Civil Services</h4><ul class="tree"><li><span>Lack of Professionalism &amp; Poor Capacity Building</span></li><li><span>Inefficient Incentive Systems</span></li><li><span>Outdated Rules &amp; Procedures</span></li><li><span>Systemic Inconsistencies in Promotion</span></li><li><span>Lack of Adequate Transparency &amp; Accountability Procedures</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Arbitrary &amp; Whimsical Transfers</span></li><li><span>Political Interference &amp; Administrative Acquiescence</span></li><li><span>Gradual Erosion in Values &amp; Ethics</span></li><li><span>Redtapism</span></li><li><span>Elitist in Nature</span></li><li><span>Poor Pay</span></li><li><span>Tendency to Capture Power</span></li></ul></section><section class="cluster"><h4>Reforming Bureaucracy to Strengthen Democracy</h4><ul class="tree"><li><span>Setting Right the Asymmetry of Power</span></li><li><span>Insulating Civil Servants from Undue Political Interference</span></li><li><span>Professionalisation with Stability of Tenure &amp; Competition</span></li><li><span>Citizen-Centric Administration</span></li><li><span>Accountability</span></li><li><span>Outcome Orientation</span></li><li><span>Promoting Public Service Values &amp; Ethics</span></li></ul></section></div></details><h3 class="part-title">SOCIAL JUSTICE</h3><details class="branch"><summary>Welfare Schemes for Vulnerable Sections</summary><div class="clusters"><section class="cluster"><h4>Schemes for the Following Vulnerable Sections</h4><ul class="tree"><li><span>SCs &amp; STs</span></li><li><span>Minorities</span></li><li><span>Children</span></li><li><span>Elderly</span></li><li><span>Disabled</span></li><li><span>Women</span></li><li><span>Transgender</span></li></ul></section><section class="cluster"><h4>Performance of These Schemes</h4></section><section class="cluster"><h4>Mechanisms, Laws, Institutions &amp; Bodies Constituted for Protection &amp; Betterment of These Vulnerable Sections</h4><ul class="tree"><li><span>SCs:</span><ul class="tree tree-sub"><li><span>The Protection of Civil Rights Act</span></li><li><span>The Scheduled Castes and the Scheduled Tribes (Prevention of Atrocities) Act</span></li><li><span>National Commission for Scheduled Castes</span></li><li><span>Scheduled Castes Sub Plan</span></li></ul></li><li><span>Disabled:</span><ul class="tree tree-sub"><li><span>The Rehabilitation Council of India Act</span></li><li><span>The Persons with Disabilities (Equal Opportunities, Protection of Rights and Full Participation) Act</span></li><li><span>Mental Retardation and Multiple Disabilities Act</span></li><li><span>The National Trust for Welfare of Persons withAutism, Cerebral Palsy, Mental Retardation and Multiple Disabilities Act</span></li><li><span>Rights of the Persons with Disabilities Act</span></li></ul></li></ul></section><section class="cluster"><ul class="tree"><li><span>STs:</span><ul class="tree tree-sub"><li><span>National Commission for Scheduled Tribes</span></li><li><span>Tribal Sub Plan</span></li><li><span>TRIFED</span></li><li><span>Scheduled Tribes and Other Traditional Forest Dwellers (Recognition of Forest Rights) Act</span></li></ul></li><li><span>Minorities:</span><ul class="tree tree-sub"><li><span>National Commission for Minorities</span></li><li><span>National Commission for Religious and Linguistic Minorities</span></li></ul></li></ul></section><section class="cluster"><h4>Women &amp; Children</h4><ul class="tree"><li><span>The Immoral Traffic (Prevention) Act</span></li><li><span>The Indecent Representation of Women (Prevention) Act</span></li><li><span>The Dowry Prohibition Act</span></li><li><span>The Commission of Sati (Prevention) Act</span></li><li><span>The Prohibition of Child Marriage Act</span></li><li><span>Protection of Women from Domestic Violence Act</span></li><li><span>Juvenile Justice (Care and Protection of Children) Act</span></li><li><span>Central Adoption Resource Agency (CARA)</span></li><li><span>The Protection of Children from Sexual Offences (POCSO) Act</span></li><li><span>Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal)</span></li><li><span>Pre-Conception and Pre Natal Diagnostic Techniques (PC&amp;PNDT) Act</span></li><li><span>Gender Budgeting</span></li><li><span>National Policy for Women</span></li><li><span>Domestic Violence Act</span></li><li><span>Maternity Benefit (Amendment) Act</span></li></ul></section><section class="cluster"><h4>Elderly</h4><ul class="tree"><li><span>Maintenance and Welfare of Parents and Senior Citizens Act</span></li></ul></section></div></details><details class="branch"><summary>Issues Relating to Development &amp; Management of Social Sector/Services</summary><div class="clusters"><section class="cluster"><h4>Health</h4><ul class="tree"><li><span>India’s Performance on Various Health Indicators</span></li><li><span>Weaknesses of Indian Healthcare System</span></li><li><span>Health Infrastructure in India</span></li><li><span>Universal Health Coverage</span></li><li><span>12th FYP Strategy</span></li><li><span>Universal Health Coverage</span></li><li><span>Health Insurance</span></li><li><span>National Family Health Survey</span></li><li><span>National Health Policy</span></li><li><span>National Health Mission</span></li><li><span>Maternal &amp; Adolescent Health</span></li><li><span>Child Health</span></li><li><span>Antimicrobial Resistance</span></li><li><span>Disease Burden in India</span></li><li><span>Measures to Ensure Good Health Outcomes</span></li><li><span>Government Initiatives</span></li></ul></section><section class="cluster"><h4>Education</h4><ul class="tree"><li><span>Status of Literacy in India</span></li><li><span>Education Structure in India</span></li><li><span>Challenges Faced by Education Sector in India</span></li><li><span>Reforms Required</span></li><li><span>Government Initiatives</span></li><li><span>ASER Report</span></li><li><span>Financing Education</span></li><li><span>Subramanian Panel Report</span></li></ul></section><section class="cluster"><h4>Human Resource</h4><ul class="tree"><li><span>Need For Skill Development</span></li><li><span>Skill Development Initiatives</span></li><li><span>Challenges in Skilling Landscape in India</span></li><li><span>Shortcomings of Current Skill Development Initiatives</span></li><li><span>Reforms Required</span></li><li><span>Steps that can Be Taken</span></li></ul></section></div></details><details class="branch"><summary>Issues Relating to Poverty &amp; Hunger</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Relation between Poverty &amp; Hunger</span></li><li><span>Distribution of Poverty &amp; Hunger</span></li><li><span>Magnitude &amp; Trends of Poverty &amp; Hunger</span></li><li><span>Causes of Poverty &amp; Hunger</span></li><li><span>Cost/Impact of Poverty &amp; Malnutrition</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>MDGs &amp; SDGs</span></li><li><span>Food and nutrition insecurity - a consequence of structural inequities</span></li><li><span>Constraints in Reducing Poverty &amp; Hunger</span></li><li><span>Measure to Reduce Poverty &amp; Hunger – National Food Security Act, Mid-day Meal Scheme, MGNREGA etc.</span></li></ul></section></div></details><h3 class="part-title">INTERNATIONAL RELATIONS</h3><details class="branch"><summary>India and its Neighborhood – Relations</summary><div class="clusters"><section class="cluster"><h4>India’s Relations With</h4><ul class="tree"><li><span>China</span></li><li><span>Pakistan</span></li><li><span>Myanmar</span></li><li><span>Bhutan</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Bangladesh</span></li><li><span>Sri Lanka</span></li><li><span>Afghanistan</span></li><li><span>Nepal</span></li><li><span>Maldives</span></li></ul></section></div></details><details class="branch"><summary>Bilateral, Regional &amp; Global Groupings &amp; Agreements Involving India and/or Affecting India&#x27;s Interests</summary><div class="clusters"><section class="cluster"><h4>India’s Major Foreign Policy Doctrines Since 1947</h4><ul class="tree"><li><span>Non-aligned Movement (NAM)</span></li><li><span>Nuclear Doctrine</span></li><li><span>Gujral Doctrine</span></li><li><span>Look East to Act East</span></li><li><span>Think West, etc.</span></li></ul></section><section class="cluster"><h4>Bilateral Relations With</h4><ul class="tree"><li><span>Major Powers Like – USA, Russia, Japan</span></li><li><span>Central Asian Countries</span></li><li><span>West Asian Countries</span></li><li><span>African Countries</span></li><li><span>Australia &amp; New Zealand</span></li><li><span>EU &amp; European Countries</span></li><li><span>Latin American Countries</span></li><li><span>Pacific Countries</span></li></ul></section><section class="cluster"><h4>Regional &amp; Global Groupings</h4><ul class="tree"><li><span>SAARC</span></li><li><span>BRICS</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>BBIN &amp; BCIM</span></li><li><span>BIMSTEC</span></li><li><span>IBSA</span></li><li><span>ASEAN &amp; RCEP</span></li><li><span>India-Africa Forum</span></li><li><span>SCO</span></li><li><span>Ashgabat Agreement</span></li><li><span>FIPIC</span></li><li><span>IOR-ARC</span></li><li><span>Mekong Ganga Cooperation (MGC)</span></li><li><span>Raisina Dialogue</span></li><li><span>Heart of Asia Conference</span></li><li><span>East Asia Summit</span></li><li><span>G-20</span></li><li><span>Asian Development Bank</span></li><li><span>National Security Summit</span></li><li><span>Multilateral Nuclear Export Regulatory Regimes: Wassenar, MTCR, Australia Group</span></li><li><span>Asian Development Bank</span></li><li><span>APEC, etc</span></li></ul></section></div></details><details class="branch"><summary>Effect of Policies &amp; Politics of Developed &amp; Developing Countries on India&#x27;s Interests</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>One Belt One Road</span></li><li><span>International North–South Transport Corridor</span></li><li><span>Global Trade War</span></li><li><span>Global Currency War</span></li><li><span>Syrian Crisis</span></li><li><span>UN Reforms</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>WTO Reforms</span></li><li><span>South China Sea Conflict</span></li><li><span>Brexit</span></li><li><span>Deglobalisation &amp; Protectionism – US Sanctions on Iran, US Pullout from Paris Agreement, H-1B Visa Issue etc.</span></li><li><span>OPEC Oil Prices Manipulation, etc.</span></li></ul></section></div></details><details class="branch"><summary>Indian Diaspora</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Spread of Indian Diaspora</span></li><li><span>India’s Diaspora Policy &amp; Engagement Initiatives</span><ul class="tree tree-sub"><li><span>OCI</span></li><li><span>Pravasi Bharatiya Divas</span></li><li><span>Know India Programme, etc.</span></li></ul></li></ul></section><section class="cluster"><ul class="tree"><li><span>LM Singhvi High Level Committee on the Diaspora</span></li><li><span>Role played by Indian Diaspora</span></li><li><span>Issues Concerning the Diaspora:</span><ul class="tree tree-sub"><li><span>Dual Nationality</span></li><li><span>Remittances, etc.</span></li></ul></li></ul></section></div></details><details class="branch"><summary>Important International Institutions</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>UN &amp; its Agencies</span></li><li><span>WTO</span></li><li><span>World Bank</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>IMF</span></li><li><span>World Economic Forum</span></li><li><span>Commonwealth of Nations, etc.</span></li></ul></section></div></details></div>
+            </article>
+
+            <article id="gs3" class="sheet panel">
+                <h3 class="sheet-title">GS III</h3>
+                <p class="sheet-sub">Technology, economic development, biodiversity, environment, security, and disaster management. 250 marks.</p>
+                <ol class="topic-list">
+                    <li>Indian economy and issues relating to planning, mobilisation of resources, growth, development, and employment.</li>
+                    <li>Inclusive growth and issues arising from it.</li>
+                    <li>Government budgeting.</li>
+                    <li>Major crops and cropping patterns; types of irrigation and irrigation systems; storage, transport, and marketing of agricultural produce and related constraints; e-technology in the aid of farmers.</li>
+                    <li>Direct and indirect farm subsidies and minimum support prices; public distribution system; buffer stocks and food security; technology missions; economics of animal rearing.</li>
+                    <li>Food processing and related industries in India: scope and significance, location, upstream and downstream requirements, supply chain management.</li>
+                    <li>Land reforms in India.</li>
+                    <li>Effects of liberalisation on the economy, changes in industrial policy, and their effects on industrial growth.</li>
+                    <li>Infrastructure: energy, ports, roads, airports, railways, and so on.</li>
+                    <li>Investment models.</li>
+                    <li>Science and technology: developments and their applications and effects in everyday life.</li>
+                    <li>Achievements of Indians in science and technology; indigenisation of technology and developing new technology.</li>
+                    <li>Awareness in IT, space, computers, robotics, nano-technology, bio-technology, and issues relating to intellectual property rights.</li>
+                    <li>Conservation, environmental pollution and degradation, and environmental impact assessment.</li>
+                    <li>Disaster and disaster management.</li>
+                    <li>Linkages between development and spread of extremism.</li>
+                    <li>Role of external state and non-state actors in creating challenges to internal security.</li>
+                    <li>Challenges to internal security through communication networks, the role of media and social networking sites, basics of cyber security, and money laundering and its prevention.</li>
+                    <li>Security challenges and their management in border areas; linkages of organised crime with terrorism.</li>
+                    <li>Various security forces and agencies and their mandate.</li>
+                </ol>
+                <div class="chips">
+                    <span>Planning and jobs</span><span>Budget</span><span>Farm and PDS</span><span>Industry</span><span>Infrastructure</span><span>Science</span><span>Environment</span><span>Disasters</span><span>Internal security</span>
+                </div>
+                <div class="breakdown"><p class="sheet-sub">Full topic breakdown. Open a heading, or type a word to find it.</p><label class="filter"><input type="search" data-filter placeholder="Filter topics in this paper" aria-label="Filter topics"></label><h3 class="part-title">ECONOMIC DEVELOPMENT</h3><details class="branch"><summary>Indian Economy &amp; Issues Relating to Planning, Mobilization of Resources, Growth, Development &amp; Employment</summary><div class="clusters"><section class="cluster"><h4>Planning</h4><ul class="tree"><li><span>Meaning of Planning</span></li><li><span>Need for Planning in Economic Development</span></li><li><span>Imperative Vs. Indicative Vs. Structural Planning</span></li><li><span>Objectives of Planning</span></li><li><span>Indian Planning History</span></li><li><span>Techniques of Indian Planning</span></li><li><span>Achievements &amp; Failures of Indian Planning</span></li><li><span>Shortcomings of Planning in India</span></li><li><span>NITI Aayog Vs. Planning Commission</span></li></ul></section><section class="cluster"><h4>Mobilisation of Resources</h4><ul class="tree"><li><span>Types of Resources – Financial, Human, Natural etc.</span></li><li><span>Need for Resource Mobilisation</span></li><li><span>Role of Savings &amp; Investment</span></li><li><span>Government Resources – Tax &amp; Non-Tax ( or Fiscal &amp; Monetary Policy)</span></li><li><span>Banking Sector &amp; NBFCs</span></li><li><span>Capital Market</span></li><li><span>External Sources – FDI, ODA etc.</span></li><li><span>Public Borrowing &amp; Management of Public Debt</span></li><li><span>Challenges in Mobilising Resources for Development</span></li><li><span>Steps That Can Be Taken</span></li></ul></section><section class="cluster"><h4>Growth &amp; Development</h4><ul class="tree"><li><span>Meaning of Development &amp; Growth</span></li><li><span>Difference between Development &amp; Growth</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Determinants of Growth &amp; Development</span></li><li><span>Importance &amp; Limitations of Economic Growth</span></li><li><span>Jobless Growth</span></li><li><span>Pro-Poor Growth</span></li><li><span>Balanced &amp; Unbalanced Growth</span></li><li><span>Dimensions of Development</span></li><li><span>Measurement &amp; Indicators of Development</span></li><li><span>Approaches to Development:</span><ul class="tree tree-sub"><li><span>Market-Based Approach</span></li><li><span>Role of State and Planned Approach</span></li><li><span>Mixed Economy Approach</span></li></ul></li><li><span>Challenges to Development &amp; Growth</span></li></ul></section><section class="cluster"><h4>Employment</h4><ul class="tree"><li><span>Nature – Rural vs. Urban, Formal Vs. Informal</span></li><li><span>Terms Related to Employment – Labour Force Participation Rate, Employment Rate, Working Age Population etc.</span></li><li><span>Sectoral Distribution of Employment</span></li><li><span>Quality of Employment</span></li><li><span>Causes of Lack of Employment</span></li><li><span>Restructuring of Workforce</span></li><li><span>Government Initiatives for Generating Employment</span></li></ul></section></div></details><details class="branch"><summary>Inclusive Growth &amp; Issues Arising From It</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>What is Inclusive Growth?</span></li><li><span>Elements of Inclusive Growth</span></li><li><span>Need for Inclusive Growth</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Indicators of Inclusive Growth</span></li><li><span>Challenges in Achieveing Inclusive Growth in India</span></li><li><span>12th FYP &amp; Inclusive Growth</span></li></ul></section></div></details><details class="branch"><summary>Government Budgeting</summary><div class="clusters"><section class="cluster"><h4>Need for Government Budgeting</h4></section><section class="cluster"><h4>Components of the Government Budget</h4><ul class="tree"><li><span>Revenue Account – Revenue Receipts &amp; Revenue Expenditure</span></li><li><span>Capital Account – Capital Receipts &amp; Capital Expenditure</span></li></ul></section><section class="cluster"><h4>Changes in Budgetary Process in 2017</h4></section><section class="cluster"><h4>Measures of Government Deficit</h4><ul class="tree"><li><span>Revenue Deficit</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Fiscal Deficit</span></li><li><span>Primary Deficit</span></li></ul></section><section class="cluster"><h4>Fiscal Policy</h4></section><section class="cluster"><h4>Deficit Reduction</h4></section><section class="cluster"><h4>FRBM Act</h4></section><section class="cluster"><h4>Other Types of Budgets – Outcome, Zero-Based, etc.</h4></section></div></details><details class="branch"><summary>Land Reforms in India</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Rationale for Land Reforms</span></li><li><span>Components of Land Reforms</span></li><li><span>Impact of Land Reforms</span></li><li><span>Problems in Implementaion of Land Reforms</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Success of Land Reforms</span></li><li><span>Recent Initiatives - Land Leasing, Land Acquisition, Rehabilitation &amp; Resettlement Act, etc.</span></li></ul></section></div></details><details class="branch"><summary>Effects of Liberalization on the Economy</summary><div class="clusters"><section class="cluster"><h4>Phase of Liberalisation</h4></section><section class="cluster"><ul class="tree"><li><span>Impact on Different Sectors of the Economy</span></li></ul></section></div></details><details class="branch"><summary>Changes In Industrial Policy &amp; their Effects on Industrial Growth</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Industrial Policy Before 1991</span></li><li><span>Industrial Policy After 1991</span></li><li><span>Phases of Industrial Growth</span></li><li><span>Linkage Between Economic Reforms and Economic Outcomes</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Weaknesses and Failures of Industrial Policies</span></li><li><span>National Manufacturing Policy</span></li><li><span>SEZs</span></li><li><span>Make in India</span></li></ul></section></div></details><details class="branch"><summary>Infrastructure</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Energy</span></li><li><span>Ports</span></li><li><span>Roads</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Airports</span></li><li><span>Railways</span></li></ul></section></div></details><details class="branch"><summary>Investment Models</summary><div class="clusters"><section class="cluster"><h4>Need for Investment</h4></section><section class="cluster"><h4>Sources of Investment</h4></section><section class="cluster"><h4>Types of Investment Models</h4><ul class="tree"><li><span>Domestic Investment Models</span><ul class="tree tree-sub"><li><span>Public Investment Model</span></li><li><span>Private Investment Model</span></li><li><span>Public Private Participation Investment Model</span></li></ul></li></ul></section><section class="cluster"><ul class="tree"><li><span>Foreign Investment Models:</span><ul class="tree tree-sub"><li><span>FDI</span></li><li><span>FII, etc.</span></li></ul></li><li><span>Sector Specific Investment Models</span></li><li><span>Cluster Based Investment Models</span></li></ul></section><section class="cluster"><h4>Investment Models Followed by India</h4></section></div></details><h3 class="part-title">AGRICULTURE</h3><details class="branch"><summary>Major Crops Cropping Patterns in Various Parts of the Country</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Importance of Cropping Pattern</span></li><li><span>Types of Cropping Pattern</span></li><li><span>Reasons Why Cropping Pattern Differ</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Factors Influencing Cropping Pattern</span></li><li><span>Emerging Trends in Cropping Pattern</span></li><li><span>Long-Run Effects of Current Trends in Cropping Pattern</span></li></ul></section></div></details><details class="branch"><summary>Different Types of Irrigation &amp; Irrigation Systems Storage</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Modes of Irrigation</span></li><li><span>Sources of Irrigation</span></li><li><span>Choosing an Irrigation System</span></li><li><span>Problems Associated with Irrigation</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Progress of Irrigation Under Five Year Plans</span></li><li><span>Environmental Effects of Irrigation</span></li><li><span>Need for Systemic Irrigation Reforms</span></li><li><span>Need for a National Water Policy</span></li></ul></section></div></details><details class="branch"><summary>Transport &amp; Marketing of Agricultural Produce &amp; Issues &amp; Related Constraints</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Process of Agricultural Marketing - Marketing Channels, Functionaries, Costs, etc.</span></li><li><span>Role of FCI</span></li><li><span>Regulated Markets</span></li><li><span>Warehousing</span></li><li><span>Cooperative Marketing</span></li><li><span>Shortcomings of Current Agricultural Marketing Process</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>APMCs</span></li><li><span>National Agricultutral Market (NAM)</span></li><li><span>Farmer Producer Organisations (FPO)</span></li><li><span>Contract Farming</span></li><li><span>Futures Trading in Agricultural Commodities</span></li></ul></section></div></details><div class="branch branch-solo"><p>E-Technology in the Aid of Farmers, Technology Missions</p></div><details class="branch"><summary>Issues Related to Direct &amp; Indirect Farm Subsidies &amp; Minimum Support Prices</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Agricultural Pricing Policy</span></li><li><span>Rationale for Subsidies</span></li><li><span>Types of Subsidies</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Effectiveness, Extent &amp; Problems of Subsisies</span></li><li><span>Clash with WTO Agreements</span></li></ul></section></div></details><details class="branch"><summary>Public Distribution System Objectives, Functioning, Limitations, Revamping</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Objectives/Significance</span></li><li><span>Functioning - Fair Price Shops, FCI, Ration Cards, Aadhar Linking, etc.</span></li><li><span>Shortcomings or Problems Associated with PDS</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Need to Improve the Working of PDS</span></li><li><span>Measures to Improve the Loopholes &amp; Lacunaes Associated with PDS</span></li><li><span>Steps Taken by Governement in this Regard</span></li></ul></section></div></details><details class="branch"><summary>Issues of Buffer Stocks &amp; Food Security</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Buffer Stock – Objectives &amp; Norms in India</span></li><li><span>Impact of Government Procurement &amp; Distribution</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Need for Food Security</span></li><li><span>NFSM And othe Food Security Realted Government Initiatives</span></li></ul></section></div></details><div class="branch branch-solo"><p>Economics of Animal-Rearing</p></div><details class="branch"><summary>Food Processing &amp; Related Industries in India</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Scope &amp; Potential in India</span></li><li><span>Significance</span></li><li><span>Location</span></li><li><span>Constraints and Challenges</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Upstream &amp; Downstream Requirements</span></li><li><span>Supply Chain Management</span></li><li><span>Government Policies and Initiatives – SAMPADA, 12th FYP, etc.</span></li></ul></section></div></details><h3 class="part-title">SCIENCE &amp; TECHNOLOGY</h3><details class="branch"><summary>Developments &amp; their Applications &amp; Effects in Everyday Life</summary><div class="clusters"><section class="cluster"><h4>Chemicals in Food</h4><ul class="tree"><li><span>Artificial Sweetening Agents</span></li><li><span>Food Preservatives</span></li></ul></section><section class="cluster"><h4>Drugs</h4><ul class="tree"><li><span>Antacid</span></li><li><span>Antihistamines</span></li><li><span>Neurologically Active Drugs</span><ul class="tree tree-sub"><li><span>Tranquilizers</span></li><li><span>Analgesics</span></li></ul></li><li><span>Antimicrobials</span><ul class="tree tree-sub"><li><span>Antibiotics</span></li><li><span>Antiseptic and Disinfectant</span></li></ul></li></ul></section><section class="cluster"><ul class="tree"><li><span>Anti-Fertility Drugs, etc.</span></li></ul></section><section class="cluster"><h4>Cleansing Agents</h4><ul class="tree"><li><span>Soaps</span></li><li><span>Synthetic detergents</span></li></ul></section><section class="cluster"><h4>Glass</h4></section><section class="cluster"><h4>Water Softener</h4></section><section class="cluster"><h4>Water Purification/Disinfection</h4></section><section class="cluster"><h4>Microwave Oven, etc.</h4></section></div></details><details class="branch"><summary>Achievements of Indians in Science &amp; Technology</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Chandrasekhara Venkata Raman</span></li><li><span>Acharya Jagadish Chandra Bose</span></li><li><span>Satyendra Nath Bose</span></li><li><span>Meghnad Saha</span></li><li><span>Homi Jehangir Bhabha</span></li><li><span>Subrahmanyan Chandrasekhar</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>A.P.J. Abdul Kalam</span></li><li><span>Vikram Sarabhai</span></li><li><span>Mokshagundam Visvesvaraya</span></li><li><span>Har Gobind Khorana</span></li><li><span>Tessy Thomas</span></li><li><span>C.N.R. Rao</span></li></ul></section></div></details><details class="branch"><summary>Indigenization of Technology &amp; Developing New Technology</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>IT &amp; Computers</span></li><li><span>Space</span></li><li><span>Nanotechnology</span></li><li><span>Biotechnology</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Robotics</span></li><li><span>Defence</span></li><li><span>Nuclear</span></li></ul></section></div></details><details class="branch"><summary>Awareness in Different Fields</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>IT &amp; Computers</span></li><li><span>Space</span></li><li><span>Nanotechnology</span></li><li><span>Biotechnology</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Robotics</span></li><li><span>Defence</span></li><li><span>Nuclear</span></li></ul></section></div></details><details class="branch"><summary>Issues Relating to Intellectual Property Rights</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Need for Intellectual Property Rights</span></li><li><span>Types of IPR</span></li><li><span>IPR Regime in India</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>International Agreements Related to IPRs</span></li><li><span>Geographical Indicators</span></li><li><span>Recent Issues - Evergreening, Compuslory Licensing, Prominent Cases etc.</span></li></ul></section></div></details><h3 class="part-title">BIODIVERSITY &amp; ENVIRONMENT</h3><details class="branch"><summary>Conservation</summary><div class="clusters"><section class="cluster"><h4>What is Biodiversity?</h4></section><section class="cluster"><h4>Types of Biodiversity – Genetic, Species, Ecosystem, etc.</h4></section><section class="cluster"><h4>Importance of Biodivesirty – Ecosystem Services, Bio Resources of Economic Importance, Social Benefits etc.</h4></section><section class="cluster"><h4>Resasons for Loss of Biodiversity</h4></section><section class="cluster"><h4>Conservation</h4><ul class="tree"><li><span>In-situ &amp; Ex-Situ</span></li><li><span>Eco-Sensitive Areas</span></li><li><span>Ecological Hotspots</span></li><li><span>National Guidelines, Legislations &amp; Other Programmes.</span></li><li><span>International Agreements &amp; Groupings</span></li></ul></section></div></details><details class="branch"><summary>Environmental Pollution &amp; Degradation</summary><div class="clusters"><section class="cluster"><h4>Types of Pollution &amp; Pollutants</h4></section><section class="cluster"><h4>Impact of Pollution &amp; Degradation</h4><ul class="tree"><li><span>Ozone Layer Depletion and Ozone Hole</span></li><li><span>Greenhouse Gas Effect &amp; Global Warming</span></li><li><span>Eutrophication</span></li><li><span>Desertification</span></li><li><span>Acid Rain</span></li><li><span>Hazardous Waste, etc.</span></li></ul></section><section class="cluster"><h4>Causes/Sources of Pollution &amp; Degradation</h4></section><section class="cluster"><h4>Prevention &amp; Control of Pollution &amp; Degradation</h4></section><section class="cluster"><h4>National Environment Agencies, Legislations and Policies</h4></section><section class="cluster"><h4>International Environment Agencies &amp; Agreements</h4></section></div></details><details class="branch"><summary>Environmental Impact Assessment (EIA)</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>What is EIA?</span></li><li><span>Indian Guidelines &amp; Legislations</span></li><li><span>EIA Process</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Need &amp; Benefits of EIA</span></li><li><span>Shortcomings of EIA in India</span></li><li><span>Measures to Make EIA Effective</span></li></ul></section></div></details><details class="branch"><summary>Disaster Management</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Types of Disasters</span></li><li><span>Management of Disasters</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Community Level Disaster Management</span></li><li><span>Governement Initiatives on Disaster Management</span></li></ul></section></div></details><h3 class="part-title">SECURITY</h3><details class="branch"><summary>Linkages Between Development &amp; Spread of Extremism</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Factors Responsible for Spread of Extremism</span></li><li><span>Steps that State can Taken to Reduce the Spread of Extremism due to Underdevelopment</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Naxalism</span></li></ul></section></div></details><details class="branch"><summary>Role of External State &amp; Non-State Actors in Creating Challenges to Internal Security</summary><div class="clusters"><section class="cluster"><h4>Threats from Non-State Actors</h4><ul class="tree"><li><span>J&amp;K Separatism</span></li><li><span>Left Wing Extremism</span></li><li><span>North East Insurgency</span></li><li><span>Terrorism in Hinterland &amp; Border Areas</span></li><li><span>Right Wing Terrorism</span></li></ul></section><section class="cluster"><h4>Reasons for Spread of Terrorism</h4></section><section class="cluster"><h4>State Sponsored Terrorism</h4></section><section class="cluster"><h4>Institutional Framework to Tackle Challenge of Internal Security</h4><ul class="tree"><li><span>NIA</span></li><li><span>NATGRID</span></li><li><span>MAC</span></li><li><span>UAPA</span></li><li><span>TADA</span></li><li><span>POTA</span></li><li><span>NCTC</span></li></ul></section></div></details><details class="branch"><summary>Challenges to Internal Security Through Communication Networks</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Role of Media &amp; Social Networking Sites in Internal Security Challenges</span></li><li><span>Challenges in Managing Social Media</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Steps That can be Taken</span></li></ul></section></div></details><details class="branch"><summary>Basics of Cyber Security</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Cyber Security</span></li><li><span>Threats to Indian Cyber Security</span></li><li><span>Steps taken by India</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>International Cooperation on Cyber Security</span></li><li><span>Cyber Warfare</span></li><li><span>Terms Associated with Cyber Security</span></li></ul></section></div></details><details class="branch"><summary>Money-Laundering &amp; its Prevention</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Process of Money Laundering</span></li><li><span>Impact of Money Laundering</span></li><li><span>Challenges to Tackle Money Laundering</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Steps to Counter Money Laundering</span></li><li><span>Terms Related To Money Laundering</span></li></ul></section></div></details><details class="branch"><summary>Security Challenges &amp; their Management in Border Areas</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Challenges in Managing Border Security – Coastal &amp; Terrestrial</span></li><li><span>Land Boundary Disputes with Neighbours</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>India&#x27;s Policy in Border Area Security Management</span></li></ul></section></div></details><details class="branch"><summary>Linkages of Organized Crime with Terrorism</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Types of Organised Crime</span></li><li><span>Challenges in Controlling Organised Crime</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Indian Context – Link between Organised Crime &amp; Terrorism</span></li></ul></section></div></details><details class="branch"><summary>Various Security Forces &amp; Agencies &amp; Their Mandate</summary><div class="clusters"><section class="cluster"><ul class="tree"><li><span>Central Armed Police Forces</span></li><li><span>Central Paramilitary Forces</span></li></ul></section><section class="cluster"><ul class="tree"><li><span>Security &amp; Intelligence Agencies – IB. R&amp;WA, etc.</span></li></ul></section></div></details></div>
+            </article>
+
+            <article id="gs4" class="sheet panel">
+                <h3 class="sheet-title">GS IV</h3>
+                <p class="sheet-sub">Ethics, integrity, and aptitude. Theory plus case studies. 250 marks.</p>
+                <ol class="topic-list">
+                    <li>Attitude and approach to integrity, probity in public life, and problem solving in conflicts with society. Case studies may be used.</li>
+                    <li>Ethics and human interface: essence, determinants, and consequences of ethics in human actions; dimensions of ethics; ethics in private and public relationships.</li>
+                    <li>Human values: lessons from the lives and teachings of great leaders, reformers, and administrators; role of family, society, and educational institutions in inculcating values.</li>
+                    <li>Attitude: content, structure, function; its influence and relation with thought and behaviour; moral and political attitudes; social influence and persuasion.</li>
+                    <li>Aptitude and foundational values for civil service: integrity, impartiality and non-partisanship, objectivity, dedication to public service, empathy, tolerance, and compassion towards weaker sections.</li>
+                    <li>Emotional intelligence: concepts, and their utilities and application in administration and governance.</li>
+                    <li>Contributions of moral thinkers and philosophers from India and the world.</li>
+                    <li>Public and civil service values and ethics in public administration: status and problems; ethical concerns and dilemmas; laws, rules, regulations, and conscience as sources of ethical guidance; accountability and ethical governance; ethical issues in international relations and funding; corporate governance.</li>
+                    <li>Probity in governance: public service, philosophical basis of governance and probity, information sharing and transparency, right to information, codes of ethics and conduct, citizens’ charters, work culture, quality of service delivery, utilisation of public funds, challenges of corruption.</li>
+                    <li>Case studies on the above issues.</li>
+                </ol>
+                <div class="chips">
+                    <span>Ethics</span><span>Values</span><span>Attitude</span><span>Foundational values</span><span>EI</span><span>Thinkers</span><span>Probity</span><span>Cases</span>
+                </div>
+            </article>
+
+            <article id="essay" class="sheet panel">
+                <h3 class="sheet-title">Essay</h3>
+                <p class="sheet-sub">One paper, 250 marks, 3 hours. It is counted in the merit. There is no separate subject list.</p>
+            </article>
+        </section>
+
+        <section id="interview" class="section">
+            <div class="section-head">
+                <h2 class="section-title">Personality test</h2>
+            </div>
+            <div class="paper-grid">
+                <article class="panel">
+                    <h3>275 marks</h3>
+                    <p class="note">About 2.5 to 3 times the vacancies are called after Mains. Final merit is written Mains plus this test. Prelims marks stay out of the merit.</p>
+                </article>
+                <article class="panel">
+                    <h3>How many move on</h3>
+                    <p class="note">About 12 to 13 times the vacancies go from Prelims to Mains. Qualifying language papers need 25% before the other papers are evaluated.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="optional" class="section">
+            <div class="section-head">
+                <h2 class="section-title">Optional subjects</h2>
+            </div>
+            <article class="panel">
+                <p class="note">Paper VI and Paper VII follow the honours degree level. That is higher than a bachelor's degree and lower than a master's degree. Engineering, Medical Science, and Law follow the bachelor's degree level.</p>
+            </article>
+        </section>
+
+        <section id="faq" class="section">
+            <div class="section-head">
+                <h2 class="section-title">Exam notes</h2>
+            </div>
+            <details class="branch"><summary>1. What is the eligibility criteria for the Civil Services Examination (CSE) 2026?</summary><div class="clusters"><div class="faq-answer"><strong>Nationality:</strong>Must be a citizen of India for IAS, IFS, and IPS. For other services, candidates may also be a subject of Nepal, Bhutan, a Tibetan refugee, or an individual of Indian origin from specified countries.<br><strong>Age Limit:</strong>Candidates must be between 21 and 32 years and the cutoff date to calculate age is August 1. Relaxations apply for certain categories.<br><strong>Educational Qualification:</strong>Must hold a graduate degree or equivalent from a recognized institution.</div></div></details>
+<details class="branch"><summary>2. How many attempts are allowed for the Civil Services Examination?</summary><div class="clusters"><div class="faq-answer"><strong>General Category:</strong>6 attempts.<br><strong>SC/ST Category:</strong>Unlimited attempts.<br><strong>OBC Category:</strong>9 attempts.<br><strong>PwBD Category:</strong>9 attempts for General, EWS, and OBC categories; unlimited for SC/ST.</div></div></details>
+<details class="branch"><summary>3. What are the key stages in the Civil Services Examination?</summary><div class="clusters"><div class="faq-answer"><strong>Preliminary Examination:</strong>Objective type with two papers (General Studies and CSAT).<br><strong>Main Examination:</strong>Written examination with 9 papers, including compulsory and optional papers.<br><strong>Interview/Personality Test:</strong>For those who qualify the Main Examination.</div></div></details>
+<details class="branch"><summary>4. What is the fee structure for the Civil Services Examination?</summary><div class="clusters"><div class="faq-answer"><strong>General, OBC, and EWS categories:</strong>Rs. 100.<br><strong>Women, SC/ST, PwBD candidates:</strong>Exempt from the fee.</div></div></details>
+<details class="branch"><summary>5. What documents are required to apply for the CSE?</summary><div class="clusters"><div class="faq-answer"><strong>Identity Proof:</strong>Valid photo ID (Aadhar, PAN, Passport, etc.).<br><strong>Educational Certificates:</strong>Proof of graduation or final year mark sheet.<br><strong>Caste/Category Certificate:</strong>For candidates claiming reservation benefits.<br><strong>Photograph and Signature:</strong>Scanned copies in prescribed format (JPEG, PNG and PDF).</div></div></details>
+<details class="branch"><summary>6. Can candidates change their category or service preference after submitting the application?</summary><div class="clusters"><div class="faq-answer"><strong>Category Change:</strong>Requests for category changes (e.g., from OBC to SC/ST) will not be entertained.<br><strong>Service Preference:</strong>Candidates must carefully select their service preferences during application, and once submitted, these cannot be changed.</div></div></details>
+<details class="branch"><summary>7. How are candidates selected for the Civil Services (Main) Examination?</summary><div class="clusters"><div class="faq-answer">Candidates are selected based on their performance in the Preliminary Examination. Only those who qualify the Preliminary Exam will be admitted to the Main Examination.</div></div></details>
+<details class="branch"><summary>8. How many candidates are selected for the Mains Examination?</summary><div class="clusters"><div class="faq-answer">The number of candidates selected in the Preliminary Examination to appear in the Civil Services Main Examination is typically between twelve and thirteen times the total number of vacancies to be filled.<ul class="tree"><li><span>This means that if there are &#x27;X&#x27; vacancies, approximately 12X to 13X candidates will be admitted to the Mains examination.</span></li></ul></div></div></details>
+<details class="branch"><summary>9. How many candidates are selected for the Interview?</summary><div class="clusters"><div class="faq-answer">The number of candidates selected in the Mains Examination to appear for the Civil Services Interview/Personality Test is typically 2.5 to 3 times the total number of vacancies to be filled.<ul class="tree"><li><span>This means that if there are &#x27;X&#x27; vacancies, approximately 2.5X to 3X candidates will be shortlisted for the Interview stage.</span></li></ul></div></div></details>
+<details class="branch"><summary>10. Is there any relaxation in age or attempts for differently-abled candidates?</summary><div class="clusters"><div class="faq-answer">Yes, candidates with benchmark disabilities (PwBD) are provided relaxation in age limits and the number of attempts, depending on their category.</div></div></details>
+<details class="branch"><summary>11. How do I apply for the Civil Services Examination?</summary><div class="clusters"><div class="faq-answer">Candidates need to apply online through the UPSC website. They must complete a four-stage application process, including registration, filling out personal and academic details, and paying the application fee.</div></div></details>
+<details class="branch"><summary>12. Will the marks obtained in the Preliminary Examination be counted for the final result?</summary><div class="clusters"><div class="faq-answer">No, the marks obtained in the Preliminary Examination will not be considered when determining the final merit order of the candidates.</div></div></details>
+<details class="branch"><summary>13. Is it mandatory to appear in both papers of the Civil Services (Preliminary) Examination?</summary><div class="clusters"><div class="faq-answer">Yes, candidates must appear in both papers of the Preliminary Examination for the purpose of evaluation. Failure to appear in both will result in disqualification.</div></div></details>
+<details class="branch"><summary>14. If I appear in only one Paper in Prelims Examination, will it be counted as an attempt?</summary><div class="clusters"><div class="faq-answer">Yes, if a candidate appears in any one paper of the Preliminary Examination, it will count as an attempt.</div></div></details>
+<details class="branch"><summary>15. What happens if a candidate fails to appear in one of the Preliminary Examination papers?</summary><div class="clusters"><div class="faq-answer">If a candidate does not appear in both papers of the Civil Services (Preliminary) Examination, they will be disqualified from the evaluation process.</div></div></details>
+<details class="branch"><summary>16. How many candidates are typically selected for the Civil Services (Main) Examination?</summary><div class="clusters"><div class="faq-answer">Approximately 12 to 13 times the number of vacancies are selected from the candidates who qualify in the Civil Services (Preliminary) Examination to appear for the Civil Services (Main) Examination.</div></div></details>
+<details class="branch"><summary>17. Is there any provision for candidates who reach the final interview stage but are not recommended?</summary><div class="clusters"><div class="faq-answer">Yes, non-recommended candidates at the interview stage can consent to share their details with registered organizations (Public and Private Sector) for potential employment opportunities.</div></div></details>
+<details class="branch"><summary>18. Which categories of disabilities are eligible for reservation under PwBD?</summary><div class="clusters"><div class="faq-answer"><strong>Eligible Disabilities:</strong><ul class="tree"><li><span>Blindness and low vision</span></li><li><span>Deaf and hard of hearing</span></li><li><span>Locomotor disabilities (including cerebral palsy, leprosy cured, dwarfism, acid attack victims, muscular dystrophy)</span></li><li><span>Multiple disabilities</span></li></ul></div></div></details>
+<details class="branch"><summary>19. What is the format for the Qualifying Papers?</summary><div class="clusters"><div class="faq-answer"><strong>Paper A:</strong>Indian Language (300 marks).<br><strong>Paper B:</strong>English (300 marks).<br>These papers are qualifying in nature. Candidates must score at least 25% in each to have their other papers evaluated.</div></div></details>
+<details class="branch"><summary>20. Can candidates with disabilities avail reservation?</summary><div class="clusters"><div class="faq-answer">Yes, candidates with disabilities (PwBD) can avail of the reservation. The eligibility for reservation will depend on the nature of the disability, and candidates must meet the specific requirements outlined in the notice.</div></div></details>
+<details class="branch"><summary>21. Can the chosen examination center be changed after submission of the form?</summary><div class="clusters"><div class="faq-answer">No requests for changes in the examination center will be entertained after submission of the form.</div></div></details>
+<details class="branch"><summary>22. What is the examination fee for UPSC Civil Services Examination 2026?</summary><div class="clusters"><div class="faq-answer"><strong>General, OBC, and EWS:</strong>Rs. 100.<br><strong>Women, SC, ST, PwBD:</strong>Exempted from the fee.</div></div></details>
+<details class="branch"><summary>23. How can candidates apply for the UPSC Civil Services Examination?</summary><div class="clusters"><div class="faq-answer">Applications must be submitted online via the UPSC official websiteupsconline.gov.inusing the One Time Registration (OTR) platform.</div></div></details>
+<details class="branch"><summary>24. Can the OTR Profile be modified after submission?</summary><div class="clusters"><div class="faq-answer">Yes, but modifications are allowed only once in a lifetime and within 7 days from the closure of the application window for the first UPSC application.</div></div></details>
+        </section>
+    </main>
+    <script>
+        document.querySelectorAll(".switcher").forEach(function (bar) {
+            bar.addEventListener("click", function (event) {
+                var button = event.target.closest("button");
+                if (!button) return;
+                var target = document.getElementById(button.dataset.target);
+                if (!target) return;
+                bar.querySelectorAll("button").forEach(function (item) {
+                    item.classList.toggle("is-on", item === button);
+                });
+                var section = bar.parentElement;
+                section.querySelectorAll(".sheet").forEach(function (sheet) {
+                    sheet.classList.toggle("is-on", sheet === target);
+                });
+            });
+        });
+
+        document.querySelectorAll("[data-filter]").forEach(function (input) {
+            input.addEventListener("input", function () {
+                var query = input.value.trim().toLowerCase();
+                var root = input.closest(".breakdown");
+                root.querySelectorAll(".branch").forEach(function (branch) {
+                    var hit = !query || branch.textContent.toLowerCase().indexOf(query) !== -1;
+                    branch.hidden = !hit;
+                    if (query) branch.open = hit;
+                });
+                root.querySelectorAll(".part-title").forEach(function (title) {
+                    var node = title.nextElementSibling;
+                    var any = false;
+                    while (node && !node.classList.contains("part-title")) {
+                        if (node.classList.contains("branch") && !node.hidden) any = true;
+                        node = node.nextElementSibling;
+                    }
+                    title.hidden = !!query && !any;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
