@@ -277,7 +277,10 @@ const indiaTodayGroupBooks = [
     "https://hemachandranss.github.io/books16/books/visual-books/india_today_2010_June_07",
     "https://hemachandranss.github.io/books16/books/visual-books/india_today_2010_June_14",
     "https://hemachandranss.github.io/books16/books/visual-books/india_today_2010_June_21",
-    "https://hemachandranss.github.io/books16/books/visual-books/india_today_2010_June_28"
+    "https://hemachandranss.github.io/books16/books/visual-books/india_today_2010_June_28",
+    "https://hemachandranss.github.io/books27/books/visual-books/11102026-md-hr1",
+    "https://hemachandranss.github.io/books27/books/visual-books/25102026-md-hr1",
+    "https://hemachandranss.github.io/books27/books/visual-books/08112026-md-hr1"
 
 ];
 
@@ -317,6 +320,9 @@ if (countEl) countEl.textContent = `${bookCount} ${label}`;
 
 const visualCountEl = document.getElementById('visualCount');
 if (visualCountEl) visualCountEl.textContent = `${bookCount} ${label}`;
+
+const businessLineCountEl = document.getElementById('businessLineCount');
+if (businessLineCountEl) businessLineCountEl.textContent = '3 Books';
 
 // Show the "no books" empty state when the list is empty,
 // and hide the grid.
