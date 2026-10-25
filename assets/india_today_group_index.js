@@ -321,9 +321,6 @@ if (countEl) countEl.textContent = `${bookCount} ${label}`;
 const visualCountEl = document.getElementById('visualCount');
 if (visualCountEl) visualCountEl.textContent = `${bookCount} ${label}`;
 
-const businessLineCountEl = document.getElementById('businessLineCount');
-if (businessLineCountEl) businessLineCountEl.textContent = '3 Books';
-
 // Show the "no books" empty state when the list is empty,
 // and hide the grid.
 const emptyState = document.querySelector('.empty');
