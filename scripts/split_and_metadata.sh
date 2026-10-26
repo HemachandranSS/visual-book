@@ -12,7 +12,7 @@ for video in tmp/*.mp4; do
     echo "Processing $video -> $out_dir/"
     
     # Split the video
-    ffmpeg -i "$video" -map 0 -c:v libx264 -c:a aac -f segment -segment_time 60 -reset_timestamps 1 -segment_start_number 1 "$out_dir/%d.mp4"
+    ffmpeg -i "$video" -map 0 -c:v libx264 -c:a aac -f segment -segment_time 30 -reset_timestamps 1 -segment_start_number 1 "$out_dir/%d.mp4"
     
     # Generate metadata using our python script
     python3 scripts/generate_metadata.py "$out_dir"
