@@ -1,0 +1,2301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GS Topic Maps</title>
+    <link rel="stylesheet" href="../assets/index.css">
+    <link rel="stylesheet" href="../assets/login.css" />
+    <script src="../assets/login.js"></script>
+    <style>
+        .map-nav {
+            display: grid;
+            gap: 14px;
+            margin: 0 0 22px;
+        }
+
+        .map-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .map-group-label {
+            min-width: 4.6rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .map-nav button {
+            font: inherit;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--panel-border);
+            border-radius: 999px;
+            padding: 8px 14px;
+            cursor: pointer;
+        }
+
+        .map-nav button.is-on {
+            background: linear-gradient(90deg, rgba(141, 214, 255, 0.28), rgba(154, 140, 255, 0.28));
+            border-color: rgba(141, 214, 255, 0.7);
+        }
+
+        .sheet { display: none; }
+        .sheet.is-on { display: block; animation: rise 0.45s ease; }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 0 0 18px;
+        }
+
+        .toolbar input {
+            flex: 1 1 220px;
+            font: inherit;
+            color: var(--text);
+            background: rgba(7, 11, 22, 0.55);
+            border: 1px solid var(--panel-border);
+            border-radius: 14px;
+            padding: 12px 14px;
+        }
+
+        .toolbar button {
+            font: inherit;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--panel-border);
+            border-radius: 14px;
+            padding: 10px 14px;
+            cursor: pointer;
+        }
+
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin: 0 0 22px;
+        }
+
+        .flow span {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(141, 214, 255, 0.12);
+            border: 1px solid rgba(141, 214, 255, 0.35);
+            animation: rise 0.5s ease both;
+        }
+
+        .flow i {
+            color: var(--accent);
+            font-style: normal;
+            animation: nudge 1.6s ease-in-out infinite;
+        }
+
+        .battles {
+            display: grid;
+            gap: 10px;
+            margin: 0 0 26px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .battles li {
+            display: grid;
+            grid-template-columns: 108px 1fr;
+            gap: 12px;
+            align-items: center;
+            padding: 10px 12px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            animation: rise 0.55s ease both;
+        }
+
+        .battles strong {
+            color: #fdba74;
+        }
+
+        .battles li:hover {
+            transform: translateX(6px);
+        }
+
+        .pairs {
+            display: grid;
+            gap: 10px;
+            margin: 0 0 26px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .pairs li {
+            display: grid;
+            grid-template-columns: minmax(160px, 280px) 1fr;
+            gap: 12px;
+            align-items: start;
+            padding: 10px 12px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            animation: rise 0.55s ease both;
+        }
+
+        .pairs strong { color: #c4b5fd; }
+
+        @media (max-width: 700px) {
+            .priority, .pairs li, .battles li { grid-template-columns: 1fr; }
+        }
+
+        .priority {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 0 0 26px;
+            padding: 0;
+            list-style: none;
+            counter-reset: rank;
+        }
+
+        .priority li {
+            counter-increment: rank;
+            display: grid;
+            grid-template-columns: 36px 1fr;
+            gap: 10px;
+            align-items: center;
+            padding: 10px 12px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid transparent;
+            animation: rise 0.55s ease both;
+        }
+
+        .priority li::before {
+            content: counter(rank);
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: rgba(249, 115, 22, 0.18);
+            color: #fdba74;
+            font-weight: 700;
+        }
+
+        .priority li:hover {
+            border-color: rgba(253, 186, 116, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .tree-wrap {
+            padding: 8px 4px 20px;
+        }
+
+        .tree, .tree ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .tree ul {
+            margin-left: 18px;
+            padding-left: 16px;
+            border-left: 2px solid rgba(141, 214, 255, 0.28);
+        }
+
+        .node { margin: 6px 0; }
+
+        .node > button, .node > .leaf {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            text-align: left;
+            font: inherit;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--panel-border);
+            border-radius: 14px;
+            padding: 10px 12px;
+        }
+
+        .node > button { cursor: pointer; }
+        .node > .leaf { color: var(--muted); }
+
+        .node > button::before {
+            content: "▸";
+            color: var(--accent);
+            transition: transform 0.25s ease;
+        }
+
+        .node.open > button::before { transform: rotate(90deg); }
+
+        .node > ul { display: none; }
+        .node.open > ul { display: block; }
+
+        .node.open > ul > .node {
+            animation: slide 0.35s ease both;
+        }
+
+        .node.open > ul > .node:nth-child(2) { animation-delay: 0.04s; }
+        .node.open > ul > .node:nth-child(3) { animation-delay: 0.08s; }
+        .node.open > ul > .node:nth-child(4) { animation-delay: 0.12s; }
+        .node.open > ul > .node:nth-child(5) { animation-delay: 0.16s; }
+        .node.open > ul > .node:nth-child(6) { animation-delay: 0.2s; }
+
+        .cue {
+            flex-basis: 100%;
+            margin: 2px 0 0 18px;
+            color: var(--muted);
+            font-size: 0.86rem;
+            font-weight: 400;
+        }
+
+        .tone-1 > button { border-left: 4px solid #38bdf8; }
+        .tone-2 > button { border-left: 4px solid #a78bfa; }
+        .tone-3 > button { border-left: 4px solid #fbbf24; }
+        .tone-4 > button { border-left: 4px solid #34d399; }
+        .tone-5 > button { border-left: 4px solid #fb7185; }
+
+        .back {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: none; }
+        }
+
+        @keyframes slide {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: none; }
+        }
+
+        @keyframes nudge {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(4px); }
+        }
+
+        @media (max-width: 700px) {
+            .priority { grid-template-columns: 1fr; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="shell">
+        <section class="hero">
+            <div>
+                <h1>GS Topic Maps</h1>
+                <p class="lede">Geography, Indian history, world history, sociology, the Constitution, social justice, international relations, the Indian economy, science and technology, internal security, ethics, and CSAT are full NCERT-to-UPSC trees. Society and Polity are shorter companion maps. Open a branch, or type a word to find it.</p>
+                <p><a class="back" href="upsc_syllabus.html">Back to the syllabus</a></p>
+            </div>
+        </section>
+
+        <div class="map-nav" id="switcher">
+            <div class="map-group">
+                <span class="map-group-label">GS I</span>
+                <button type="button" class="is-on" data-sheet="geo">Geography</button>
+                <button type="button" data-sheet="history">History</button>
+                <button type="button" data-sheet="world">World History</button>
+                <button type="button" data-sheet="society">Society</button>
+                <button type="button" data-sheet="sociology">Sociology</button>
+            </div>
+            <div class="map-group">
+                <span class="map-group-label">GS II</span>
+                <button type="button" data-sheet="constitution">Constitution</button>
+                <button type="button" data-sheet="polity">Polity</button>
+                <button type="button" data-sheet="justice">Social Justice</button>
+                <button type="button" data-sheet="ir">International Relations</button>
+            </div>
+            <div class="map-group">
+                <span class="map-group-label">GS III</span>
+                <button type="button" data-sheet="economy">Indian Economy</button>
+                <button type="button" data-sheet="science">Science</button>
+                <button type="button" data-sheet="security">Internal Security</button>
+            </div>
+            <div class="map-group">
+                <span class="map-group-label">GS IV</span>
+                <button type="button" data-sheet="ethics">Ethics</button>
+            </div>
+            <div class="map-group">
+                <span class="map-group-label">Prelims</span>
+                <button type="button" data-sheet="csat">CSAT</button>
+            </div>
+        </div>
+
+        <section id="geo" class="sheet is-on"></section>
+        <section id="history" class="sheet"></section>
+        <section id="world" class="sheet"></section>
+        <section id="constitution" class="sheet"></section>
+        <section id="society" class="sheet"></section>
+        <section id="sociology" class="sheet"></section>
+        <section id="polity" class="sheet"></section>
+        <section id="justice" class="sheet"></section>
+        <section id="ir" class="sheet"></section>
+        <section id="economy" class="sheet"></section>
+        <section id="science" class="sheet"></section>
+        <section id="security" class="sheet"></section>
+        <section id="ethics" class="sheet"></section>
+        <section id="csat" class="sheet"></section>
+    </main>
+    <script>
+        function b(name, children, cue) {
+            var node = { name: name };
+            if (children) node.children = children;
+            if (cue) node.cue = cue;
+            return node;
+        }
+
+        var maps = {
+            geo: {
+                flows: [
+                    ["Geography", "Physical", "Human", "Indian relief and rivers", "Climate and soil", "Agriculture"],
+                    ["World physical geography", "Natural resources", "Industry location", "Earthquakes, tsunami, volcanoes, cyclones"]
+                ],
+                priority: [
+                    "Plate Tectonics",
+                    "Monsoon Mechanism",
+                    "Ocean Currents",
+                    "Soil Types of India",
+                    "Indian Rivers",
+                    "Natural Vegetation",
+                    "Population Distribution",
+                    "Agriculture and Crops",
+                    "Minerals and Industries",
+                    "Mapping of Mountains, Passes and Rivers"
+                ],
+                tree: [
+                    b("1. Physical Geography", [
+                        b("Geomorphology (Study of Landforms)", [
+                            b("Interior of Earth", [b("Crust"), b("Mantle"), b("Core")]),
+                            b("Rocks", [b("Igneous"), b("Sedimentary"), b("Metamorphic")]),
+                            b("Plate Tectonics", [b("Convergent Plate"), b("Divergent Plate"), b("Transform Plate")]),
+                            b("Endogenic Forces", [b("Volcanoes"), b("Earthquakes"), b("Mountain Building")]),
+                            b("Exogenic Forces", [b("Weathering"), b("Erosion"), b("Deposition")]),
+                            b("Landforms", [b("Mountains"), b("Plateaus"), b("Plains"), b("Deserts"), b("Valleys"), b("Coastal Landforms")])
+                        ]),
+                        b("Climatology (Study of Climate)", [
+                            b("Atmosphere", [b("Troposphere"), b("Stratosphere"), b("Mesosphere"), b("Thermosphere"), b("Exosphere")]),
+                            b("Insolation"),
+                            b("Temperature"),
+                            b("Pressure Belts"),
+                            b("Winds", [b("Planetary Winds"), b("Seasonal Winds"), b("Local Winds")]),
+                            b("Humidity"),
+                            b("Clouds"),
+                            b("Rainfall", [b("Convectional"), b("Orographic"), b("Cyclonic")]),
+                            b("Cyclones", [b("Tropical Cyclone"), b("Temperate Cyclone")]),
+                            b("Monsoon", [b("Southwest Monsoon"), b("Northeast Monsoon")]),
+                            b("Climate Types", [b("Equatorial"), b("Tropical"), b("Desert"), b("Mediterranean"), b("Temperate"), b("Polar")])
+                        ]),
+                        b("Oceanography (Study of Oceans)", [
+                            b("Ocean Floor", [b("Continental Shelf"), b("Continental Slope"), b("Abyssal Plain"), b("Ocean Trenches")]),
+                            b("Ocean Water", [b("Salinity"), b("Temperature"), b("Density")]),
+                            b("Ocean Movements", [b("Waves"), b("Tides"), b("Currents")]),
+                            b("Major Ocean Currents", [b("Gulf Stream"), b("Labrador Current"), b("Kuroshio Current"), b("Canary Current")]),
+                            b("Marine Resources", [b("Fisheries"), b("Petroleum"), b("Minerals")])
+                        ]),
+                        b("Biogeography", [
+                            b("Biosphere"),
+                            b("Ecosystem"),
+                            b("Food Chain"),
+                            b("Biomes", [b("Forest"), b("Grassland"), b("Desert"), b("Tundra")]),
+                            b("Natural Vegetation", [b("Tropical Evergreen Forest"), b("Tropical Deciduous Forest"), b("Thorn Forest"), b("Montane Forest"), b("Mangrove Forest")]),
+                            b("Wildlife")
+                        ]),
+                        b("Environmental Geography", [
+                            b("Pollution", [b("Air Pollution"), b("Water Pollution"), b("Soil Pollution"), b("Noise Pollution")]),
+                            b("Global Warming"),
+                            b("Climate Change"),
+                            b("Ozone Depletion"),
+                            b("Biodiversity"),
+                            b("Conservation", [b("National Parks"), b("Wildlife Sanctuaries"), b("Biosphere Reserves")]),
+                            b("Sustainable Development")
+                        ])
+                    ], "Land, air, water, life, and the environment."),
+                    b("2. Human Geography", [
+                        b("Population Geography", [b("Population Distribution"), b("Population Density"), b("Population Growth"), b("Birth Rate"), b("Death Rate"), b("Migration"), b("Demographic Transition Theory")]),
+                        b("Settlement Geography", [
+                            b("Rural Settlements", [b("Clustered"), b("Dispersed"), b("Linear")]),
+                            b("Urban Settlements", [b("Town"), b("City"), b("Metropolitan City"), b("Megacity")])
+                        ]),
+                        b("Cultural Geography", [b("Language"), b("Religion"), b("Customs"), b("Civilization"), b("Cultural Regions")]),
+                        b("Economic Geography", [
+                            b("Primary Activities", [b("Agriculture"), b("Fishing"), b("Forestry"), b("Mining")]),
+                            b("Secondary Activities", [b("Manufacturing"), b("Industry")]),
+                            b("Tertiary Activities", [b("Trade"), b("Transport"), b("Communication"), b("Banking")]),
+                            b("Quaternary Activities", [b("Research"), b("IT"), b("Education")]),
+                            b("Quinary Activities", [b("Policy Making"), b("Top Management"), b("High-level Services")])
+                        ]),
+                        b("Transport Geography", [b("Roadways"), b("Railways"), b("Airways"), b("Waterways"), b("Pipelines")]),
+                        b("Political Geography", [b("Nation"), b("State"), b("Boundary"), b("Frontier"), b("Geopolitics"), b("International Organizations")])
+                    ], "Where people live, work, and organise power."),
+                    b("3. Indian Physical Geography", [
+                        b("Physiographic Divisions of India", [
+                            b("Himalayas", [b("Greater Himalaya"), b("Lesser Himalaya"), b("Shiwalik")]),
+                            b("Northern Plains"),
+                            b("Peninsular Plateau"),
+                            b("Indian Desert"),
+                            b("Coastal Plains"),
+                            b("Islands", [b("Andaman and Nicobar"), b("Lakshadweep")])
+                        ]),
+                        b("Drainage System", [
+                            b("Himalayan Rivers", [b("Indus"), b("Ganga"), b("Brahmaputra")]),
+                            b("Peninsular Rivers", [b("Godavari"), b("Krishna"), b("Kaveri"), b("Narmada")])
+                        ]),
+                        b("Indian Climate", [b("Winter Season"), b("Summer Season"), b("Southwest Monsoon"), b("Retreating Monsoon")]),
+                        b("Soils of India", [b("Alluvial Soil"), b("Black Soil"), b("Red Soil"), b("Laterite Soil"), b("Desert Soil"), b("Mountain Soil")]),
+                        b("Natural Vegetation of India", [b("Tropical Evergreen"), b("Deciduous"), b("Thorn"), b("Montane"), b("Mangrove")]),
+                        b("Natural Hazards", [b("Earthquake"), b("Flood"), b("Drought"), b("Cyclone"), b("Tsunami")])
+                    ], "Relief, rivers, seasons, soil, forests, and hazards."),
+                    b("4. Indian Human & Economic Geography", [
+                        b("Agriculture", [
+                            b("Kharif Crops", [b("Rice"), b("Maize"), b("Cotton")]),
+                            b("Rabi Crops", [b("Wheat"), b("Gram"), b("Mustard")]),
+                            b("Zaid Crops"),
+                            b("Types of Farming", [b("Subsistence Farming"), b("Commercial Farming"), b("Plantation Farming")])
+                        ]),
+                        b("Minerals and Energy Resources", [
+                            b("Coal"), b("Petroleum"), b("Natural Gas"), b("Iron Ore"), b("Bauxite"),
+                            b("Renewable Energy", [b("Solar"), b("Wind"), b("Hydel")])
+                        ]),
+                        b("Industries", [b("Iron and Steel"), b("Cotton Textile"), b("Jute"), b("Sugar"), b("Automobile"), b("IT Industry")]),
+                        b("Transport and Communication", [b("Golden Quadrilateral"), b("National Highways"), b("Railways"), b("Ports"), b("Airports"), b("Communication Network")]),
+                        b("Population of India", [b("Census"), b("Literacy"), b("Sex Ratio"), b("Urbanization"), b("Migration")])
+                    ], "What India grows, mines, makes, and how people move."),
+                    b("5. Map-Based Geography (Important for UPSC)", [
+                        b("Mountains", [b("Himalayas"), b("Aravalli"), b("Vindhya"), b("Satpura"), b("Western Ghats")]),
+                        b("Rivers", [b("Ganga"), b("Yamuna"), b("Brahmaputra"), b("Narmada"), b("Godavari"), b("Kaveri")]),
+                        b("Passes", [b("Nathu La"), b("Shipki La"), b("Zoji La"), b("Bomdi La")]),
+                        b("Straits and Seas", [b("Palk Strait"), b("Malacca Strait"), b("Arabian Sea"), b("Bay of Bengal"), b("Indian Ocean")]),
+                        b("Important Locations", [b("Tropic of Cancer"), b("Standard Meridian of India"), b("IST Longitude – 82°30′ E"), b("Indian States and Capitals")])
+                    ], "Place these on a blank map until the locations stay."),
+                    b("6. Salient features of World’s Physical Geography", [
+                        b("Geomorphology", [
+                            b("Origin & Evolution of Earth"),
+                            b("Interior of the Earth"),
+                            b("Distribution of Continents & Oceans"),
+                            b("Plate Tectonic Theory"),
+                            b("Distribution of Earthquakes & Volcanoes"),
+                            b("Rocks & Rock Cycle"),
+                            b("Geomorphic Processes – Endogenic & Exogenic"),
+                            b("Landforms & their Evolution"),
+                            b("Geological Time Scale")
+                        ]),
+                        b("Oceanography", [
+                            b("Hydrological Cycle"),
+                            b("Seafloor Spreading"),
+                            b("Ocean Floor Configuration"),
+                            b("Temperature & Salinity of Oceans"),
+                            b("Movement of Oceans – Waves, Tides, Currents")
+                        ]),
+                        b("Climatology", [
+                            b("Earth’s Atmosphere – Composition & Structure"),
+                            b("Solar Radiation, Heat Budget & Temperature"),
+                            b("Atmospheric Circulation & Weather Systems"),
+                            b("World Climate (examples)")
+                        ]),
+                        b("Soil Geography", [
+                            b("Soil & Soil Contents"),
+                            b("Process of Soil Formation"),
+                            b("Soil Forming Factors"),
+                            b("Types of Soils (examples)"),
+                            b("Soil Erosion & Conservation")
+                        ])
+                    ], "Name the process, then one place it shows up."),
+                    b("7. Distribution of Key Natural Resources across the world (including South Asia and the Indian sub-continent)", [
+                        b("Types of Resources", [b("On the Basis of Origin, Ownership, Exhaustability etc.")]),
+                        b("Land Resources", [b("Land Utilisation"), b("Land Use Pattern"), b("Land Degradation & Conservation")]),
+                        b("Forest Resources", [b("Types & Distribution – Grasslands, Forests etc."), b("Causes of Depletion"), b("Conservation of Forests")]),
+                        b("Water Resources", [b("Marine & Freshwater"), b("Water Scarcity & Need For Conservation"), b("Integrated Water Resources Management")]),
+                        b("Agricultural Resources", [b("Types of Farming"), b("Cropping Patterns"), b("Contribution to Economy, Employment & Output"), b("Food Security")]),
+                        b("Mineral & Energy Resources", [
+                            b("Classification of Minerals – Ferrous & Non-Ferrous"),
+                            b("Occurrence of Minerals"),
+                            b("Conservation of Minerals"),
+                            b("Classification of Energy Resources – Conventional & Non-Conventional"),
+                            b("Occurrence of Energy Resources"),
+                            b("Conservation of Energy Resources")
+                        ])
+                    ], "Where it is found, why it is there, and what happens when it runs short."),
+                    b("8. Factors responsible for the location of primary, secondary, and tertiary sector industries in various parts of the world (including India)", [
+                        b("Classification of Industries"),
+                        b("Location & Distribution of the Industries on the Basis of", [
+                            b("Raw Material"),
+                            b("Labour"),
+                            b("Market"),
+                            b("Capital"),
+                            b("Land"),
+                            b("Grants & Financial Incentives"),
+                            b("Power"),
+                            b("Transport"),
+                            b("Water"),
+                            b("Communication")
+                        ]),
+                        b("Distribution of Major Industries – Iron & Steel, IT, Cotton Textile"),
+                        b("Agglomeration & Footloose Industries")
+                    ], "Raw material, power, labour, market, and transport decide the pin on the map."),
+                    b("9. Important Geophysical Phenomena such as earthquakes, Tsunami, Volcanic activity, cyclone etc.", [
+                        b("Earthquakes", [b("Why Does Earth Shake?"), b("Earthquake Waves"), b("Shadow Zone"), b("Types of Earthquake"), b("Measuring Earthquake"), b("Effects of Earthquake")]),
+                        b("Tsunami", [b("What Causes Tsunami"), b("Effect of Tsunami"), b("Mitigating the Impact of Tsunami")]),
+                        b("Volcanoes", [b("Types of Volcanoes"), b("What Causes Volcanoes?"), b("Volcanic Landforms"), b("Intrusive volcanic Landforms"), b("Extrusive Volcanic Landforms"), b("Distribution of Volcanoes")]),
+                        b("Cyclone", [b("Tropical Cyclones"), b("Anti-Cyclone"), b("Extra Tropical Cyclones")]),
+                        b("Factors Causing Changes in Critical Geographical Features"),
+                        b("Examples of Changing Geographical Features - Melting of Ice Sheets, Desertification etc."),
+                        b("Impact of Changing Geographical Features"),
+                        b("Physical Geography of India", [b("Physiography of India"), b("Drainage System"), b("Climate"), b("Soils in India"), b("Natural Vegetation")]),
+                        b("Human Geography", [b("Demography"), b("Urbanization"), b("Census")]),
+                        b("Economic Geography", [b("Agriculture"), b("Mineral resource"), b("Energy resources"), b("Industry"), b("Transport and Communication")])
+                    ], "Cause, the feature it changes, and the effect on water, ice, and life.")
+                ]
+            },
+            society: {
+                flow: ["Diversity", "Women", "Population", "Poverty", "City life", "Social stress"],
+                priority: ["Unity in diversity", "Women and SHGs", "Demographic dividend", "Poverty and hunger", "Urbanisation", "Globalisation", "Communalism", "Regionalism", "Secularism"],
+                tree: [
+                    b("Diversity of India", [b("Caste"), b("Language"), b("Religion"), b("Tribe and ethnicity"), b("Unity in diversity"), b("Inequality and exclusion")], "What holds a varied society together, and where it frays."),
+                    b("Women", [b("Women’s organisations"), b("Reform movements"), b("Role in the freedom struggle"), b("SHGs and microfinance"), b("Problems the organisations face")], "From participation to the institutions that carry it."),
+                    b("Population", [b("Growth and age structure"), b("Demographic dividend"), b("Ageing"), b("Population policy")], "Numbers only matter with the age structure behind them."),
+                    b("Poverty and cities", [b("Poverty line and types"), b("Urban poverty"), b("Slums"), b("Urban local bodies"), b("Service delivery")], "Poverty and the city are one GS I cluster."),
+                    b("Globalisation and empowerment", [b("Culture and glocalisation"), b("Impact on women and farming"), b("Disadvantaged groups"), b("What empowerment policies try to do")]),
+                    b("Fault lines", [b("Communalism"), b("Regionalism and sons of the soil"), b("Secularism and the uniform civil code")], "Name the cause, the consequence, and one remedy.")
+                ]
+            },
+            polity: {
+                flow: ["Constitution", "Federalism", "Three organs", "Bodies", "Welfare", "Neighbourhood"],
+                priority: ["Basic structure", "Federalism and the Governor", "Parliament", "Judiciary", "Constitutional bodies", "Welfare schemes", "E-governance and RTI", "Civil services", "Neighbourhood and institutions"],
+                tree: [
+                    b("Constitution", [b("Acts from 1773 to 1947"), b("Features"), b("Fundamental rights"), b("Directive principles"), b("Amendments"), b("Basic structure")], "One line: how the text was made, and what cannot be amended away."),
+                    b("Union, states, and local bodies", [b("Seventh Schedule"), b("Centre-state relations"), b("Governor and emergency"), b("Sarkaria and Punchhi"), b("Panchayats and the 11th and 12th Schedules")], "Who legislates, who spends, and who is left with the scheme."),
+                    b("Organs", [b("Separation of powers"), b("Parliament and state legislatures"), b("President, Prime Minister, Governor, Chief Minister"), b("Supreme Court and High Courts"), b("Pressure groups")], "Compare the Indian scheme with another country in one paragraph."),
+                    b("Bodies and elections", [b("Representation of the People Act"), b("Election Commission"), b("UPSC and Finance Commission"), b("CAG"), b("Statutory and regulatory bodies")]),
+                    b("Welfare and governance", [b("Health, education, poverty"), b("NGOs and SHGs"), b("E-governance"), b("Citizens’ charter"), b("RTI and Lokpal"), b("Civil services")], "A scheme question needs design, performance, and one fix."),
+                    b("International relations", [b("Neighbourhood"), b("Regional and global groupings"), b("Diaspora"), b("Structure and mandate of institutions")], "Interest of India first, then the forum.")
+                ]
+            },
+            economy: {
+                flow: ["Economy", "Basic concepts", "National income", "Planning", "Poverty and unemployment", "Agriculture, industry, services", "Money and banking", "Budget and taxation", "External sector", "Social sector"],
+                priority: [
+                    "GDP, GVA, National Income",
+                    "Inflation and RBI Monetary Policy",
+                    "Budget, Fiscal Deficit and GST",
+                    "Poverty and Unemployment",
+                    "Agriculture and MSP",
+                    "LPG Reforms 1991",
+                    "Banking and Financial Inclusion",
+                    "Balance of Payments and Exchange Rate",
+                    "FDI vs FPI",
+                    "Current Economic Affairs"
+                ],
+                tree: [
+                    b("1. Basic Economic Concepts", [
+                        b("Economy", [b("Capitalist Economy"), b("Socialist Economy"), b("Mixed Economy")]),
+                        b("Factors of Production", [b("Land"), b("Labour"), b("Capital"), b("Entrepreneurship")]),
+                        b("Types of Goods", [b("Consumer Goods"), b("Capital Goods"), b("Public Goods"), b("Private Goods")]),
+                        b("Demand and Supply", [b("Law of Demand"), b("Law of Supply"), b("Elasticity"), b("Market Equilibrium")]),
+                        b("Market Structure", [b("Perfect Competition"), b("Monopoly"), b("Monopolistic Competition"), b("Oligopoly")])
+                    ], "Name the system, then who owns the factors."),
+                    b("2. National Income", [
+                        b("GDP (Gross Domestic Product)", [b("Nominal GDP"), b("Real GDP"), b("GDP Deflator")]),
+                        b("GNP (Gross National Product)"),
+                        b("NNP (Net National Product)"),
+                        b("NDP (Net Domestic Product)"),
+                        b("Per Capita Income"),
+                        b("National Income Methods", [b("Production Method"), b("Income Method"), b("Expenditure Method")]),
+                        b("Sectoral Contribution", [b("Primary Sector"), b("Secondary Sector"), b("Tertiary Sector")])
+                    ], "Say which measure, at what prices, and which sector."),
+                    b("3. Economic Growth and Development", [
+                        b("Economic Growth"),
+                        b("Economic Development"),
+                        b("Human Development Index (HDI)"),
+                        b("Sustainable Development"),
+                        b("Inclusive Growth"),
+                        b("Green Economy")
+                    ]),
+                    b("4. Planning in India", [
+                        b("Planning Commission – 1950"),
+                        b("Five Year Plans", [
+                            b("First Plan (1951–56)"),
+                            b("Second Plan (1956–61)"),
+                            b("Third Plan (1961–66)"),
+                            b("Plan Holiday (1966–69)"),
+                            b("Fourth Plan (1969–74)"),
+                            b("Fifth Plan (1974–79)"),
+                            b("Sixth Plan (1980–85)"),
+                            b("Seventh Plan (1985–90)"),
+                            b("Eighth Plan (1992–97)"),
+                            b("Ninth Plan (1997–2002)"),
+                            b("Tenth Plan (2002–07)"),
+                            b("Eleventh Plan (2007–12)"),
+                            b("Twelfth Plan (2012–17)")
+                        ]),
+                        b("NITI Aayog – 2015")
+                    ]),
+                    b("5. Poverty and Unemployment", [
+                        b("Poverty", [b("Absolute Poverty"), b("Relative Poverty"), b("Poverty Line"), b("Multidimensional Poverty")]),
+                        b("Unemployment", [b("Open Unemployment"), b("Seasonal Unemployment"), b("Disguised Unemployment"), b("Structural Unemployment"), b("Frictional Unemployment")]),
+                        b("Government Programmes", [b("MGNREGA"), b("PM Garib Kalyan Yojana"), b("Skill India")])
+                    ]),
+                    b("6. Agriculture", [
+                        b("Importance of Agriculture"),
+                        b("Types of Farming", [b("Subsistence Farming"), b("Commercial Farming"), b("Plantation Farming")]),
+                        b("Cropping Seasons", [b("Kharif"), b("Rabi"), b("Zaid")]),
+                        b("Major Crops", [b("Rice"), b("Wheat"), b("Sugarcane"), b("Cotton"), b("Tea"), b("Coffee")]),
+                        b("Green Revolution"),
+                        b("Irrigation"),
+                        b("MSP (Minimum Support Price)"),
+                        b("Agricultural Marketing"),
+                        b("Agricultural Reforms")
+                    ]),
+                    b("7. Industry", [
+                        b("Types of Industries", [b("Agro-based"), b("Mineral-based"), b("Small Scale"), b("Large Scale")]),
+                        b("Industrial Policy", [b("1948"), b("1956"), b("1991")]),
+                        b("LPG Reforms – 1991", [b("Liberalization"), b("Privatization"), b("Globalization")]),
+                        b("MSME"),
+                        b("Make in India"),
+                        b("Startup India")
+                    ], "1991 is liberalise, privatise, and open."),
+                    b("8. Service Sector", [
+                        b("Trade"), b("Transport"), b("Tourism"), b("Banking"), b("Insurance"), b("IT Sector"), b("Digital Economy")
+                    ]),
+                    b("9. Money and Banking", [
+                        b("Money", [b("Functions of Money"), b("Fiat Money"), b("Credit Money")]),
+                        b("Banking System", [b("Commercial Banks"), b("Cooperative Banks"), b("Regional Rural Banks")]),
+                        b("Reserve Bank of India (RBI)", [b("Monetary Policy"), b("Repo Rate"), b("Reverse Repo Rate"), b("CRR"), b("SLR"), b("Open Market Operations")]),
+                        b("Inflation", [b("Demand Pull Inflation"), b("Cost Push Inflation"), b("CPI and WPI")]),
+                        b("Financial Inclusion", [b("Jan Dhan Yojana"), b("UPI"), b("Digital Payments")])
+                    ], "A rate cut is a story about inflation, credit, and who gets left out."),
+                    b("10. Public Finance", [
+                        b("Budget", [b("Revenue Budget"), b("Capital Budget"), b("Fiscal Deficit")]),
+                        b("Taxation", [b("Direct Tax"), b("Indirect Tax"), b("GST")]),
+                        b("Public Expenditure"),
+                        b("Public Debt"),
+                        b("FRBM Act")
+                    ]),
+                    b("11. External Sector", [
+                        b("Foreign Trade", [b("Exports"), b("Imports"), b("Balance of Trade")]),
+                        b("Balance of Payments", [b("Current Account"), b("Capital Account")]),
+                        b("Foreign Exchange"),
+                        b("Exchange Rate"),
+                        b("FDI"),
+                        b("FPI"),
+                        b("WTO"),
+                        b("IMF"),
+                        b("World Bank")
+                    ], "FDI builds. FPI can leave."),
+                    b("12. Inclusive and Social Sector", [
+                        b("Education"),
+                        b("Health"),
+                        b("Food Security", [b("PDS"), b("NFSA"), b("Mid-Day Meal")]),
+                        b("Social Security", [b("EPFO"), b("Pension"), b("Ayushman Bharat")]),
+                        b("Women and Child Development")
+                    ]),
+                    b("13. Environment and Economy", [
+                        b("Sustainable Development"),
+                        b("Climate Finance"),
+                        b("Carbon Tax"),
+                        b("Renewable Energy"),
+                        b("Circular Economy"),
+                        b("Green GDP")
+                    ]),
+                    b("14. Current Economy Topics for UPSC", [
+                        b("Inflation"),
+                        b("GDP Growth"),
+                        b("Unemployment"),
+                        b("GST Collections"),
+                        b("Fiscal Deficit"),
+                        b("Digital Rupee"),
+                        b("Semiconductor Mission"),
+                        b("PLI Scheme"),
+                        b("Startup Ecosystem"),
+                        b("India’s Manufacturing and Service Growth")
+                    ], "Pair the headline with the concept it tests.")
+                ]
+            },
+            history: {
+                flows: [
+                    ["Ancient", "Indus", "Vedic", "Mahajanapada", "Maurya", "Gupta"],
+                    ["Medieval", "Rajputs", "Delhi Sultanate", "Vijayanagara", "Mughals", "Marathas"],
+                    ["Modern", "British", "1857", "Congress", "Gandhi", "Independence"]
+                ],
+                battles: [
+                    { year: "326 BCE", name: "Battle of Hydaspes", note: "Alexander vs Porus" },
+                    { year: "261 BCE", name: "Kalinga War", note: "Ashoka" },
+                    { year: "1191 CE", name: "First Battle of Tarain", note: "Prithviraj Chauhan defeated Ghori" },
+                    { year: "1192 CE", name: "Second Battle of Tarain", note: "Ghori defeated Prithviraj" },
+                    { year: "1526 CE", name: "First Battle of Panipat", note: "Babur defeated Ibrahim Lodi" },
+                    { year: "1556 CE", name: "Second Battle of Panipat", note: "Akbar defeated Hemu" },
+                    { year: "1761 CE", name: "Third Battle of Panipat", note: "Ahmad Shah Abdali vs Marathas" },
+                    { year: "1757 CE", name: "Battle of Plassey", note: "British rule begins" },
+                    { year: "1764 CE", name: "Battle of Buxar", note: "British supremacy established" },
+                    { year: "1857 CE", name: "Revolt of 1857", note: "" }
+                ],
+                tree: [
+                    b("Ancient History (Prehistory – 700 CE)", [
+                        b("Prehistoric Age", [
+                            b("Paleolithic Age (2,000,000 BCE – 10,000 BCE)", [b("Hunter-gatherers, stone tools")]),
+                            b("Mesolithic Age (10,000 BCE – 6,000 BCE)", [b("Microliths, beginning of settlements")]),
+                            b("Neolithic Age (6,000 BCE – 1,000 BCE)", [b("Agriculture, domestication, pottery")])
+                        ]),
+                        b("Chalcolithic Age (3000 BCE – 1000 BCE)", [b("Copper and stone tools used together")]),
+                        b("Indus Valley Civilization (2600 BCE – 1900 BCE)", [
+                            b("Major Cities:", [b("Harappa"), b("Mohenjo-daro"), b("Dholavira"), b("Lothal")]),
+                            b("Features:", [b("Urban planning"), b("Drainage system"), b("Trade with Mesopotamia")]),
+                            b("Decline: around 1900 BCE")
+                        ]),
+                        b("Vedic Age (1500 BCE – 600 BCE)", [
+                            b("Early Vedic Period (1500 BCE – 1000 BCE)", [b("Rig Veda composed"), b("Tribal kingdoms")]),
+                            b("Later Vedic Period (1000 BCE – 600 BCE)", [b("Expansion into Ganga valley"), b("Iron usage"), b("Rise of Janapadas")])
+                        ]),
+                        b("Mahajanapadas (600 BCE – 321 BCE)", [
+                            b("16 Mahajanapadas"),
+                            b("Important Kingdoms:", [b("Magadha"), b("Kosala"), b("Avanti"), b("Vatsa")]),
+                            b("Haryanka Dynasty (544 BCE – 413 BCE)", [b("Bimbisara (544 BCE – 492 BCE)"), b("Ajatashatru (492 BCE – 460 BCE)")]),
+                            b("Shishunaga Dynasty (413 BCE – 345 BCE)"),
+                            b("Nanda Dynasty (345 BCE – 321 BCE)", [b("Mahapadma Nanda")])
+                        ]),
+                        b("Religious Reform Movements (6th Century BCE)", [
+                            b("Jainism", [b("Mahavira (599 BCE – 527 BCE)")]),
+                            b("Buddhism", [b("Gautama Buddha (563 BCE – 483 BCE)")])
+                        ]),
+                        b("Persian and Greek Invasions", [
+                            b("Persian Invasion – Darius I (518 BCE)"),
+                            b("Alexander's Invasion (326 BCE)")
+                        ]),
+                        b("Mauryan Empire (321 BCE – 185 BCE)", [
+                            b("Chandragupta Maurya (321 BCE – 297 BCE)", [b("Founded Mauryan Empire with Chanakya")]),
+                            b("Bindusara (297 BCE – 273 BCE)"),
+                            b("Ashoka (268 BCE – 232 BCE)", [b("Kalinga War – 261 BCE"), b("Spread of Buddhism"), b("Rock and Pillar Edicts")])
+                        ]),
+                        b("Post-Mauryan Period (185 BCE – 300 CE)", [
+                            b("Shunga Dynasty (185 BCE – 73 BCE)", [b("Pushyamitra Shunga")]),
+                            b("Kanva Dynasty (73 BCE – 28 BCE)"),
+                            b("Indo-Greeks (2nd Century BCE)", [b("Menander / Milinda")]),
+                            b("Sakas (1st Century BCE – 4th Century CE)"),
+                            b("Parthians"),
+                            b("Kushana Empire (1st Century CE – 3rd Century CE)", [b("Kanishka (78 CE – 101 CE)")]),
+                            b("Satavahana Dynasty (1st Century BCE – 3rd Century CE)", [b("Gautamiputra Satakarni")])
+                        ]),
+                        b("Sangam Age (300 BCE – 300 CE)", [b("Chera Kingdom"), b("Chola Kingdom"), b("Pandya Kingdom")]),
+                        b("Gupta Age (300 CE – 550 CE)", [
+                            b("Gupta Dynasty Founded – 320 CE"),
+                            b("Chandragupta I (320 CE – 335 CE)"),
+                            b("Samudragupta (335 CE – 375 CE)", [b("Called “Napoleon of India”")]),
+                            b("Chandragupta II Vikramaditya (375 CE – 415 CE)"),
+                            b("Kumaragupta (415 CE – 455 CE)"),
+                            b("Skandagupta (455 CE – 467 CE)"),
+                            b("Golden Age of India", [b("Aryabhata"), b("Kalidasa"), b("Fa-Hien visited India")]),
+                            b("Decline after Hun invasions")
+                        ])
+                    ], "From stone tools to the Gupta court."),
+                    b("Medieval History (700 CE – 1707 CE)", [
+                        b("Early Medieval India (700 CE – 1200 CE)", [
+                            b("Harsha Empire (606 CE – 647 CE)", [b("Harshavardhana")]),
+                            b("Rajput Kingdoms", [
+                                b("Pratiharas"),
+                                b("Paramaras"),
+                                b("Chauhans", [b("Prithviraj Chauhan (1178 CE – 1192 CE)")]),
+                                b("Solankis")
+                            ]),
+                            b("Chalukyas", [b("Pulakesin II (610 CE – 642 CE)")]),
+                            b("Pallavas", [b("Narasimhavarman I")]),
+                            b("Rashtrakutas (753 CE – 973 CE)", [b("Amoghavarsha")]),
+                            b("Palas (750 CE – 1174 CE)", [b("Dharmapala")]),
+                            b("Pratiharas (730 CE – 1036 CE)"),
+                            b("Chola Empire (850 CE – 1279 CE)", [b("Vijayalaya Chola"), b("Rajaraja Chola I (985 CE – 1014 CE)"), b("Rajendra Chola I (1014 CE – 1044 CE)")])
+                        ]),
+                        b("Arab and Turkish Invasions", [
+                            b("Arab Invasion of Sindh – 712 CE", [b("Muhammad bin Qasim")]),
+                            b("Mahmud of Ghazni – 17 invasions (1000 CE – 1027 CE)"),
+                            b("Muhammad Ghori", [b("First Battle of Tarain – 1191 CE"), b("Second Battle of Tarain – 1192 CE")])
+                        ]),
+                        b("Delhi Sultanate (1206 CE – 1526 CE)", [
+                            b("Slave Dynasty (1206 CE – 1290 CE)", [b("Qutb-ud-din Aibak (1206 CE – 1210 CE)"), b("Iltutmish (1211 CE – 1236 CE)"), b("Razia Sultan (1236 CE – 1240 CE)")]),
+                            b("Khilji Dynasty (1290 CE – 1320 CE)", [b("Jalal-ud-din Khilji"), b("Alauddin Khilji (1296 CE – 1316 CE)")]),
+                            b("Tughlaq Dynasty (1320 CE – 1414 CE)", [b("Ghiyasuddin Tughlaq"), b("Muhammad bin Tughlaq"), b("Firoz Shah Tughlaq")]),
+                            b("Sayyid Dynasty (1414 CE – 1451 CE)"),
+                            b("Lodi Dynasty (1451 CE – 1526 CE)", [b("Ibrahim Lodi")])
+                        ]),
+                        b("Vijayanagara Empire (1336 CE – 1646 CE)", [b("Founded by Harihara and Bukka"), b("Krishnadevaraya (1509 CE – 1529 CE)"), b("Battle of Talikota – 1565 CE")]),
+                        b("Bahmani Kingdom (1347 CE – 1527 CE)", [b("Later split into Deccan Sultanates")]),
+                        b("Mughal Empire (1526 CE – 1707 CE)", [
+                            b("Babur (1526 CE – 1530 CE)", [b("First Battle of Panipat – 1526 CE")]),
+                            b("Humayun (1530 CE – 1540 CE, 1555 CE – 1556 CE)"),
+                            b("Sher Shah Suri (1540 CE – 1545 CE)", [b("Grand Trunk Road")]),
+                            b("Akbar (1556 CE – 1605 CE)", [b("Second Battle of Panipat – 1556 CE"), b("Din-i-Ilahi"), b("Navaratnas")]),
+                            b("Jahangir (1605 CE – 1627 CE)"),
+                            b("Shah Jahan (1628 CE – 1658 CE)", [b("Taj Mahal built – 1632 CE – 1653 CE")]),
+                            b("Aurangzeb (1658 CE – 1707 CE)", [b("Mughal Empire reached greatest extent")])
+                        ]),
+                        b("Rise of Regional Powers", [
+                            b("Maratha Empire", [b("Shivaji Maharaj (1674 CE – 1680 CE)"), b("Coronation – 1674 CE")]),
+                            b("Sikh Power", [b("Guru Gobind Singh (1666 CE – 1708 CE)")]),
+                            b("Jat and Rajput States")
+                        ])
+                    ], "From Harsha and the Cholas to Aurangzeb."),
+                    b("Modern History (1707 CE – 1947 CE)", [
+                        b("Decline of Mughal Empire (After 1707 CE)", [b("Death of Aurangzeb – 1707 CE")]),
+                        b("European Powers in India", [
+                            b("Portuguese arrive – 1498 CE", [b("Vasco da Gama reached Calicut")]),
+                            b("Dutch arrive – 1605 CE"),
+                            b("English East India Company – 1600 CE"),
+                            b("French East India Company – 1664 CE")
+                        ]),
+                        b("British Expansion", [
+                            b("Battle of Plassey – 1757 CE", [b("Robert Clive"), b("Siraj-ud-Daulah")]),
+                            b("Battle of Buxar – 1764 CE"),
+                            b("Warren Hastings – Governor General (1773 CE)"),
+                            b("Subsidiary Alliance – Lord Wellesley"),
+                            b("Doctrine of Lapse – Lord Dalhousie")
+                        ]),
+                        b("Important Governor-Generals / Viceroys", [
+                            b("Lord Cornwallis (1786 CE – 1793 CE)"),
+                            b("Lord Wellesley (1798 CE – 1805 CE)"),
+                            b("Lord William Bentinck (1828 CE – 1835 CE)", [b("Abolition of Sati – 1829 CE")]),
+                            b("Lord Dalhousie (1848 CE – 1856 CE)"),
+                            b("Lord Canning (1856 CE – 1862 CE)"),
+                            b("Lord Curzon (1899 CE – 1905 CE)", [b("Partition of Bengal – 1905 CE")]),
+                            b("Lord Mountbatten (1947 CE)")
+                        ]),
+                        b("Revolt of 1857", [
+                            b("Started at Meerut – 10 May 1857"),
+                            b("Bahadur Shah II declared emperor"),
+                            b("Rani Lakshmibai"),
+                            b("Tantia Tope"),
+                            b("Ended – 1858 CE")
+                        ]),
+                        b("Social and Religious Reform Movements", [
+                            b("Raja Ram Mohan Roy", [b("Brahmo Samaj – 1828 CE")]),
+                            b("Swami Dayanand Saraswati", [b("Arya Samaj – 1875 CE")]),
+                            b("Ramakrishna Paramahamsa"),
+                            b("Swami Vivekananda", [b("Ramakrishna Mission – 1897 CE")]),
+                            b("Sir Syed Ahmed Khan", [b("Aligarh Movement")])
+                        ]),
+                        b("Indian National Movement", [
+                            b("Indian National Congress formed – 1885 CE", [b("A.O. Hume")]),
+                            b("Moderate Phase (1885 CE – 1905 CE)", [b("Dadabhai Naoroji"), b("Gopal Krishna Gokhale"), b("Surendranath Banerjee")]),
+                            b("Extremist Phase (1905 CE – 1919 CE)", [b("Bal Gangadhar Tilak"), b("Bipin Chandra Pal"), b("Lala Lajpat Rai")]),
+                            b("Partition of Bengal – 1905 CE"),
+                            b("Swadeshi Movement – 1905 CE"),
+                            b("Muslim League formed – 1906 CE"),
+                            b("Surat Split – 1907 CE"),
+                            b("Home Rule Movement – 1916 CE", [b("Annie Besant"), b("Bal Gangadhar Tilak")]),
+                            b("Lucknow Pact – 1916 CE")
+                        ]),
+                        b("Gandhian Era (1915 CE – 1947 CE)", [
+                            b("Mahatma Gandhi returned to India – 1915 CE"),
+                            b("Champaran Satyagraha – 1917 CE"),
+                            b("Kheda Satyagraha – 1918 CE"),
+                            b("Rowlatt Act – 1919 CE"),
+                            b("Jallianwala Bagh Massacre – 1919 CE"),
+                            b("Non-Cooperation Movement – 1920 CE – 1922 CE"),
+                            b("Chauri Chaura Incident – 1922 CE"),
+                            b("Simon Commission – 1928 CE"),
+                            b("Civil Disobedience Movement – 1930 CE – 1934 CE", [b("Dandi March – 1930 CE")]),
+                            b("Round Table Conferences – 1930 CE – 1932 CE"),
+                            b("Government of India Act – 1935 CE"),
+                            b("Quit India Movement – 1942 CE"),
+                            b("Cabinet Mission – 1946 CE")
+                        ]),
+                        b("Revolutionary Activities", [
+                            b("Bhagat Singh"),
+                            b("Chandrashekhar Azad"),
+                            b("Surya Sen"),
+                            b("Subhas Chandra Bose", [b("INA formed – 1943 CE")])
+                        ]),
+                        b("Independence and Partition", [
+                            b("Mountbatten Plan – 3 June 1947"),
+                            b("Indian Independence Act – July 1947"),
+                            b("India became independent – 15 August 1947"),
+                            b("Jawaharlal Nehru became first Prime Minister"),
+                            b("Partition of India and Pakistan – 1947")
+                        ])
+                    ], "Company, Crown, Congress, and 15 August 1947.")
+                ]
+            },
+            constitution: {
+                flow: ["Historical Acts", "Constituent Assembly", "Preamble", "Rights, DPSP, Duties", "President, PM, Parliament, Judiciary", "Federalism, states, local bodies", "Elections, emergency, amendments"],
+                priority: [
+                    "Fundamental Rights and Writs",
+                    "DPSP vs Fundamental Rights",
+                    "President vs Prime Minister",
+                    "Parliament and Money Bill",
+                    "Supreme Court and Judicial Review",
+                    "Federalism and Centre-State Relations",
+                    "Emergency Provisions",
+                    "Constitutional Amendments",
+                    "Panchayati Raj and Municipalities",
+                    "Important Articles and Schedules"
+                ],
+                tree: [
+                    b("1. Historical Background", [
+                        b("Regulating Act – 1773"),
+                        b("Pitt’s India Act – 1784"),
+                        b("Charter Acts", [b("Charter Act – 1813"), b("Charter Act – 1833"), b("Charter Act – 1853")]),
+                        b("Government of India Act – 1858"),
+                        b("Indian Councils Act – 1861"),
+                        b("Indian Councils Act – 1892"),
+                        b("Morley-Minto Reforms – 1909"),
+                        b("Montagu-Chelmsford Reforms – 1919"),
+                        b("Government of India Act – 1935"),
+                        b("Indian Independence Act – 1947")
+                    ], "Each Act is one step from Company rule to the republic."),
+                    b("2. Making of the Constitution", [
+                        b("Cabinet Mission Plan – 1946"),
+                        b("Constituent Assembly formed – 1946"),
+                        b("First Meeting – 9 Dec 1946"),
+                        b("Temporary President – Sachchidananda Sinha"),
+                        b("Permanent President – Dr. Rajendra Prasad"),
+                        b("Drafting Committee formed – 29 Aug 1947", [b("Chairman – B. R. Ambedkar")]),
+                        b("Constitution Adopted – 26 Nov 1949"),
+                        b("Constitution Came into Force – 26 Jan 1950"),
+                        b("Sources of the Constitution", [
+                            b("UK → Parliamentary System"),
+                            b("USA → Fundamental Rights, Judicial Review"),
+                            b("Ireland → DPSP"),
+                            b("Canada → Federalism with strong Centre"),
+                            b("Australia → Concurrent List"),
+                            b("USSR → Fundamental Duties")
+                        ])
+                    ], "Who met, who drafted, and which country lent which idea."),
+                    b("3. Salient Features of the Constitution", [
+                        b("Lengthiest Written Constitution"),
+                        b("Parliamentary Government"),
+                        b("Federal System with Unitary Bias"),
+                        b("Single Citizenship"),
+                        b("Independent Judiciary"),
+                        b("Fundamental Rights"),
+                        b("Directive Principles of State Policy"),
+                        b("Fundamental Duties"),
+                        b("Secular State"),
+                        b("Universal Adult Franchise"),
+                        b("Emergency Provisions")
+                    ]),
+                    b("4. Preamble", [
+                        b("We, the People of India"),
+                        b("Sovereign"), b("Socialist"), b("Secular"), b("Democratic"), b("Republic"),
+                        b("Justice"), b("Liberty"), b("Equality"), b("Fraternity")
+                    ]),
+                    b("5. Union and its Territory", [
+                        b("Article 1 → India, that is Bharat"),
+                        b("Article 2 → Admission of New States"),
+                        b("Article 3 → Formation / Alteration of States"),
+                        b("Present Structure", [b("28 States"), b("8 Union Territories")])
+                    ]),
+                    b("6. Citizenship", [
+                        b("Articles 5–11"),
+                        b("Citizenship by Birth"),
+                        b("Citizenship by Descent"),
+                        b("Citizenship by Registration"),
+                        b("Citizenship by Naturalization"),
+                        b("Citizenship Act – 1955")
+                    ]),
+                    b("7. Fundamental Rights (Part III)", [
+                        b("Right to Equality (Art. 14–18)", [b("Equality before Law"), b("No Discrimination"), b("Abolition of Untouchability")]),
+                        b("Right to Freedom (Art. 19–22)", [b("Speech and Expression"), b("Assembly"), b("Association"), b("Movement"), b("Residence"), b("Profession")]),
+                        b("Right against Exploitation (Art. 23–24)"),
+                        b("Right to Freedom of Religion (Art. 25–28)"),
+                        b("Cultural and Educational Rights (Art. 29–30)"),
+                        b("Right to Constitutional Remedies (Art. 32)", [
+                            b("Writs", [b("Habeas Corpus"), b("Mandamus"), b("Prohibition"), b("Certiorari"), b("Quo Warranto")]),
+                            b("Called “Heart and Soul” by Ambedkar")
+                        ])
+                    ], "Rights, the article band, and the writ that enforces them."),
+                    b("8. Directive Principles of State Policy (Part IV)", [
+                        b("Socialistic Principles"),
+                        b("Gandhian Principles"),
+                        b("Liberal-Intellectual Principles"),
+                        b("Uniform Civil Code"),
+                        b("Equal Pay for Equal Work"),
+                        b("Free Legal Aid"),
+                        b("Protection of Environment")
+                    ]),
+                    b("9. Fundamental Duties (Part IVA)", [
+                        b("Added by 42nd Amendment – 1976"),
+                        b("Initially 10 Duties"),
+                        b("Presently 11 Duties")
+                    ]),
+                    b("10. Union Executive", [
+                        b("President", [
+                            b("Articles 52–62"),
+                            b("Election"),
+                            b("Powers", [b("Executive"), b("Legislative"), b("Judicial"), b("Financial"), b("Emergency")]),
+                            b("Veto Powers")
+                        ]),
+                        b("Vice President", [b("Articles 63–71"), b("Ex-officio Chairman of Rajya Sabha")]),
+                        b("Prime Minister", [b("Real Executive"), b("Head of Government"), b("Leader of Council of Ministers")]),
+                        b("Council of Ministers", [b("Cabinet Ministers"), b("Ministers of State"), b("Deputy Ministers")])
+                    ], "President is the head of state. The Prime Minister is the head of government."),
+                    b("11. Parliament", [
+                        b("President"),
+                        b("Rajya Sabha", [b("Maximum Strength – 250"), b("Present Strength – 245"), b("Permanent House")]),
+                        b("Lok Sabha", [b("Maximum Strength – 552"), b("Present Strength – 543"), b("Tenure – 5 Years")]),
+                        b("Parliamentary Procedures", [b("Question Hour"), b("Zero Hour"), b("Adjournment Motion"), b("No Confidence Motion"), b("Censure Motion")]),
+                        b("Types of Bills", [b("Ordinary Bill"), b("Money Bill"), b("Finance Bill"), b("Constitutional Amendment Bill")])
+                    ]),
+                    b("12. Judiciary", [
+                        b("Supreme Court", [b("Articles 124–147"), b("Chief Justice of India"), b("Original Jurisdiction"), b("Appellate Jurisdiction"), b("Advisory Jurisdiction"), b("Judicial Review")]),
+                        b("High Courts"),
+                        b("Subordinate Courts"),
+                        b("Public Interest Litigation (PIL)")
+                    ]),
+                    b("13. Federalism", [
+                        b("Union List"),
+                        b("State List"),
+                        b("Concurrent List"),
+                        b("Inter-State Council"),
+                        b("Zonal Councils"),
+                        b("Centre-State Relations", [b("Legislative"), b("Administrative"), b("Financial")])
+                    ]),
+                    b("14. State Government", [
+                        b("Governor"),
+                        b("Chief Minister"),
+                        b("State Council of Ministers"),
+                        b("State Legislature", [b("Legislative Assembly"), b("Legislative Council")]),
+                        b("High Court")
+                    ]),
+                    b("15. Local Government", [
+                        b("Panchayati Raj", [b("73rd Amendment – 1992"), b("Gram Panchayat"), b("Panchayat Samiti"), b("Zila Parishad")]),
+                        b("Urban Local Bodies", [b("74th Amendment – 1992"), b("Municipal Corporation"), b("Municipality"), b("Nagar Panchayat")])
+                    ]),
+                    b("16. Election System", [
+                        b("Election Commission of India"),
+                        b("Chief Election Commissioner"),
+                        b("Universal Adult Franchise"),
+                        b("First-Past-The-Post System"),
+                        b("Representation of People Act – 1950, 1951"),
+                        b("Anti-Defection Law", [b("52nd Amendment – 1985")])
+                    ]),
+                    b("17. Constitutional Bodies", [
+                        b("Election Commission"),
+                        b("UPSC"),
+                        b("Finance Commission"),
+                        b("CAG"),
+                        b("Attorney General of India"),
+                        b("National Commission for SC/ST")
+                    ]),
+                    b("18. Non-Constitutional / Statutory Bodies", [
+                        b("NITI Aayog"),
+                        b("NHRC"),
+                        b("CBI"),
+                        b("Lokpal"),
+                        b("CIC")
+                    ]),
+                    b("19. Emergency Provisions", [
+                        b("National Emergency (Art. 352)", [b("War"), b("External Aggression"), b("Armed Rebellion")]),
+                        b("President’s Rule (Art. 356)"),
+                        b("Financial Emergency (Art. 360)")
+                    ]),
+                    b("20. Constitutional Amendments", [
+                        b("42nd Amendment – 1976", [b("Socialist"), b("Secular"), b("Fundamental Duties")]),
+                        b("44th Amendment – 1978"),
+                        b("52nd Amendment – Anti Defection"),
+                        b("61st Amendment – Voting Age 18"),
+                        b("73rd Amendment – Panchayati Raj"),
+                        b("74th Amendment – Urban Local Bodies"),
+                        b("86th Amendment – Right to Education"),
+                        b("101st Amendment – GST"),
+                        b("103rd Amendment – 10% EWS Reservation")
+                    ], "Remember the number, the year, and the one change it made."),
+                    b("21. Important Articles for UPSC", [
+                        b("Art. 14 → Equality before Law"),
+                        b("Art. 19 → Freedom"),
+                        b("Art. 21 → Right to Life"),
+                        b("Art. 32 → Constitutional Remedies"),
+                        b("Art. 44 → Uniform Civil Code"),
+                        b("Art. 51A → Fundamental Duties"),
+                        b("Art. 72 → President’s Pardoning Power"),
+                        b("Art. 110 → Money Bill"),
+                        b("Art. 123 → Ordinance"),
+                        b("Art. 143 → Advisory Jurisdiction"),
+                        b("Art. 249 → Parliament on State Subject"),
+                        b("Art. 280 → Finance Commission"),
+                        b("Art. 324 → Election Commission"),
+                        b("Art. 352 → National Emergency"),
+                        b("Art. 356 → President’s Rule"),
+                        b("Art. 360 → Financial Emergency")
+                    ])
+                ]
+            },
+            science: {
+                flows: [
+                    ["Physics", "Motion", "Heat", "Waves", "Electricity", "Modern Physics"],
+                    ["Chemistry", "Atoms", "Bonds", "Reactions", "Materials", "Environment"],
+                    ["Biology", "Cell", "DNA", "Genetics", "Biotechnology", "Health"],
+                    ["Space", "Universe", "Orbits", "Launch vehicles", "Satellites", "Missions"],
+                    ["ICT", "Computers", "Networks", "AI", "Cybersecurity", "Digital public infrastructure"],
+                    ["Energy", "Fossil fuels", "Renewables", "Storage", "Hydrogen", "Smart grids"],
+                    ["India", "ISRO", "DRDO", "DAE", "DST / DBT / CSIR / ICMR / ICAR"],
+                    ["UPSC", "Static concepts", "Indian programmes", "Current affairs", "Ethics"]
+                ],
+                priority: [
+                    "Build basics from NCERT Science, Classes 6–10, then the relevant Class 11–12 chapters",
+                    "For each topic, note the principle, how it works, uses, limits, risks, and the Indian link",
+                    "Learn the science behind a headline before memorising the headline",
+                    "Prioritise space, biotechnology, health, AI and ICT, defence, nuclear energy, renewables, nanotechnology, and emerging technology",
+                    "Prelims needs distinctions and applications. Mains needs opportunities, challenges, ethics, and a way forward"
+                ],
+                battles: [
+                    { year: "1543", name: "Copernicus publishes heliocentric model" },
+                    { year: "1609", name: "Galileo’s telescopic astronomical observations" },
+                    { year: "1687", name: "Newton publishes laws of motion and gravitation" },
+                    { year: "1796", name: "Jenner’s smallpox vaccination experiment" },
+                    { year: "1831", name: "Faraday’s electromagnetic induction discovery" },
+                    { year: "1859", name: "Darwin publishes theory of evolution by natural selection" },
+                    { year: "1869", name: "Mendeleev’s periodic table" },
+                    { year: "1895", name: "X-rays discovered by Wilhelm Röntgen" },
+                    { year: "1896", name: "Radioactivity identified by Henri Becquerel" },
+                    { year: "1905", name: "Einstein’s special relativity papers" },
+                    { year: "1928", name: "Penicillin’s antibacterial effect observed by Fleming" },
+                    { year: "1942", name: "First controlled nuclear chain reaction" },
+                    { year: "1947", name: "Transistor demonstrated" },
+                    { year: "1953", name: "DNA double-helix structure proposed" },
+                    { year: "1957", name: "Sputnik 1, first artificial satellite" },
+                    { year: "1969", name: "Apollo 11 Moon landing" },
+                    { year: "1973", name: "First mobile-phone call using a handheld cellular phone" },
+                    { year: "1983", name: "TCP/IP becomes the foundation of the modern Internet" },
+                    { year: "1990", name: "Hubble Space Telescope launched" },
+                    { year: "1996", name: "Dolly the sheep, cloned from an adult somatic cell, is born" },
+                    { year: "2003", name: "Human Genome Project declared complete" },
+                    { year: "2012", name: "Higgs boson discovery announced" },
+                    { year: "2015", name: "Gravitational waves directly detected by LIGO" },
+                    { year: "2020", name: "First COVID-19 vaccines authorised for public use" },
+                    { year: "2022", name: "First images from the James Webb Space Telescope released" }
+                ],
+                india: [
+                    { year: "1920", name: "Tata Institute of Fundamental Research precursor context", note: "Indian scientific institutions expand in the 20th century" },
+                    { year: "1945", name: "Tata Institute of Fundamental Research (TIFR) established" },
+                    { year: "1948", name: "Atomic Energy Commission established" },
+                    { year: "1954", name: "Department of Atomic Energy established" },
+                    { year: "1960s", name: "India’s space research programme develops" },
+                    { year: "1975", name: "Aryabhata, India’s first satellite, launched" },
+                    { year: "1980", name: "Rohini satellite placed in orbit by an Indian launch vehicle" },
+                    { year: "1983", name: "Integrated Guided Missile Development Programme launched" },
+                    { year: "1988", name: "Chandipur-based Integrated Test Range development era" },
+                    { year: "2008", name: "Chandrayaan-1 launched", note: "evidence of lunar water molecules reported" },
+                    { year: "2013", name: "Mars Orbiter Mission launched" },
+                    { year: "2014", name: "Mars Orbiter Mission enters Mars orbit" },
+                    { year: "2016", name: "NavIC’s first-generation constellation reaches operational capability" },
+                    { year: "2019", name: "Chandrayaan-2 launched" },
+                    { year: "2023", name: "Chandrayaan-3 achieves a successful lunar soft landing" },
+                    { year: "2023", name: "Aditya-L1 launched to study the Sun" },
+                    { year: "2024", name: "Aditya-L1 enters its planned halo orbit around the Sun–Earth L1 region" },
+                    { year: "Ongoing", name: "Gaganyaan, human spaceflight preparations and other national R&D programmes" }
+                ],
+                pairs: [
+                    { topic: "Weather vs climate", note: "Short-term atmospheric conditions vs long-term patterns" },
+                    { topic: "Virus vs bacteria", note: "Viruses need host cells to replicate; bacteria are cellular organisms" },
+                    { topic: "Antibiotic vs vaccine", note: "Antibiotics act against susceptible bacteria; vaccines train immune responses" },
+                    { topic: "Fission vs fusion", note: "Splitting a heavy nucleus vs combining light nuclei" },
+                    { topic: "GPS vs NavIC", note: "Global satellite navigation system vs India’s regional navigation system" },
+                    { topic: "Radar vs sonar", note: "Radio waves vs sound waves" },
+                    { topic: "AI vs machine learning", note: "AI is the broader field; machine learning is one approach within it" },
+                    { topic: "Gene editing vs GM organism", note: "Editing changes targeted genetic sequences; GM is a broad category involving genetic modification" },
+                    { topic: "Solar PV vs solar thermal", note: "Converts light directly to electricity vs uses solar heat" },
+                    { topic: "Quantum vs classical computing", note: "Uses quantum states and operations; practical advantages depend on the task" }
+                ],
+                tree: [
+                    b("1. Foundations of Science", [
+                        b("Scientific Method", [b("Observation → Question → Hypothesis"), b("Experiment → Evidence → Conclusion"), b("Peer review, reproducibility, scientific temper")]),
+                        b("Units and Measurement", [b("SI units and prefixes"), b("Accuracy, precision, errors"), b("Scalars, vectors, dimensions")]),
+                        b("Basic Concepts", [b("Matter: solid, liquid, gas, plasma"), b("Energy: kinetic, potential, thermal, chemical"), b("Force, motion, work, power")])
+                    ], "Method first, then units, then matter and energy."),
+                    b("2. Physics", [
+                        b("Mechanics", [b("Newton's laws of motion"), b("Gravity and orbital motion"), b("Momentum and conservation laws"), b("Pressure, buoyancy, fluid mechanics")]),
+                        b("Heat and Thermodynamics", [b("Temperature vs heat"), b("Conduction, convection, radiation"), b("Laws of thermodynamics")]),
+                        b("Waves, Sound and Light", [b("Frequency, wavelength, amplitude"), b("Reflection and refraction"), b("Lenses, mirrors, optical instruments"), b("Electromagnetic spectrum")]),
+                        b("Electricity and Magnetism", [b("Current, voltage, resistance"), b("Ohm's law and electrical power"), b("Motors, generators, transformers"), b("Electromagnetic induction")]),
+                        b("Modern Physics", [b("Atoms, nuclei, radioactivity"), b("Fission vs fusion"), b("Quantum ideas and relativity"), b("Semiconductors and superconductivity")])
+                    ]),
+                    b("3. Chemistry", [
+                        b("Basic Chemistry", [b("Atoms, elements, compounds, mixtures"), b("Periodic table and periodic trends"), b("Chemical bonds and reactions"), b("Acids, bases, salts and pH")]),
+                        b("Materials and Industry", [b("Metals, alloys and corrosion"), b("Cement, glass, ceramics"), b("Polymers, plastics and composites"), b("Fertilisers, catalysts and industrial chemicals")]),
+                        b("Energy Chemistry", [b("Batteries and fuel cells"), b("Hydrogen production and storage"), b("Solar cells and energy materials")]),
+                        b("Environmental Chemistry", [b("Air and water pollutants"), b("Greenhouse gases and ozone chemistry"), b("Waste treatment and recycling"), b("Green chemistry")])
+                    ]),
+                    b("4. Biology and Biotechnology", [
+                        b("Cell Biology", [b("Cell membrane, nucleus and organelles"), b("DNA, RNA, genes and chromosomes"), b("Cell division: mitosis and meiosis")]),
+                        b("Genetics and Evolution", [b("Mendelian inheritance"), b("Mutation and natural selection"), b("Genetic disorders and genetic counselling")]),
+                        b("Biotechnology", [b("Recombinant DNA technology"), b("PCR and DNA sequencing"), b("Genome editing: CRISPR-Cas systems"), b("GM crops and biofortification"), b("Stem cells and regenerative medicine"), b("Cloning and biomanufacturing")]),
+                        b("Health and Medicine", [b("Bacteria, viruses, fungi and parasites"), b("Immunity, vaccines and antibodies"), b("Antibiotics and antimicrobial resistance"), b("Diagnostics: PCR, rapid tests, imaging"), b("Gene therapy, mRNA platforms and precision medicine")]),
+                        b("Agriculture and Food", [b("Plant breeding and hybrid seeds"), b("Tissue culture and biofertilisers"), b("Food processing and preservation"), b("Biosafety and bioethics")])
+                    ]),
+                    b("5. Space Technology and Astronomy", [
+                        b("Universe and Celestial Objects", [b("Stars, galaxies and nebulae"), b("Solar system, planets, moons and asteroids"), b("Black holes and gravitational waves"), b("Telescopes and space observatories")]),
+                        b("Spaceflight Basics", [b("Orbits and escape velocity"), b("Launch vehicles and stages"), b("Satellites: payload, bus and ground segment"), b("Reusable launch systems")]),
+                        b("Satellite Applications", [b("Communication and broadcasting"), b("Navigation and timing"), b("Weather forecasting"), b("Earth observation and disaster management"), b("Agriculture, fisheries and mapping")]),
+                        b("Human Spaceflight and Exploration", [b("Life support and spacesuits"), b("Space stations and crewed missions"), b("Moon and Mars exploration"), b("Planetary defence and space debris")]),
+                        b("India’s Space Programme", [b("ISRO and Department of Space"), b("Aryabhata (1975)"), b("SLV, PSLV, GSLV and LVM3"), b("INSAT, IRS, NavIC and Earth-observation satellites"), b("Chandrayaan programme"), b("Mars Orbiter Mission (Mangalyaan)"), b("Aditya-L1 solar mission"), b("Gaganyaan human-spaceflight programme")])
+                    ]),
+                    b("6. Information and Communication Technology", [
+                        b("Computing", [b("Hardware, software and operating systems"), b("CPU, memory, storage and networks"), b("Cloud computing and edge computing"), b("High-performance and quantum computing")]),
+                        b("Internet and Networks", [b("Internet, IP, DNS and data packets"), b("Fibre optics and undersea cables"), b("4G, 5G and emerging 6G research"), b("Internet of Things (IoT)")]),
+                        b("Artificial Intelligence", [b("AI, machine learning and deep learning"), b("Generative AI and large language models"), b("Robotics and autonomous systems"), b("Uses, bias, safety and accountability")]),
+                        b("Cybersecurity", [b("Encryption and authentication"), b("Malware, phishing and ransomware"), b("Digital signatures and secure systems"), b("Data protection and privacy")]),
+                        b("Digital Public Infrastructure in India", [b("Aadhaar and digital identity"), b("UPI and digital payments"), b("DigiLocker and e-governance"), b("BharatNet and digital inclusion")])
+                    ]),
+                    b("7. Defence and Security Technology", [
+                        b("Missiles", [b("Ballistic vs cruise missiles"), b("Hypersonic systems"), b("Guidance, propulsion and payload"), b("Strategic and tactical roles")]),
+                        b("Detection and Protection", [b("Radar and sonar"), b("Air-defence systems"), b("Electronic warfare"), b("Cyber defence")]),
+                        b("Platforms and Systems", [b("Aircraft carriers, submarines and aircraft"), b("Drones and counter-drone systems"), b("Robotics and autonomous platforms"), b("Directed-energy research")]),
+                        b("India’s Defence R&D", [b("DRDO"), b("Agni and Prithvi missile families"), b("Akash air-defence system"), b("Tejas light combat aircraft"), b("Indigenous sensors, radars and platforms")])
+                    ]),
+                    b("8. Nuclear Technology", [
+                        b("Nuclear Fundamentals", [b("Isotopes and radioactive decay"), b("Nuclear fission and fusion"), b("Chain reaction and criticality"), b("Radiation: alpha, beta, gamma and neutrons")]),
+                        b("Civilian Applications", [b("Nuclear power reactors"), b("Medical diagnosis and radiotherapy"), b("Food irradiation and industrial testing"), b("Radioisotopes and research")]),
+                        b("Safety and Waste", [b("Radiation protection"), b("Nuclear waste management"), b("Reactor safety and emergency planning"), b("Safeguards and non-proliferation")]),
+                        b("India’s Nuclear Programme", [b("Homi J. Bhabha and DAE"), b("BARC and NPCIL"), b("Three-stage nuclear power programme"), b("Fast breeder reactor research")])
+                    ]),
+                    b("9. Energy Technology", [
+                        b("Conventional Sources", [b("Coal, oil and natural gas"), b("Thermal power and emissions")]),
+                        b("Renewable Sources", [b("Solar photovoltaic and solar thermal"), b("Wind and offshore wind"), b("Hydropower and pumped storage"), b("Biomass, biogas and waste-to-energy"), b("Geothermal and ocean energy")]),
+                        b("Storage and Grid", [b("Lithium-ion and alternative batteries"), b("Grid-scale storage and smart grids"), b("Green hydrogen and fuel cells"), b("Carbon capture, utilisation and storage")]),
+                        b("India’s Energy Initiatives", [b("National Solar Mission"), b("International Solar Alliance"), b("National Green Hydrogen Mission"), b("Energy efficiency and electric mobility")])
+                    ]),
+                    b("10. Nanotechnology and Advanced Materials", [
+                        b("Nanoscale (roughly 1–100 nm)"),
+                        b("Nanoparticles and nanocomposites"),
+                        b("Graphene and other advanced materials"),
+                        b("Quantum dots and nanosensors"),
+                        b("Applications in medicine, water and electronics"),
+                        b("Safety, environmental impact and regulation")
+                    ]),
+                    b("11. Robotics, Automation and Emerging Technology", [
+                        b("Industrial and collaborative robots"),
+                        b("Drones and autonomous vehicles"),
+                        b("3D printing / additive manufacturing"),
+                        b("Digital twins and industrial automation"),
+                        b("Quantum technologies", [b("Quantum computing"), b("Quantum communication"), b("Quantum sensing")]),
+                        b("Ethical, safety and employment implications")
+                    ]),
+                    b("12. Environmental and Climate Technology", [
+                        b("Climate observation and modelling"),
+                        b("Remote sensing and GIS"),
+                        b("Early-warning systems for disasters"),
+                        b("Pollution monitoring and clean technologies"),
+                        b("Carbon removal and climate adaptation"),
+                        b("Circular economy and waste management")
+                    ]),
+                    b("13. Indian Science Institutions and Policy", [
+                        b("Department of Science and Technology (DST)"),
+                        b("Department of Biotechnology (DBT)"),
+                        b("Council of Scientific and Industrial Research (CSIR)"),
+                        b("Indian Council of Medical Research (ICMR)"),
+                        b("Indian Council of Agricultural Research (ICAR)"),
+                        b("ISRO – space research"),
+                        b("DRDO – defence research"),
+                        b("Department of Atomic Energy (DAE)"),
+                        b("Anusandhan National Research Foundation (ANRF)")
+                    ], "Name the body, then the one job it does."),
+                    b("14. UPSC Current-Affairs Linkage", [
+                        b("New missions, satellites and launch vehicles"),
+                        b("New vaccines, diseases and biotech developments"),
+                        b("AI, semiconductors and digital regulation"),
+                        b("Defence tests and indigenous systems"),
+                        b("Nuclear, battery and hydrogen developments"),
+                        b("New materials and quantum technology"),
+                        b("Major science awards and discoveries"),
+                        b("Ethics, risks, regulation and social impact")
+                    ], "Static concept, Indian programme, then the current headline.")
+                ]
+            },
+            ir: {
+                flow: ["Basic concepts", "India’s foreign policy", "Neighbours", "Major powers", "International organisations", "Regional groupings", "Security and nuclear issues", "Global issues"],
+                priority: [
+                    "India–China and India–Pakistan",
+                    "India–USA and India–Russia",
+                    "QUAD, BRICS, G20, SCO",
+                    "United Nations and UNSC Reform",
+                    "Climate Change and Paris Agreement",
+                    "Terrorism and Maritime Security",
+                    "India’s Nuclear Doctrine",
+                    "West Asia and Indo-Pacific",
+                    "Neighbourhood First and Act East",
+                    "Current Affairs-based International Relations"
+                ],
+                tree: [
+                    b("1. Basic Concepts", [b("Nation"), b("State"), b("Sovereignty"), b("National Interest"), b("Foreign Policy"), b("Diplomacy"), b("Geopolitics"), b("Geostrategy"), b("Soft Power"), b("Hard Power")], "Interest first, then the instrument: diplomacy, soft power, or hard power."),
+                    b("2. Theories of International Relations", [
+                        b("Realism", [b("Power Politics"), b("National Interest")]),
+                        b("Liberalism", [b("Cooperation"), b("International Institutions")]),
+                        b("Marxism", [b("Economic Inequality")]),
+                        b("Constructivism", [b("Role of Ideas and Identity")]),
+                        b("Balance of Power")
+                    ]),
+                    b("3. India’s Foreign Policy", [
+                        b("Principles", [b("Panchsheel"), b("Non-Alignment"), b("Anti-Colonialism"), b("Peaceful Coexistence"), b("Strategic Autonomy")]),
+                        b("Architects", [b("Jawaharlal Nehru"), b("Indira Gandhi"), b("Atal Bihari Vajpayee"), b("Contemporary Foreign Policy")]),
+                        b("Key Doctrines", [b("Gujral Doctrine"), b("Look East Policy"), b("Act East Policy"), b("Neighborhood First"), b("SAGAR"), b("Indo-Pacific Strategy")])
+                    ], "Name the principle, then the doctrine that applies it now."),
+                    b("4. India and its Neighbours", [
+                        b("India – Pakistan", [b("Kashmir Issue"), b("Indus Water Treaty"), b("Wars → 1947, 1965, 1971, 1999"), b("Cross-Border Terrorism")]),
+                        b("India – China", [b("Border Dispute"), b("1962 War"), b("LAC"), b("Doklam"), b("Galwan")]),
+                        b("India – Nepal", [b("Open Border"), b("Treaty of Peace and Friendship – 1950"), b("Boundary Issues")]),
+                        b("India – Bangladesh", [b("Land Boundary Agreement – 2015"), b("Teesta Water Issue"), b("Connectivity")]),
+                        b("India – Sri Lanka", [b("Tamil Issue"), b("Fishermen Issue"), b("Maritime Security")]),
+                        b("India – Myanmar", [b("Border Security"), b("Act East Gateway")]),
+                        b("India – Bhutan", [b("Special Relationship"), b("Hydropower Cooperation")]),
+                        b("India – Maldives", [b("Maritime Importance"), b("Indian Ocean Region")])
+                    ]),
+                    b("5. India and Major Powers", [
+                        b("India – USA", [b("Strategic Partnership"), b("Defence Agreements"), b("QUAD"), b("Trade and Technology")]),
+                        b("India – Russia", [b("Defence Cooperation"), b("Energy"), b("Historical Friendship")]),
+                        b("India – European Union", [b("Trade"), b("Climate Cooperation"), b("FTA Talks")]),
+                        b("India – Japan", [b("Bullet Train Project"), b("Indo-Pacific"), b("Infrastructure")]),
+                        b("India – France", [b("Rafale Deal"), b("Nuclear Energy"), b("Indian Ocean Cooperation")]),
+                        b("India – West Asia", [b("UAE"), b("Saudi Arabia"), b("Iran"), b("Israel"), b("Energy and Diaspora")])
+                    ]),
+                    b("6. International Organizations", [
+                        b("United Nations (UN)", [b("General Assembly"), b("Security Council"), b("ECOSOC"), b("ICJ"), b("Secretariat")]),
+                        b("World Bank"), b("IMF"), b("WTO"), b("WHO"), b("UNESCO"), b("ILO"), b("UN Reforms")
+                    ]),
+                    b("7. Regional Groupings", [b("SAARC"), b("BIMSTEC"), b("ASEAN"), b("BRICS"), b("G20"), b("SCO"), b("QUAD"), b("I2U2"), b("European Union")]),
+                    b("8. Security Issues", [b("Terrorism"), b("Cyber Security"), b("Maritime Security"), b("Border Security"), b("Nuclear Security"), b("Energy Security"), b("Food Security"), b("Biosecurity")]),
+                    b("9. Disarmament and Nuclear Issues", [
+                        b("Nuclear Non-Proliferation Treaty (NPT)"),
+                        b("CTBT"),
+                        b("NSG"),
+                        b("India’s Nuclear Doctrine", [b("No First Use"), b("Credible Minimum Deterrence")]),
+                        b("Pokhran-I – 1974"),
+                        b("Pokhran-II – 1998")
+                    ]),
+                    b("10. Global Issues", [b("Climate Change"), b("Global Warming"), b("Refugee Crisis"), b("Migration"), b("Human Rights"), b("Sustainable Development Goals (SDGs)"), b("Poverty"), b("Pandemics"), b("Artificial Intelligence and Technology Governance")]),
+                    b("11. India and Global Issues", [
+                        b("Climate Diplomacy", [b("Paris Agreement"), b("International Solar Alliance"), b("LiFE Mission")]),
+                        b("Blue Economy"),
+                        b("Vaccine Diplomacy"),
+                        b("Diaspora Diplomacy"),
+                        b("Development Partnership"),
+                        b("Humanitarian Assistance and Disaster Relief")
+                    ]),
+                    b("12. Important Events in IR", [
+                        b("Cold War – 1945–1991"),
+                        b("NAM formed – 1961"),
+                        b("Indo-China War – 1962"),
+                        b("Indo-Pak War – 1971"),
+                        b("Collapse of USSR – 1991"),
+                        b("Pokhran-II – 1998"),
+                        b("9/11 Attacks – 2001"),
+                        b("Global Financial Crisis – 2008"),
+                        b("Paris Climate Agreement – 2015"),
+                        b("Russia–Ukraine Conflict – 2022"),
+                        b("West Asia Crisis")
+                    ]),
+                    b("13. Most Important UPSC IR Topics", [
+                        b("India and Neighbourhood"),
+                        b("India–China Relations"),
+                        b("India–USA Relations"),
+                        b("India–Russia Relations"),
+                        b("India–West Asia Relations"),
+                        b("UN Reforms and UNSC"),
+                        b("QUAD, BRICS, G20, SCO"),
+                        b("Climate Change Diplomacy"),
+                        b("Terrorism and Security"),
+                        b("Current International Conflicts")
+                    ], "Neighbour first, then the great power, then the forum.")
+                ]
+            },
+            security: {
+                flow: ["Internal security", "Terrorism", "Naxalism", "North-East and Kashmir", "Cyber security", "Border management", "Organised crime and terror funding", "Security agencies", "Security laws"],
+                priority: [
+                    "Left Wing Extremism and SAMADHAN",
+                    "Terrorism and UAPA",
+                    "Jammu & Kashmir and Article 370",
+                    "Cyber Security and CERT-In",
+                    "Border Management",
+                    "Drug Trafficking and Golden Crescent/Triangle",
+                    "Money Laundering and PMLA",
+                    "NIA, RAW, IB and CAPFs",
+                    "Coastal Security after 26/11",
+                    "AFSPA and Internal Security Laws"
+                ],
+                tree: [
+                    b("1. Basic Concepts", [b("Internal Security"), b("National Security"), b("Law and Order"), b("Public Order"), b("Security Challenges"), b("National Integration")], "Public order is the state’s job. National security is the Union’s."),
+                    b("2. Terrorism", [
+                        b("Meaning of Terrorism"),
+                        b("Types of Terrorism", [b("Religious Terrorism"), b("Ethnic Terrorism"), b("Left-Wing Terrorism"), b("State-Sponsored Terrorism")]),
+                        b("Causes", [b("Radicalization"), b("Poverty"), b("Political Instability"), b("Cross-Border Support")]),
+                        b("Major Terror Groups Affecting India", [b("Lashkar-e-Taiba"), b("Jaish-e-Mohammed"), b("ISIS"), b("Al-Qaeda")]),
+                        b("Counter-Terrorism Measures", [b("Intelligence"), b("Border Security"), b("International Cooperation"), b("De-radicalization")])
+                    ]),
+                    b("3. Left-Wing Extremism / Naxalism", [
+                        b("Naxalbari Movement – 1967"),
+                        b("Areas Affected", [b("Chhattisgarh"), b("Jharkhand"), b("Odisha"), b("Maharashtra")]),
+                        b("Causes", [b("Poverty"), b("Land Issues"), b("Tribal Exploitation"), b("Lack of Development")]),
+                        b("Government Measures", [b("Security Forces"), b("SAMADHAN Doctrine"), b("Development Projects"), b("Road Connectivity")]),
+                        b("Objective", [b("Eliminate Left Wing Extremism")])
+                    ], "Development and force, named together as SAMADHAN."),
+                    b("4. Insurgency in North-East India", [
+                        b("Causes", [b("Ethnic Identity"), b("Demand for Autonomy"), b("Illegal Migration"), b("Underdevelopment")]),
+                        b("Important Groups", [b("ULFA – Assam"), b("NSCN – Nagaland"), b("PLA – Manipur"), b("NLFT – Tripura")]),
+                        b("Important States", [b("Assam"), b("Nagaland"), b("Manipur"), b("Mizoram")]),
+                        b("Government Response", [b("Peace Talks"), b("Autonomous Councils"), b("Development Packages"), b("Border Management")])
+                    ]),
+                    b("5. Insurgency in Jammu & Kashmir", [
+                        b("Causes", [b("Cross-Border Terrorism"), b("Separatism"), b("Radicalization"), b("Political Issues")]),
+                        b("Important Events", [b("Militancy begins – 1989"), b("Kargil War – 1999"), b("Pulwama Attack – 2019"), b("Article 370 removed – 2019")]),
+                        b("Government Measures", [b("Security Operations"), b("Development Initiatives"), b("Border Fencing"), b("Counter-Radicalization")])
+                    ]),
+                    b("6. Cyber Security", [b("Cyber Crime", [b("Hacking"), b("Phishing"), b("Identity Theft"), b("Ransomware")]), b("Cyber Warfare"), b("Critical Infrastructure Protection"), b("Data Protection"), b("CERT-In"), b("National Cyber Security Policy"), b("Cyber Security Challenges")]),
+                    b("7. Border Management", [
+                        b("India’s Borders", [b("Pakistan Border"), b("China Border"), b("Bangladesh Border"), b("Nepal Border"), b("Myanmar Border")]),
+                        b("Challenges", [b("Infiltration"), b("Smuggling"), b("Illegal Migration"), b("Drug Trafficking")]),
+                        b("Border Guarding Forces", [b("BSF"), b("ITBP"), b("SSB"), b("Assam Rifles")]),
+                        b("Border Infrastructure", [b("Fencing"), b("Roads"), b("Smart Surveillance"), b("Check Posts")])
+                    ], "Name the neighbour, the force on that border, and the main leak."),
+                    b("8. Organized Crime", [b("Drug Trafficking"), b("Human Trafficking"), b("Money Laundering"), b("Counterfeit Currency"), b("Smuggling"), b("Mafia Networks")]),
+                    b("9. Money Laundering and Terror Funding", [b("Hawala"), b("Black Money"), b("Fake Currency"), b("Terror Financing"), b("Prevention of Money Laundering Act (PMLA)"), b("Financial Intelligence Unit (FIU)")]),
+                    b("10. Drug Trafficking", [
+                        b("Golden Crescent", [b("Afghanistan"), b("Iran"), b("Pakistan")]),
+                        b("Golden Triangle", [b("Myanmar"), b("Laos"), b("Thailand")]),
+                        b("Impact on India", [b("Addiction"), b("Crime"), b("Terror Funding")]),
+                        b("Government Measures", [b("NCB"), b("NDPS Act"), b("International Cooperation")])
+                    ]),
+                    b("11. Security Forces and Agencies", [
+                        b("CAPF", [b("CRPF"), b("BSF"), b("CISF"), b("ITBP"), b("SSB")]),
+                        b("Intelligence Agencies", [b("IB"), b("RAW"), b("NTRO")]),
+                        b("Investigation Agencies", [b("NIA"), b("CBI"), b("ED")]),
+                        b("Special Forces", [b("NSG"), b("MARCOS")])
+                    ]),
+                    b("12. Legal and Policy Framework", [b("UAPA"), b("AFSPA"), b("NIA Act"), b("PMLA"), b("NDPS Act"), b("National Security Act (NSA)"), b("Disaster Management Act")]),
+                    b("13. Coastal Security", [b("Importance"), b("26/11 Mumbai Attacks"), b("Coastal Surveillance"), b("Indian Coast Guard"), b("Marine Police"), b("Port Security")]),
+                    b("14. Disaster Management and Internal Security", [
+                        b("Natural Disasters", [b("Flood"), b("Cyclone"), b("Earthquake"), b("Tsunami")]),
+                        b("Man-made Disasters", [b("Industrial Accident"), b("Chemical Leak"), b("Terror Attack")]),
+                        b("NDMA"),
+                        b("NDRF"),
+                        b("Incident Response System")
+                    ]),
+                    b("15. Most Important UPSC Internal Security Topics", [
+                        b("Terrorism and Counter-Terrorism"),
+                        b("Naxalism and LWE"),
+                        b("North-East Insurgency"),
+                        b("Jammu & Kashmir"),
+                        b("Cyber Security"),
+                        b("Border Management"),
+                        b("Money Laundering and Terror Funding"),
+                        b("Security Forces and Intelligence Agencies"),
+                        b("Coastal Security"),
+                        b("Important Security Laws")
+                    ], "Threat, agency, and the law that authorises the response.")
+                ]
+            },
+            justice: {
+                flow: ["Governance", "E-governance", "RTI and citizen charter", "Civil services", "Welfare schemes", "Vulnerable sections", "Education and health", "Poverty and NGOs"],
+                priority: [
+                    "Good Governance",
+                    "E-Governance",
+                    "RTI and Citizen Charter",
+                    "Social Justice and Inclusion",
+                    "Welfare Schemes",
+                    "Women and Child Issues",
+                    "SC/ST/OBC and Reservation",
+                    "Education and Health",
+                    "Poverty and Hunger",
+                    "NGOs and SHGs"
+                ],
+                tree: [
+                    b("1. Governance", [
+                        b("Meaning of Governance"),
+                        b("Types of Governance", [b("Good Governance"), b("Democratic Governance"), b("Participatory Governance"), b("E-Governance")]),
+                        b("Features of Good Governance", [b("Transparency"), b("Accountability"), b("Responsiveness"), b("Rule of Law"), b("Participation"), b("Consensus"), b("Efficiency")]),
+                        b("Challenges in Governance", [b("Corruption"), b("Red Tapism"), b("Delay in Services"), b("Lack of Accountability")])
+                    ], "A scheme answer names the feature that failed, then the fix."),
+                    b("2. E-Governance", [
+                        b("Meaning of E-Governance"),
+                        b("Components", [b("G2C → Government to Citizen"), b("G2G → Government to Government"), b("G2B → Government to Business"), b("G2E → Government to Employee")]),
+                        b("Benefits", [b("Transparency"), b("Speed"), b("Reduced Corruption"), b("Better Service Delivery")]),
+                        b("Important Initiatives", [b("Digital India"), b("UMANG"), b("DigiLocker"), b("Aadhaar"), b("DBT")]),
+                        b("Challenges", [b("Digital Divide"), b("Cyber Security"), b("Lack of Awareness")])
+                    ]),
+                    b("3. Citizen Charter and Transparency", [
+                        b("Citizen Charter", [b("Standards of Service"), b("Grievance Redressal"), b("Accountability")]),
+                        b("Right to Information (RTI)", [b("RTI Act – 2005"), b("Public Information Officer"), b("Central Information Commission")]),
+                        b("Social Audit"),
+                        b("Sevottam Model"),
+                        b("Grievance Redressal Mechanism")
+                    ]),
+                    b("4. Civil Services", [
+                        b("Role of Civil Services", [b("Policy Implementation"), b("Administration"), b("Welfare Delivery"), b("Crisis Management")]),
+                        b("Challenges", [b("Political Pressure"), b("Corruption"), b("Lack of Capacity"), b("Accountability Issues")]),
+                        b("Civil Service Reforms", [b("Mission Karmayogi"), b("Performance Evaluation"), b("Lateral Entry"), b("Training and Capacity Building")])
+                    ]),
+                    b("5. Welfare Schemes", [
+                        b("Poverty Alleviation", [b("MGNREGA"), b("PM Garib Kalyan Yojana"), b("DAY-NRLM")]),
+                        b("Food Security", [b("PDS"), b("NFSA"), b("Mid-Day Meal")]),
+                        b("Health", [b("Ayushman Bharat"), b("National Health Mission"), b("PM Jan Arogya Yojana")]),
+                        b("Education", [b("Right to Education"), b("Samagra Shiksha"), b("Mid-Day Meal Scheme")]),
+                        b("Housing", [b("PM Awas Yojana"), b("Smart Cities Mission")])
+                    ], "For each scheme: who it covers, how it is delivered, and where it leaks."),
+                    b("6. Social Justice", [b("Meaning of Social Justice"), b("Equality"), b("Equity"), b("Social Inclusion"), b("Welfare State")]),
+                    b("7. Vulnerable Sections", [
+                        b("Scheduled Castes (SC)", [b("Reservation"), b("Prevention of Atrocities Act"), b("National Commission for SC")]),
+                        b("Scheduled Tribes (ST)", [b("Forest Rights Act"), b("Tribal Welfare Schemes"), b("National Commission for ST")]),
+                        b("Other Backward Classes (OBC)", [b("Reservation"), b("National Commission for Backward Classes")]),
+                        b("Women", [b("Beti Bachao Beti Padhao"), b("Maternity Benefit Act"), b("Women Reservation"), b("Domestic Violence Act")]),
+                        b("Children", [b("Child Labour Act"), b("POCSO Act"), b("ICDS")]),
+                        b("Elderly", [b("National Policy for Senior Citizens"), b("Pension Schemes")]),
+                        b("Persons with Disabilities", [b("RPWD Act – 2016"), b("Accessible India Campaign")]),
+                        b("Minorities", [b("National Commission for Minorities"), b("Scholarships"), b("Sachar Committee")])
+                    ]),
+                    b("8. Education and Health", [
+                        b("Education", [b("Literacy"), b("School Education"), b("Higher Education"), b("NEP 2020"), b("Digital Education")]),
+                        b("Health", [b("Public Health System"), b("Malnutrition"), b("Maternal Health"), b("Child Health"), b("Universal Health Coverage")])
+                    ]),
+                    b("9. Poverty, Hunger and Unemployment", [
+                        b("Poverty"), b("Hunger"), b("Malnutrition"), b("Unemployment"),
+                        b("Skill Development", [b("Skill India"), b("PMKVY"), b("Startup India")]),
+                        b("Human Development")
+                    ]),
+                    b("10. NGOs, SHGs and Civil Society", [b("NGOs"), b("Self Help Groups (SHGs)"), b("Cooperatives"), b("Corporate Social Responsibility (CSR)"), b("Role in Welfare Delivery")]),
+                    b("11. Important Laws and Institutions", [
+                        b("RTI Act – 2005"), b("MGNREGA – 2005"), b("NFSA – 2013"), b("RTE Act – 2009"),
+                        b("Lokpal and Lokayukta Act – 2013"), b("POCSO Act – 2012"), b("Forest Rights Act – 2006"),
+                        b("RPWD Act – 2016"), b("National Commissions")
+                    ]),
+                    b("12. Most Important UPSC Topics", [
+                        b("Good Governance"), b("E-Governance"), b("RTI and Citizen Charter"), b("Social Justice and Inclusion"),
+                        b("Welfare Schemes"), b("Women and Child Issues"), b("SC/ST/OBC and Reservation"),
+                        b("Education and Health"), b("Poverty and Hunger"), b("NGOs and SHGs")
+                    ]),
+                    b("13. Quick Revision Flow", [
+                        b("Governance"), b("E-Governance"), b("RTI + Citizen Charter"), b("Civil Services"),
+                        b("Welfare Schemes"), b("Vulnerable Sections"), b("Education + Health"), b("Poverty + NGOs")
+                    ])
+                ]
+            },
+            sociology: {
+                flow: ["Sociology", "Society and groups", "Culture and socialization", "Family and institutions", "Caste and class", "Social change", "Rural and urban society", "Social problems", "Sociologists"],
+                priority: [
+                    "Sociology as a Discipline",
+                    "Culture and Socialization",
+                    "Family and Marriage",
+                    "Caste and Class",
+                    "Social Stratification",
+                    "Social Change",
+                    "Urbanization and Migration",
+                    "Women and Society",
+                    "Tribal Issues",
+                    "Thinkers and Theories"
+                ],
+                tree: [
+                    b("1. Introduction to Sociology", [
+                        b("Meaning of Sociology"),
+                        b("Father of Sociology → Auguste Comte"),
+                        b("Nature of Sociology", [b("Social Science"), b("Abstract"), b("Generalizing Science")]),
+                        b("Scope of Sociology", [b("Study of Society"), b("Social Relationships"), b("Social Institutions")]),
+                        b("Difference", [b("Sociology vs History"), b("Sociology vs Political Science"), b("Sociology vs Anthropology")])
+                    ]),
+                    b("2. Society", [
+                        b("Meaning of Society"),
+                        b("Features", [b("Cooperation"), b("Conflict"), b("Interdependence"), b("Common Culture")]),
+                        b("Types of Society", [b("Tribal Society"), b("Agrarian Society"), b("Industrial Society"), b("Post-Industrial Society")]),
+                        b("Community vs Society")
+                    ]),
+                    b("3. Social Groups", [
+                        b("Primary Group", [b("Family"), b("Friends")]),
+                        b("Secondary Group", [b("School"), b("Office")]),
+                        b("In-Group and Out-Group"),
+                        b("Formal and Informal Group"),
+                        b("Reference Group")
+                    ]),
+                    b("4. Socialization", [
+                        b("Meaning of Socialization"),
+                        b("Types", [b("Primary Socialization"), b("Secondary Socialization"), b("Anticipatory Socialization"), b("Re-socialization")]),
+                        b("Agencies of Socialization", [b("Family"), b("School"), b("Peer Group"), b("Religion"), b("Media")]),
+                        b("Importance", [b("Formation of Personality")])
+                    ]),
+                    b("5. Culture", [
+                        b("Meaning of Culture"),
+                        b("Components", [b("Values"), b("Norms"), b("Beliefs"), b("Customs"), b("Traditions")]),
+                        b("Types", [b("Material Culture"), b("Non-Material Culture")]),
+                        b("Concepts", [b("Cultural Lag"), b("Ethnocentrism"), b("Cultural Relativism"), b("Westernization")]),
+                        b("Sanskritization")
+                    ], "Material culture moves first. Norms catch up later. That gap is cultural lag."),
+                    b("6. Social Institutions", [
+                        b("Family", [b("Joint Family"), b("Nuclear Family"), b("Functions of Family")]),
+                        b("Marriage", [b("Monogamy"), b("Polygamy"), b("Divorce")]),
+                        b("Religion", [b("Functions"), b("Secularization")]),
+                        b("Education"), b("Economy"), b("State")
+                    ]),
+                    b("7. Social Stratification", [
+                        b("Meaning"),
+                        b("Types", [b("Slavery"), b("Estate System"), b("Caste System"), b("Class System")]),
+                        b("Caste System in India", [b("Features"), b("Caste and Occupation"), b("Dominant Caste"), b("Caste Mobility")]),
+                        b("Class System", [b("Upper Class"), b("Middle Class"), b("Lower Class")]),
+                        b("Social Mobility", [b("Vertical Mobility"), b("Horizontal Mobility")])
+                    ]),
+                    b("8. Social Change", [
+                        b("Meaning of Social Change"),
+                        b("Factors", [b("Technology"), b("Education"), b("Urbanization"), b("Industrialization"), b("Globalization")]),
+                        b("Processes", [b("Modernization"), b("Westernization"), b("Urbanization"), b("Secularization")]),
+                        b("Social Reform Movements", [b("Raja Ram Mohan Roy"), b("Jyotiba Phule"), b("B. R. Ambedkar"), b("Periyar")])
+                    ]),
+                    b("9. Rural Sociology", [b("Rural Society"), b("Village Community"), b("Agrarian Structure"), b("Land Reforms"), b("Rural Development"), b("Panchayati Raj")]),
+                    b("10. Urban Sociology", [
+                        b("Urbanization"),
+                        b("Characteristics of Urban Society"),
+                        b("Slums"),
+                        b("Migration"),
+                        b("Urban Problems", [b("Pollution"), b("Unemployment"), b("Crime")]),
+                        b("Smart Cities")
+                    ]),
+                    b("11. Social Problems", [b("Poverty"), b("Unemployment"), b("Child Labour"), b("Beggary"), b("Corruption"), b("Dowry"), b("Domestic Violence"), b("Gender Discrimination"), b("Casteism"), b("Communalism")]),
+                    b("12. Women and Society", [b("Status of Women"), b("Patriarchy"), b("Feminism"), b("Women Empowerment"), b("Women Reservation"), b("Gender Equality")]),
+                    b("13. Tribal and Marginalized Groups", [b("Tribes"), b("Scheduled Castes"), b("Scheduled Tribes"), b("Minorities"), b("OBCs"), b("Social Exclusion")]),
+                    b("14. Globalization and Society", [b("Meaning of Globalization"), b("Impact on Economy"), b("Impact on Culture"), b("Impact on Family"), b("Migration"), b("Media and Society")]),
+                    b("15. Important Sociologists", [
+                        b("Auguste Comte"),
+                        b("Karl Marx", [b("Class Conflict")]),
+                        b("Emile Durkheim", [b("Social Solidarity")]),
+                        b("Max Weber", [b("Bureaucracy")]),
+                        b("Herbert Spencer"),
+                        b("M. N. Srinivas", [b("Sanskritization"), b("Dominant Caste")]),
+                        b("G. S. Ghurye"),
+                        b("B. R. Ambedkar")
+                    ], "One thinker, one idea: Marx and class, Durkheim and solidarity, Weber and bureaucracy, Srinivas and Sanskritization."),
+                    b("16. Most Important UPSC Sociology Topics", [
+                        b("Sociology as a Discipline"), b("Culture and Socialization"), b("Family and Marriage"),
+                        b("Caste and Class"), b("Social Stratification"), b("Social Change"),
+                        b("Urbanization and Migration"), b("Women and Society"), b("Tribal Issues"), b("Thinkers and Theories")
+                    ]),
+                    b("17. Quick Revision Flow", [
+                        b("Sociology"), b("Society + Groups"), b("Culture + Socialization"), b("Family + Institutions"),
+                        b("Caste + Class"), b("Social Change"), b("Rural + Urban Society"), b("Social Problems"), b("Sociologists")
+                    ])
+                ]
+            },
+            world: {
+                flow: ["Ancient civilizations", "Greece and Rome", "Renaissance and Reformation", "Exploration", "American, French, and Russian Revolutions", "Industrial Revolution", "Imperialism", "World War I", "World War II", "Cold War", "Decolonization"],
+                priority: [
+                    "French Revolution",
+                    "Industrial Revolution",
+                    "American and Russian Revolutions",
+                    "Imperialism and Colonialism",
+                    "World War I and Treaty of Versailles",
+                    "World War II and United Nations",
+                    "Cold War",
+                    "Decolonization of Asia and Africa",
+                    "Fascism, Nazism and Communism",
+                    "Timeline of Important World Events"
+                ],
+                battles: [
+                    { year: "1492", name: "Columbus reached America" },
+                    { year: "1498", name: "Vasco da Gama reached India" },
+                    { year: "1688", name: "Glorious Revolution" },
+                    { year: "1776", name: "American Independence" },
+                    { year: "1789", name: "French Revolution" },
+                    { year: "1815", name: "Battle of Waterloo" },
+                    { year: "1914", name: "First World War begins" },
+                    { year: "1917", name: "Russian Revolution" },
+                    { year: "1919", name: "Treaty of Versailles" },
+                    { year: "1929", name: "Great Depression" },
+                    { year: "1939", name: "Second World War begins" },
+                    { year: "1945", name: "UN formed" },
+                    { year: "1949", name: "NATO formed / Chinese Revolution" },
+                    { year: "1962", name: "Cuban Missile Crisis" },
+                    { year: "1989", name: "Berlin Wall falls" },
+                    { year: "1991", name: "USSR collapses" }
+                ],
+                tree: [
+                    b("1. Ancient World", [
+                        b("Prehistoric Age", [b("Paleolithic Age"), b("Mesolithic Age"), b("Neolithic Age")]),
+                        b("River Valley Civilizations", [
+                            b("Mesopotamian Civilization (3500 BCE)", [b("Tigris–Euphrates"), b("Sumerians, Babylonians")]),
+                            b("Egyptian Civilization (3000 BCE)", [b("Nile River"), b("Pharaohs, Pyramids")]),
+                            b("Chinese Civilization (2500 BCE)", [b("Huang He River"), b("Shang Dynasty")]),
+                            b("Indus Valley Civilization (2600 BCE)")
+                        ]),
+                        b("Ancient Greece", [b("Athens"), b("Sparta"), b("Persian Wars (490–479 BCE)"), b("Peloponnesian War (431–404 BCE)"), b("Alexander the Great (336–323 BCE)")]),
+                        b("Ancient Rome", [b("Roman Republic (509 BCE)"), b("Julius Caesar"), b("Augustus Caesar"), b("Roman Empire"), b("Fall of Western Roman Empire – 476 CE")]),
+                        b("Rise of Religions", [
+                            b("Judaism"),
+                            b("Christianity", [b("Jesus Christ")]),
+                            b("Islam", [b("Prophet Muhammad – 570–632 CE")]),
+                            b("Buddhism"),
+                            b("Jainism")
+                        ])
+                    ], "Name the river, then the city or ruler, then what survived."),
+                    b("2. Medieval World (500 CE – 1500 CE)", [
+                        b("Byzantine Empire", [b("Constantinople")]),
+                        b("Feudalism in Europe", [b("King"), b("Nobles"), b("Knights"), b("Peasants")]),
+                        b("Crusades (1095–1291)"),
+                        b("Rise of Islam", [b("Caliphate"), b("Umayyads"), b("Abbasids")]),
+                        b("Mongol Empire", [b("Genghis Khan (1206)"), b("Kublai Khan")]),
+                        b("Renaissance (14th–17th Century)", [b("Italy"), b("Humanism"), b("Leonardo da Vinci"), b("Michelangelo"), b("Shakespeare")]),
+                        b("Reformation", [b("Martin Luther – 1517"), b("Protestantism"), b("Catholic Counter-Reformation")])
+                    ]),
+                    b("3. Age of Exploration", [
+                        b("Causes", [b("Search for Trade Routes"), b("Desire for Spices"), b("Spread of Christianity")]),
+                        b("Explorers", [b("Christopher Columbus – 1492"), b("Vasco da Gama – 1498"), b("Ferdinand Magellan – 1519"), b("James Cook")]),
+                        b("Consequences", [b("Colonization"), b("Slave Trade"), b("Expansion of Europe")])
+                    ]),
+                    b("4. Revolutions", [
+                        b("Glorious Revolution – England (1688)", [b("Constitutional Monarchy")]),
+                        b("American Revolution (1775–1783)", [b("Declaration of Independence – 1776"), b("George Washington"), b("USA formed")]),
+                        b("French Revolution (1789)", [b("Liberty, Equality, Fraternity"), b("Louis XVI"), b("Reign of Terror"), b("Rise of Napoleon")]),
+                        b("Latin American Revolutions", [b("Simon Bolivar")]),
+                        b("Russian Revolution (1917)", [b("February Revolution"), b("October Revolution"), b("Lenin"), b("USSR formed")])
+                    ], "1688 limits the king. 1776 founds a country. 1789 remakes society. 1917 remakes the state."),
+                    b("5. Industrial Revolution", [
+                        b("Started in England – 18th Century"),
+                        b("Causes", [b("Coal and Iron"), b("Capital"), b("Colonies")]),
+                        b("Important Inventions", [b("Steam Engine – James Watt"), b("Spinning Jenny"), b("Power Loom"), b("Railway")]),
+                        b("Effects", [b("Urbanization"), b("Factory System"), b("Capitalism"), b("Labour Movements")])
+                    ]),
+                    b("6. Imperialism and Colonialism", [
+                        b("Imperialism", [b("Political Control"), b("Economic Exploitation"), b("Colonies in Asia and Africa")]),
+                        b("Scramble for Africa"),
+                        b("Colonization of Asia"),
+                        b("Opium Wars – China"),
+                        b("Boxer Rebellion")
+                    ]),
+                    b("7. World Wars", [
+                        b("First World War (1914–1918)", [
+                            b("Causes", [b("Militarism"), b("Alliances"), b("Imperialism"), b("Nationalism")]),
+                            b("Trigger → Assassination of Archduke Franz Ferdinand"),
+                            b("Allied Powers"),
+                            b("Central Powers"),
+                            b("Treaty of Versailles – 1919"),
+                            b("League of Nations")
+                        ]),
+                        b("Inter-War Period", [b("Great Depression – 1929"), b("Rise of Fascism"), b("Mussolini"), b("Hitler"), b("Nazism")]),
+                        b("Second World War (1939–1945)", [
+                            b("Axis Powers"),
+                            b("Allied Powers"),
+                            b("Hitler invades Poland – 1939"),
+                            b("Pearl Harbor – 1941"),
+                            b("Hiroshima and Nagasaki – 1945"),
+                            b("United Nations formed – 1945")
+                        ])
+                    ]),
+                    b("8. Cold War", [
+                        b("USA vs USSR"),
+                        b("Capitalism vs Communism"),
+                        b("NATO – 1949"),
+                        b("Warsaw Pact – 1955"),
+                        b("Cuban Missile Crisis – 1962"),
+                        b("Space Race"),
+                        b("End of Cold War – 1991")
+                    ], "Two blocs, two pacts, Cuba in 1962, over in 1991."),
+                    b("9. Decolonization", [
+                        b("Asian Countries became Independent", [b("India – 1947"), b("Indonesia – 1949"), b("Vietnam")]),
+                        b("African Independence Movements", [b("Ghana – 1957"), b("Kenya"), b("South Africa")]),
+                        b("Apartheid Ends – 1994", [b("Nelson Mandela")])
+                    ]),
+                    b("10. Important World Events", [
+                        b("Chinese Revolution – 1949", [b("Mao Zedong")]),
+                        b("Korean War – 1950–53"),
+                        b("Vietnam War – 1955–75"),
+                        b("Arab–Israel Conflict"),
+                        b("Iranian Revolution – 1979"),
+                        b("Fall of Berlin Wall – 1989"),
+                        b("Disintegration of USSR – 1991"),
+                        b("Globalization – 1990s"),
+                        b("European Union")
+                    ]),
+                    b("11. Important Years for UPSC", [
+                        b("1492 → Columbus reached America"),
+                        b("1498 → Vasco da Gama reached India"),
+                        b("1688 → Glorious Revolution"),
+                        b("1776 → American Independence"),
+                        b("1789 → French Revolution"),
+                        b("1815 → Battle of Waterloo"),
+                        b("1914 → First World War begins"),
+                        b("1917 → Russian Revolution"),
+                        b("1919 → Treaty of Versailles"),
+                        b("1929 → Great Depression"),
+                        b("1939 → Second World War begins"),
+                        b("1945 → UN formed"),
+                        b("1949 → NATO formed / Chinese Revolution"),
+                        b("1962 → Cuban Missile Crisis"),
+                        b("1989 → Berlin Wall falls"),
+                        b("1991 → USSR collapses")
+                    ])
+                ]
+            },
+            csat: {
+                flow: ["CSAT", "Comprehension", "Numeracy", "Logical reasoning", "Decision making", "English", "Mock tests and previous year questions"],
+                priority: [
+                    "Reading Comprehension",
+                    "Percentage",
+                    "Ratio and Proportion",
+                    "Profit and Loss",
+                    "Time and Work",
+                    "Time, Speed and Distance",
+                    "Data Interpretation",
+                    "Logical Reasoning",
+                    "Seating Arrangement",
+                    "Decision Making"
+                ],
+                pairs: [
+                    { topic: "Comprehension", note: "25–35 questions" },
+                    { topic: "Maths / Numeracy", note: "20–25 questions" },
+                    { topic: "Reasoning", note: "15–20 questions" },
+                    { topic: "Decision Making", note: "5–10 questions" },
+                    { topic: "50%", note: "1/2" },
+                    { topic: "25%", note: "1/4" },
+                    { topic: "20%", note: "1/5" },
+                    { topic: "12.5%", note: "1/8" },
+                    { topic: "Speed", note: "Distance / Time" },
+                    { topic: "Average", note: "Sum / Number" },
+                    { topic: "Profit %", note: "Profit / CP × 100" },
+                    { topic: "SI", note: "P × R × T / 100" }
+                ],
+                tree: [
+                    b("1. Comprehension", [
+                        b("Reading Comprehension", [b("Main Idea"), b("Tone of Passage"), b("Inference"), b("Assumption"), b("Conclusion"), b("Vocabulary")]),
+                        b("Types of Passages", [b("Social Issues"), b("Economy"), b("Science"), b("Philosophy"), b("Environment")]),
+                        b("Strategy", [b("Read Questions First"), b("Identify Keywords"), b("Eliminate Wrong Options"), b("Avoid Personal Bias")])
+                    ], "Read the question first, then hunt the keywords. Leave your own view out."),
+                    b("2. Basic Numeracy", [
+                        b("Number System", [b("Natural Numbers"), b("Integers"), b("Fractions"), b("Decimals")]),
+                        b("Simplification"),
+                        b("HCF and LCM"),
+                        b("Percentage"),
+                        b("Profit and Loss"),
+                        b("Discount"),
+                        b("Simple Interest"),
+                        b("Compound Interest"),
+                        b("Ratio and Proportion"),
+                        b("Partnership"),
+                        b("Average"),
+                        b("Ages"),
+                        b("Time and Work"),
+                        b("Pipes and Cisterns"),
+                        b("Time, Speed and Distance"),
+                        b("Boats and Streams"),
+                        b("Trains"),
+                        b("Mixture and Alligation"),
+                        b("Permutation and Combination"),
+                        b("Probability"),
+                        b("Data Interpretation", [b("Table"), b("Bar Graph"), b("Pie Chart"), b("Line Graph")])
+                    ]),
+                    b("3. Logical Reasoning", [
+                        b("Statement and Conclusion"),
+                        b("Statement and Assumption"),
+                        b("Statement and Argument"),
+                        b("Cause and Effect"),
+                        b("Assertion and Reason"),
+                        b("Course of Action"),
+                        b("Syllogism"),
+                        b("Blood Relations"),
+                        b("Direction Sense"),
+                        b("Ranking"),
+                        b("Seating Arrangement"),
+                        b("Coding-Decoding"),
+                        b("Number Series"),
+                        b("Letter Series"),
+                        b("Odd One Out"),
+                        b("Analogy")
+                    ]),
+                    b("4. Decision Making and Problem Solving", [
+                        b("Ethical Decision Making"),
+                        b("Administrative Situations"),
+                        b("Public Interest vs Personal Interest"),
+                        b("Conflict Resolution"),
+                        b("Crisis Management"),
+                        b("Prioritization")
+                    ]),
+                    b("5. Mental Ability", [b("Analytical Ability"), b("Logical Ability"), b("Pattern Recognition"), b("Puzzle Solving"), b("Critical Thinking")]),
+                    b("6. Interpersonal Skills", [b("Communication Skills"), b("Teamwork"), b("Leadership"), b("Empathy"), b("Emotional Intelligence")]),
+                    b("7. English Language Skills", [
+                        b("Grammar", [b("Tenses"), b("Articles"), b("Prepositions"), b("Subject–Verb Agreement")]),
+                        b("Vocabulary", [b("Synonyms"), b("Antonyms"), b("Idioms"), b("One Word Substitution")]),
+                        b("Sentence Correction"),
+                        b("Fill in the Blanks"),
+                        b("Para Jumbles"),
+                        b("Cloze Test")
+                    ]),
+                    b("8. Most Important Topics for UPSC CSAT", [
+                        b("Reading Comprehension"),
+                        b("Percentage"),
+                        b("Ratio and Proportion"),
+                        b("Profit and Loss"),
+                        b("Time and Work"),
+                        b("Time, Speed and Distance"),
+                        b("Data Interpretation"),
+                        b("Logical Reasoning"),
+                        b("Seating Arrangement"),
+                        b("Decision Making")
+                    ]),
+                    b("9. High Weightage Chapters", [
+                        b("Comprehension → 25–35 Questions"),
+                        b("Maths / Numeracy → 20–25 Questions"),
+                        b("Reasoning → 15–20 Questions"),
+                        b("Decision Making → 5–10 Questions")
+                    ]),
+                    b("10. Shortcut Methods", [
+                        b("Percentage ↔ Fraction Conversion", [b("50% = 1/2"), b("25% = 1/4"), b("20% = 1/5"), b("12.5% = 1/8")]),
+                        b("Speed Formula", [b("Speed = Distance / Time")]),
+                        b("Average Formula", [b("Average = Sum / Number")]),
+                        b("Profit Formula", [b("Profit % = Profit / CP × 100")]),
+                        b("SI Formula", [b("SI = P × R × T / 100")])
+                    ]),
+                    b("11. CSAT Preparation Strategy", [
+                        b("Practice Reading Daily"),
+                        b("Solve Previous Year Questions"),
+                        b("Learn Shortcuts and Tricks"),
+                        b("Improve Speed and Accuracy"),
+                        b("Focus on Weak Areas"),
+                        b("Attempt Mock Tests"),
+                        b("Revise Formula Sheet Regularly")
+                    ]),
+                    b("12. Most Important Formula-Based Chapters", [
+                        b("Percentage"),
+                        b("Profit and Loss"),
+                        b("Ratio and Proportion"),
+                        b("Time and Work"),
+                        b("Time, Speed and Distance"),
+                        b("Simple and Compound Interest"),
+                        b("Data Interpretation"),
+                        b("Probability"),
+                        b("Permutation and Combination"),
+                        b("Average")
+                    ])
+                ]
+            },
+            ethics: {
+                flow: ["Ethics", "Human values", "Attitude", "Emotional intelligence", "Aptitude and integrity", "Probity", "Corruption", "Case studies"],
+                priority: [
+                    "Difference between Ethics, Morality and Values",
+                    "Attitude and Persuasion",
+                    "Emotional Intelligence",
+                    "Integrity, Impartiality and Objectivity",
+                    "Probity in Governance",
+                    "Corruption and Anti-Corruption Measures",
+                    "Code of Conduct vs Code of Ethics",
+                    "Thinkers and Quotes",
+                    "Case Study Framework",
+                    "Civil Service Values"
+                ],
+                pairs: [
+                    { topic: "Mahatma Gandhi", note: "“Be the change you wish to see.”" },
+                    { topic: "Swami Vivekananda", note: "“They alone live who live for others.”" },
+                    { topic: "Aristotle", note: "“Virtue is a habit.”" },
+                    { topic: "Immanuel Kant", note: "Duty above consequences" },
+                    { topic: "Nelson Mandela", note: "“What counts in life is not the mere fact that we have lived.”" }
+                ],
+                tree: [
+                    b("1. Ethics", [
+                        b("Meaning of Ethics"),
+                        b("Types of Ethics", [b("Personal Ethics"), b("Professional Ethics"), b("Social Ethics"), b("Administrative Ethics")]),
+                        b("Moral Thinkers", [b("Socrates"), b("Plato"), b("Aristotle"), b("Immanuel Kant"), b("Mahatma Gandhi"), b("Swami Vivekananda")]),
+                        b("Ethics in Public Administration", [b("Accountability"), b("Transparency"), b("Responsiveness"), b("Rule of Law")]),
+                        b("Ethical Theories", [b("Utilitarianism"), b("Deontology"), b("Virtue Ethics"), b("Justice Theory")])
+                    ], "Name the theory, then whether it judges the act or the result."),
+                    b("2. Human Values", [
+                        b("Sources of Human Values", [b("Family"), b("Society"), b("Education"), b("Religion"), b("Leaders")]),
+                        b("Important Values", [b("Honesty"), b("Compassion"), b("Tolerance"), b("Courage"), b("Justice"), b("Equality"), b("Respect"), b("Empathy")]),
+                        b("Role of Values in Civil Services", [b("Citizen-Centric Approach"), b("Public Welfare"), b("Trust Building")])
+                    ]),
+                    b("3. Attitude", [
+                        b("Meaning of Attitude"),
+                        b("Components of Attitude", [b("Cognitive"), b("Affective"), b("Behavioural")]),
+                        b("Functions of Attitude", [b("Knowledge Function"), b("Utilitarian Function"), b("Ego-Defensive Function"), b("Value-Expressive Function")]),
+                        b("Attitude in Public Service", [b("Positive Attitude"), b("Impartiality"), b("Non-Partisanship"), b("Objectivity")]),
+                        b("Persuasion", [b("Source"), b("Message"), b("Receiver"), b("Techniques of Persuasion")])
+                    ]),
+                    b("4. Emotional Intelligence", [
+                        b("Meaning of Emotional Intelligence"),
+                        b("Components", [b("Self-Awareness"), b("Self-Regulation"), b("Motivation"), b("Empathy"), b("Social Skills")]),
+                        b("Importance in Administration", [b("Conflict Resolution"), b("Leadership"), b("Stress Management"), b("Better Decision Making")]),
+                        b("Daniel Goleman Theory")
+                    ]),
+                    b("5. Aptitude and Foundational Values for Civil Services", [
+                        b("Aptitude", [b("Ability to Learn"), b("Capacity to Perform"), b("Natural Talent")]),
+                        b("Foundational Values", [b("Integrity"), b("Impartiality"), b("Non-Partisanship"), b("Objectivity"), b("Dedication to Public Service"), b("Compassion"), b("Tolerance")]),
+                        b("Importance", [b("Good Governance"), b("Public Trust"), b("Efficient Administration")])
+                    ]),
+                    b("6. Integrity", [
+                        b("Meaning of Integrity"),
+                        b("Types", [b("Personal Integrity"), b("Intellectual Integrity"), b("Professional Integrity")]),
+                        b("Integrity in Governance", [b("Honesty"), b("Accountability"), b("Transparency"), b("Ethical Conduct")]),
+                        b("Threats to Integrity", [b("Corruption"), b("Nepotism"), b("Favouritism"), b("Conflict of Interest")]),
+                        b("Measures to Improve Integrity", [b("Code of Conduct"), b("Vigilance"), b("E-Governance"), b("Social Audit")])
+                    ]),
+                    b("7. Probity in Governance", [
+                        b("Meaning of Probity"),
+                        b("Principles", [b("Honesty"), b("Integrity"), b("Transparency"), b("Accountability")]),
+                        b("Tools of Probity", [b("Right to Information (RTI)"), b("Citizen Charter"), b("Social Audit"), b("Whistleblower Protection"), b("Lokpal and Lokayukta")]),
+                        b("Ethical Governance", [b("Code of Ethics"), b("Code of Conduct"), b("Civil Service Values")])
+                    ], "A code of ethics says what you ought to value. A code of conduct says what you must do."),
+                    b("8. Corruption", [
+                        b("Meaning of Corruption"),
+                        b("Types", [b("Petty Corruption"), b("Grand Corruption"), b("Political Corruption")]),
+                        b("Causes", [b("Lack of Transparency"), b("Weak Accountability"), b("Delay in Services"), b("Monopoly of Power")]),
+                        b("Effects", [b("Loss of Public Trust"), b("Poor Governance"), b("Economic Loss")]),
+                        b("Anti-Corruption Measures", [b("Lokpal"), b("CVC"), b("CBI"), b("Prevention of Corruption Act")])
+                    ]),
+                    b("9. Case Studies", [
+                        b("Stakeholders"),
+                        b("Ethical Issues"),
+                        b("Options Available"),
+                        b("Best Course of Action"),
+                        b("Justification"),
+                        b("Long-Term Impact")
+                    ]),
+                    b("10. Important Thinkers and Quotes", [
+                        b("Mahatma Gandhi", [b("“Be the change you wish to see.”")]),
+                        b("Swami Vivekananda", [b("“They alone live who live for others.”")]),
+                        b("Aristotle", [b("“Virtue is a habit.”")]),
+                        b("Immanuel Kant", [b("Duty above consequences")]),
+                        b("Nelson Mandela", [b("“What counts in life is not the mere fact that we have lived.”")])
+                    ]),
+                    b("11. Most Important UPSC GS-IV Topics", [
+                        b("Ethics and Human Values"),
+                        b("Attitude"),
+                        b("Emotional Intelligence"),
+                        b("Integrity and Aptitude"),
+                        b("Probity in Governance"),
+                        b("Corruption"),
+                        b("Code of Conduct vs Code of Ethics"),
+                        b("Civil Service Values"),
+                        b("Transparency and Accountability"),
+                        b("Case Studies")
+                    ]),
+                    b("12. Case Study Approach for UPSC", [
+                        b("Identify Stakeholders"),
+                        b("Identify Ethical Dilemma"),
+                        b("Mention Values Involved"),
+                        b("Give 2–3 Options"),
+                        b("Choose Best Option"),
+                        b("Give Practical + Ethical Justification"),
+                        b("Conclude with Long-Term Public Interest")
+                    ], "Stakeholders, the dilemma, the values, two or three options, then the public interest."),
+                    b("13. Most Important for UPSC GS-IV", [
+                        b("Difference between Ethics, Morality and Values"),
+                        b("Attitude and Persuasion"),
+                        b("Emotional Intelligence"),
+                        b("Integrity, Impartiality and Objectivity"),
+                        b("Probity in Governance"),
+                        b("Corruption and Anti-Corruption Measures"),
+                        b("Code of Conduct vs Code of Ethics"),
+                        b("Thinkers and Quotes"),
+                        b("Case Study Framework"),
+                        b("Civil Service Values")
+                    ])
+                ]
+            }
+        };
+
+        function renderNode(node, tone) {
+            var li = document.createElement("li");
+            li.className = "node" + (tone ? " tone-" + tone : "");
+            li.dataset.name = node.name;
+            if (node.children) {
+                var button = document.createElement("button");
+                button.type = "button";
+                button.appendChild(document.createTextNode(node.name));
+                if (node.cue) {
+                    var cue = document.createElement("span");
+                    cue.className = "cue";
+                    cue.textContent = node.cue;
+                    button.appendChild(cue);
+                }
+                var list = document.createElement("ul");
+                node.children.forEach(function (child) {
+                    list.appendChild(renderNode(child, null));
+                });
+                button.addEventListener("click", function () {
+                    li.classList.toggle("open");
+                });
+                li.appendChild(button);
+                li.appendChild(list);
+            } else {
+                var leaf = document.createElement("div");
+                leaf.className = "leaf";
+                leaf.textContent = node.name;
+                li.appendChild(leaf);
+            }
+            return li;
+        }
+
+        function paint(id, spec) {
+            var root = document.getElementById(id);
+            var rows = spec.flows || (spec.flow ? [spec.flow] : []);
+            rows.forEach(function (row) {
+                var flow = document.createElement("div");
+                flow.className = "flow";
+                row.forEach(function (label, index) {
+                    if (index) {
+                        var arrow = document.createElement("i");
+                        arrow.textContent = "→";
+                        flow.appendChild(arrow);
+                    }
+                    var chip = document.createElement("span");
+                    chip.textContent = label;
+                    chip.style.animationDelay = (index * 0.06) + "s";
+                    flow.appendChild(chip);
+                });
+                root.appendChild(flow);
+            });
+            if (spec.priority) {
+                var list = document.createElement("ol");
+                list.className = "priority";
+                spec.priority.forEach(function (item, index) {
+                    var li = document.createElement("li");
+                    li.textContent = item;
+                    li.style.animationDelay = (index * 0.04) + "s";
+                    list.appendChild(li);
+                });
+                root.appendChild(list);
+            }
+            if (spec.battles) {
+                var battles = document.createElement("ol");
+                battles.className = "battles";
+                spec.battles.forEach(function (item, index) {
+                    var row = document.createElement("li");
+                    row.style.animationDelay = (index * 0.04) + "s";
+                    var year = document.createElement("strong");
+                    year.textContent = item.year;
+                    var text = document.createElement("span");
+                    text.textContent = item.note ? item.name + " — " + item.note : item.name;
+                    row.appendChild(year);
+                    row.appendChild(text);
+                    battles.appendChild(row);
+                });
+                root.appendChild(battles);
+            }
+            [spec.india, spec.more].forEach(function (items) {
+                if (!items) return;
+                var extra = document.createElement("ol");
+                extra.className = "battles";
+                items.forEach(function (item, index) {
+                    var row = document.createElement("li");
+                    row.style.animationDelay = (index * 0.04) + "s";
+                    var year = document.createElement("strong");
+                    year.textContent = item.year;
+                    var text = document.createElement("span");
+                    text.textContent = item.note ? item.name + " — " + item.note : item.name;
+                    row.appendChild(year);
+                    row.appendChild(text);
+                    extra.appendChild(row);
+                });
+                root.appendChild(extra);
+            });
+            if (spec.pairs) {
+                var pairs = document.createElement("ul");
+                pairs.className = "pairs";
+                spec.pairs.forEach(function (item, index) {
+                    var row = document.createElement("li");
+                    row.style.animationDelay = (index * 0.04) + "s";
+                    var topic = document.createElement("strong");
+                    topic.textContent = item.topic;
+                    var text = document.createElement("span");
+                    text.textContent = item.note;
+                    row.appendChild(topic);
+                    row.appendChild(text);
+                    pairs.appendChild(row);
+                });
+                root.appendChild(pairs);
+            }
+            var bar = document.createElement("div");
+            bar.className = "toolbar";
+            var input = document.createElement("input");
+            input.type = "search";
+            input.placeholder = "Find a topic";
+            input.setAttribute("aria-label", "Find a topic");
+            var openAll = document.createElement("button");
+            openAll.type = "button";
+            openAll.textContent = "Open all";
+            var closeAll = document.createElement("button");
+            closeAll.type = "button";
+            closeAll.textContent = "Fold";
+            bar.appendChild(input);
+            bar.appendChild(openAll);
+            bar.appendChild(closeAll);
+            root.appendChild(bar);
+
+            var wrap = document.createElement("div");
+            wrap.className = "tree-wrap";
+            var tree = document.createElement("ul");
+            tree.className = "tree";
+            spec.tree.forEach(function (node, index) {
+                var item = renderNode(node, (index % 5) + 1);
+                item.classList.add("open");
+                tree.appendChild(item);
+            });
+            wrap.appendChild(tree);
+            root.appendChild(wrap);
+
+            function walk(li, query, force) {
+                var selfHit = li.dataset.name.toLowerCase().indexOf(query) !== -1;
+                var showKids = force || selfHit;
+                var childHit = false;
+                li.querySelectorAll(":scope > ul > .node").forEach(function (child) {
+                    if (walk(child, query, showKids)) childHit = true;
+                });
+                var hit = force || selfHit || childHit;
+                li.hidden = !hit;
+                if ((selfHit || childHit) && li.querySelector("ul")) li.classList.add("open");
+                return selfHit || childHit;
+            }
+
+            input.addEventListener("input", function () {
+                var query = input.value.trim().toLowerCase();
+                if (!query) {
+                    tree.querySelectorAll(".node").forEach(function (item) {
+                        item.hidden = false;
+                        item.classList.remove("open");
+                    });
+                    tree.querySelectorAll(":scope > .node").forEach(function (node) {
+                        node.classList.add("open");
+                    });
+                    return;
+                }
+                tree.querySelectorAll(":scope > .node").forEach(function (node) {
+                    walk(node, query, false);
+                });
+            });
+            openAll.addEventListener("click", function () {
+                tree.querySelectorAll(".node").forEach(function (node) {
+                    if (node.querySelector("ul")) node.classList.add("open");
+                });
+            });
+            closeAll.addEventListener("click", function () {
+                tree.querySelectorAll(".node").forEach(function (node) {
+                    node.classList.remove("open");
+                });
+            });
+        }
+
+        Object.keys(maps).forEach(function (id) {
+            paint(id, maps[id]);
+        });
+
+        function showSheet(id) {
+            var button = document.querySelector('.map-nav button[data-sheet="' + id + '"]');
+            if (!button) return;
+            document.querySelectorAll(".map-nav button").forEach(function (item) {
+                item.classList.toggle("is-on", item === button);
+            });
+            document.querySelectorAll(".sheet").forEach(function (sheet) {
+                sheet.classList.toggle("is-on", sheet.id === id);
+            });
+        }
+
+        document.getElementById("switcher").addEventListener("click", function (event) {
+            var button = event.target.closest("button");
+            if (!button) return;
+            showSheet(button.dataset.sheet);
+            if (history.replaceState) history.replaceState(null, "", "#" + button.dataset.sheet);
+        });
+
+        if (location.hash) showSheet(location.hash.slice(1));
+    </script>
+</body>
+
+</html>
