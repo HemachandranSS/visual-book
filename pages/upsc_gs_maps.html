@@ -108,7 +108,7 @@
 
         .battles li {
             display: grid;
-            grid-template-columns: 108px 1fr;
+            grid-template-columns: minmax(108px, 168px) 1fr;
             gap: 12px;
             align-items: center;
             padding: 10px 12px;
@@ -299,7 +299,7 @@
         <section class="hero">
             <div>
                 <h1>GS Topic Maps</h1>
-                <p class="lede">Geography, Indian history, world history, sociology, the Constitution, social justice, international relations, the Indian economy, science and technology, internal security, ethics, and CSAT are full NCERT-to-UPSC trees. Society and Polity are shorter companion maps. Open a branch, or type a word to find it.</p>
+                <p class="lede">Geography, art and culture, Indian history, post-independence India, world history, sociology, the Constitution, social justice, international relations, the Indian economy, science and technology, internal security, ethics, and CSAT are full NCERT-to-UPSC trees. Society and Polity are shorter companion maps. Open a branch, or type a word to find it.</p>
                 <p><a class="back" href="upsc_syllabus.html">Back to the syllabus</a></p>
             </div>
         </section>
@@ -308,7 +308,9 @@
             <div class="map-group">
                 <span class="map-group-label">GS I</span>
                 <button type="button" class="is-on" data-sheet="geo">Geography</button>
+                <button type="button" data-sheet="culture">Art and Culture</button>
                 <button type="button" data-sheet="history">History</button>
+                <button type="button" data-sheet="post">Post-Independence</button>
                 <button type="button" data-sheet="world">World History</button>
                 <button type="button" data-sheet="society">Society</button>
                 <button type="button" data-sheet="sociology">Sociology</button>
@@ -337,7 +339,9 @@
         </div>
 
         <section id="geo" class="sheet is-on"></section>
+        <section id="culture" class="sheet"></section>
         <section id="history" class="sheet"></section>
+        <section id="post" class="sheet"></section>
         <section id="world" class="sheet"></section>
         <section id="constitution" class="sheet"></section>
         <section id="society" class="sheet"></section>
@@ -559,6 +563,447 @@
                         b("Human Geography", [b("Demography"), b("Urbanization"), b("Census")]),
                         b("Economic Geography", [b("Agriculture"), b("Mineral resource"), b("Energy resources"), b("Industry"), b("Transport and Communication")])
                     ], "Cause, the feature it changes, and the effect on water, ice, and life.")
+                ]
+            },
+            culture: {
+                flows: [
+                    ["Art", "Rock art", "Sculpture", "Painting", "Crafts"],
+                    ["Buildings", "Stupa", "Cave", "Temple", "Sultanate", "Mughal", "Modern"],
+                    ["Performance", "Dance", "Music", "Theatre", "Puppetry"],
+                    ["Ideas", "Vedas", "Buddhism and Jainism", "Bhakti", "Sufi", "Modern literature"],
+                    ["Living culture", "Festivals", "Textiles", "Tribal and folk traditions"],
+                    ["Heritage", "Archaeology", "ASI and Akademis", "UNESCO", "Conservation"],
+                    ["UPSC", "Form", "Region", "Period", "Patron or community", "Features"]
+                ],
+                priority: [
+                    "Identify the form, region, period, patron or community, and features",
+                    "Nagara, Dravida and Vesara",
+                    "Classical dance and its region",
+                    "Folk painting and its region",
+                    "Gandhara, Mathura and Gupta sculpture",
+                    "Bhimbetka and Ajanta",
+                    "Chola bronzes and Nataraja",
+                    "Bhakti and Sufi literature",
+                    "ASI, Akademis and UNESCO",
+                    "GI tags, intangible heritage and conservation"
+                ],
+                pairs: [
+                    { topic: "Bihar", note: "Madhubani / Mithila" },
+                    { topic: "Maharashtra", note: "Warli" },
+                    { topic: "Odisha", note: "Pattachitra" },
+                    { topic: "Andhra / Telangana", note: "Kalamkari traditions" },
+                    { topic: "Rajasthan", note: "Phad" },
+                    { topic: "Central India", note: "Gond traditions" },
+                    { topic: "Telangana", note: "Cheriyal scrolls" },
+                    { topic: "Bengal", note: "Kalighat painting" },
+                    { topic: "Himalayan regions", note: "Thangka traditions" },
+                    { topic: "Nagara", note: "Mainly northern India. Shikhara. Kandariya Mahadeva, Lingaraja" },
+                    { topic: "Dravida", note: "Mainly southern India. Vimāna. Brihadisvara, Shore Temple" },
+                    { topic: "Vesara", note: "Deccan blends. Pattadakal. Hoysala examples show distinct regional development" },
+                    { topic: "Bharatanatyam", note: "Tamil Nadu" },
+                    { topic: "Kathak", note: "North India" },
+                    { topic: "Kathakali", note: "Kerala" },
+                    { topic: "Mohiniyattam", note: "Kerala" },
+                    { topic: "Kuchipudi", note: "Andhra Pradesh" },
+                    { topic: "Odissi", note: "Odisha" },
+                    { topic: "Manipuri", note: "Manipur" },
+                    { topic: "Sattriya", note: "Assam" }
+                ],
+                battles: [
+                    { year: "c. 30,000 BCE", name: "Prehistoric rock art traditions (dates vary by site)" },
+                    { year: "c. 2600–1900 BCE", name: "Mature Harappan urban and craft traditions" },
+                    { year: "3rd century BCE", name: "Mauryan pillars, edicts and polished stone art" },
+                    { year: "3rd–1st century BCE", name: "Early stupas and Buddhist narrative reliefs expand" },
+                    { year: "1st–3rd century CE", name: "Gandhara and Mathura sculptural traditions flourish" },
+                    { year: "4th–6th century CE", name: "Gupta-era sculpture and temple forms develop" },
+                    { year: "5th–6th century CE", name: "Major Ajanta painting phases" },
+                    { year: "7th–9th century CE", name: "Pallava and early medieval temple traditions" },
+                    { year: "8th–13th century CE", name: "Major regional temple-building traditions develop" },
+                    { year: "10th–13th century", name: "Chola temple architecture and bronze sculpture flourish" },
+                    { year: "12th–17th century", name: "Bhakti and Sufi traditions grow across regions" },
+                    { year: "13th–16th century", name: "Delhi Sultanate and regional Indo-Islamic architecture" },
+                    { year: "16th–18th century", name: "Mughal, Rajput, Pahari and Deccan miniature traditions" },
+                    { year: "18th–19th century", name: "Company painting and changing court / regional arts" },
+                    { year: "19th–20th century", name: "Print culture, modern Indian art and cultural revival" },
+                    { year: "1954 onward", name: "National Akademis and post-independence cultural institutions" },
+                    { year: "1972", name: "India’s Ancient Monuments and Archaeological Sites and Remains Act" },
+                    { year: "1977", name: "UNESCO World Heritage Convention enters into force for India" },
+                    { year: "2003", name: "UNESCO Convention for Safeguarding Intangible Cultural Heritage adopted" }
+                ],
+                tree: [
+                    b("1. Sources of Art and Culture", [
+                        b("Archaeological sources", [b("Monuments, temples, stupas and caves"), b("Sculptures, paintings, pottery and seals"), b("Inscriptions, coins and archaeological remains")]),
+                        b("Literary sources", [b("Vedas, Upanishads, epics and Puranas"), b("Buddhist and Jain literature"), b("Sangam literature"), b("Court chronicles, biographies and travel accounts")]),
+                        b("Oral and living traditions", [b("Folktales, myths and legends"), b("Rituals, festivals and community memory"), b("Oral epics and folk performance")])
+                    ]),
+                    b("2. Prehistoric and Ancient Art", [
+                        b("Prehistoric Rock Art", [b("Bhimbetka rock shelters"), b("Hunting, animals, dance and daily life"), b("Natural pigments and rock surfaces")]),
+                        b("Indus Valley Civilization", [b("Town planning and architecture"), b("Seals and animal motifs"), b("Terracotta figurines"), b("Bronze “Dancing Girl”"), b("Stone sculpture, weights and craft production")]),
+                        b("Mauryan Art (c. 4th–2nd century BCE)", [b("Polished stone pillars and capitals"), b("Lion Capital of Sarnath"), b("Ashokan edicts"), b("Barabar caves")]),
+                        b("Shunga, Satavahana and Early Buddhist Art", [b("Bharhut and Sanchi stupas"), b("Toranas, railings and narrative reliefs"), b("Amaravati sculptural tradition"), b("Aniconic representations in early Buddhist art")]),
+                        b("Kushana and Gupta Art", [b("Gandhara school"), b("Mathura school"), b("Sarnath sculptural tradition"), b("Buddha images and bodhisattvas"), b("Gupta-period temple and sculpture developments")])
+                    ]),
+                    b("3. Architecture", [
+                        b("Buddhist Architecture", [b("Stupa: relic mound and ritual focus"), b("Chaitya: prayer / worship hall"), b("Vihara: monastic residence"), b("Sanchi, Bharhut and Amaravati"), b("Ajanta, Karle and other rock-cut sites")]),
+                        b("Hindu Temple Architecture", [
+                            b("Nagara style – mainly northern India", [b("Shikhara over the sanctum"), b("Rekha-prasada and regional forms"), b("Examples: Kandariya Mahadeva, Lingaraja")]),
+                            b("Dravida style – mainly southern India", [b("Vimāna above the sanctum"), b("Gopuram gateways in many later complexes"), b("Examples: Brihadisvara, Shore Temple")]),
+                            b("Vesara – a scholarly label often used for Deccan blends", [b("Chalukya and Hoysala traditions"), b("Examples: Pattadakal, Belur and Halebidu")]),
+                            b("Temple components", [b("Garbhagriha (sanctum)"), b("Mandapa (hall)"), b("Shikhara / vimana"), b("Pradakshina patha and gopuram where present")])
+                        ]),
+                        b("Rock-Cut Architecture", [b("Barabar caves"), b("Ajanta and Ellora"), b("Elephanta"), b("Udayagiri caves"), b("Mahabalipuram monuments")]),
+                        b("Indo-Islamic Architecture", [
+                            b("Arches, domes and vaults"),
+                            b("Minarets, courtyards and gardens"),
+                            b("Calligraphy and geometric decoration"),
+                            b("Delhi Sultanate monuments"),
+                            b("Mughal architecture", [b("Humayun’s Tomb"), b("Fatehpur Sikri"), b("Red Fort"), b("Taj Mahal")]),
+                            b("Regional Sultanate and Deccan styles")
+                        ]),
+                        b("Regional and Colonial Architecture", [b("Vijayanagara and Hampi"), b("Rajput forts and palaces"), b("Kerala timber architecture"), b("Indo-Saracenic buildings"), b("Colonial civic and institutional architecture")]),
+                        b("Modern Indian Architecture", [b("Chandigarh and modernist planning"), b("Post-independence public institutions"), b("Contemporary architecture and conservation")])
+                    ], "Name the tower, the region, and one example."),
+                    b("4. Sculpture and Iconography", [
+                        b("Sculpture materials and methods", [b("Stone, bronze, terracotta and wood"), b("Casting, carving and modelling"), b("Relief vs free-standing sculpture")]),
+                        b("Major traditions", [b("Harappan objects and figurines"), b("Mauryan pillars and yaksha figures"), b("Gandhara, Mathura and Gupta schools"), b("Pallava and Chola sculpture"), b("Pala, Hoysala and regional traditions")]),
+                        b("Chola Bronzes", [b("Lost-wax casting"), b("Nataraja iconography"), b("Devotional and processional use")]),
+                        b("Iconography", [b("Mudras and attributes"), b("Hindu, Buddhist and Jain images"), b("Symbolism and canonical proportions"), b("Identify posture, vehicle, objects and context")])
+                    ]),
+                    b("5. Painting", [
+                        b("Prehistoric and Ancient Painting", [b("Bhimbetka rock paintings"), b("Ajanta murals"), b("Bagh cave paintings")]),
+                        b("Classical and Religious Traditions", [b("Buddhist narrative scenes"), b("Jain manuscript illustration"), b("Temple and mural traditions")]),
+                        b("Miniature Painting", [
+                            b("Mughal school"),
+                            b("Rajput schools", [b("Mewar"), b("Marwar"), b("Bundi and Kota"), b("Kishangarh")]),
+                            b("Pahari schools", [b("Basohli"), b("Guler"), b("Kangra")]),
+                            b("Deccan miniature traditions"),
+                            b("Company painting")
+                        ]),
+                        b("Folk and Regional Painting", [
+                            b("Madhubani / Mithila – Bihar"),
+                            b("Warli – Maharashtra"),
+                            b("Pattachitra – Odisha and parts of eastern India"),
+                            b("Kalamkari – Andhra Pradesh / Telangana traditions"),
+                            b("Phad – Rajasthan"),
+                            b("Gond – central India"),
+                            b("Pithora – western / central India"),
+                            b("Cheriyal scrolls – Telangana"),
+                            b("Kalighat painting – Bengal"),
+                            b("Thangka – Himalayan Buddhist traditions")
+                        ]),
+                        b("Modern Indian Art", [b("Bengal School"), b("Raja Ravi Varma"), b("Amrita Sher-Gil"), b("Progressive Artists’ Group and later movements")])
+                    ], "Region first, then the name of the painting."),
+                    b("6. Performing Arts", [
+                        b("Classical Dance", [b("Bharatanatyam – Tamil Nadu"), b("Kathak – north India"), b("Kathakali – Kerala"), b("Mohiniyattam – Kerala"), b("Kuchipudi – Andhra Pradesh"), b("Odissi – Odisha"), b("Manipuri – Manipur"), b("Sattriya – Assam")]),
+                        b("Dance Concepts", [b("Nritta – pure / abstract dance"), b("Nritya – expressive dance"), b("Natya – dramatic representation"), b("Rasa and bhava"), b("Mudras, costume, music and repertoire")]),
+                        b("Classical Music", [
+                            b("Hindustani – northern tradition", [b("Dhrupad"), b("Khayal"), b("Thumri and other forms"), b("Gharanas")]),
+                            b("Carnatic – southern tradition", [b("Kriti and other compositions"), b("Trinity: Tyagaraja, Muthuswami Dikshitar, Syama Sastri"), b("Raga and tala systems")]),
+                            b("Instruments", [b("String: sitar, veena, sarod"), b("Wind: bansuri, shehnai, nadaswaram"), b("Percussion: tabla, mridangam, pakhawaj"), b("Bowed: sarangi, violin")])
+                        ]),
+                        b("Folk and Community Performance", [b("Bhangra and Giddha – Punjab"), b("Garba and Dandiya Raas – Gujarat"), b("Ghoomar and Kalbelia – Rajasthan"), b("Bihu – Assam"), b("Lavani and Tamasha – Maharashtra"), b("Yakshagana – Karnataka"), b("Chhau – eastern India"), b("Theyyam – Kerala"), b("Therukoothu – Tamil Nadu"), b("Regional ritual, harvest and community dances")])
+                    ]),
+                    b("7. Theatre, Puppetry and Storytelling", [
+                        b("Sanskrit theatre and dramaturgy", [b("Bharata’s Natyashastra"), b("Kalidasa and classical drama"), b("Rasa, bhava and stage conventions")]),
+                        b("Folk Theatre", [b("Jatra – Bengal"), b("Nautanki – north India"), b("Swang – north India"), b("Bhavai – Gujarat"), b("Tamasha – Maharashtra"), b("Therukoothu – Tamil Nadu"), b("Yakshagana – Karnataka")]),
+                        b("Puppetry", [b("String puppets"), b("Shadow puppets"), b("Rod puppets"), b("Glove puppets")]),
+                        b("Oral Traditions", [b("Ballads and epics"), b("Storytelling and recitation"), b("Community and ritual narratives")])
+                    ]),
+                    b("8. Literature and Philosophy", [
+                        b("Vedic and Sanskrit Literature", [b("Vedas and Upanishads"), b("Ramayana and Mahabharata"), b("Puranas and classical Sanskrit works"), b("Kalidasa, Bhasa and other writers")]),
+                        b("Buddhist and Jain Literature", [b("Pali Tripitaka and Buddhist texts"), b("Jataka stories"), b("Jain Agamas"), b("Prakrit and Apabhramsha traditions")]),
+                        b("Sangam and Tamil Literature", [b("Ettuthokai and Pattuppattu"), b("Tolkappiyam"), b("Tirukkural – Tiruvalluvar"), b("Silappadikaram and Manimekalai")]),
+                        b("Bhakti and Sufi Literature", [b("Alvars and Nayanars"), b("Basavanna and Vachana literature"), b("Kabir, Ravidas, Mirabai and Tulsidas"), b("Guru Nanak and Sikh scripture"), b("Sufi poetry and devotional traditions"), b("Regional-language devotional literature")]),
+                        b("Medieval and Early Modern Literature", [b("Persian chronicles and court literature"), b("Regional literary traditions"), b("Travel accounts and translations")]),
+                        b("Modern Indian Literature", [b("Print culture and language movements"), b("Social reform and nationalist writing"), b("Major literary figures and works")])
+                    ]),
+                    b("9. Religions, Philosophy and Cultural Movements", [
+                        b("Indian Philosophical Schools", [b("Astika: Nyaya, Vaisheshika, Samkhya, Yoga, Mimamsa and Vedanta"), b("Nastika: Buddhism, Jainism and Charvaka")]),
+                        b("Buddhism", [b("Four Noble Truths and Eightfold Path"), b("Theravada, Mahayana and Vajrayana"), b("Councils, symbols, sites and spread")]),
+                        b("Jainism", [b("Tirthankaras and Mahavira"), b("Ahimsa and anekantavada"), b("Digambara and Svetambara traditions")]),
+                        b("Bhakti Movement", [b("Alvars and Nayanars"), b("Saguna and Nirguna traditions"), b("Regional saints and social impact")]),
+                        b("Sufi Traditions", [b("Silsilas and khanqahs"), b("Chishti, Suhrawardi and other orders"), b("Music, poetry and devotional practice")]),
+                        b("Sikhism and Other Traditions", [b("Sikh Gurus and Guru Granth Sahib"), b("Zoroastrian communities in India"), b("Jewish, Christian and other cultural heritages")])
+                    ]),
+                    b("10. Languages, Scripts and Manuscripts", [
+                        b("Major language families", [b("Indo-Aryan"), b("Dravidian"), b("Austroasiatic"), b("Tibeto-Burman / Trans-Himalayan")]),
+                        b("Historical scripts", [b("Brahmi and Kharosthi"), b("Grantha and regional scripts"), b("Persian-Arabic script traditions"), b("Evolution of modern scripts")]),
+                        b("Manuscript traditions", [b("Palm-leaf and birch-bark manuscripts"), b("Paper manuscripts and illustrated texts"), b("Preservation, cataloguing and digitisation")]),
+                        b("Classical Languages of India", [b("Tamil, Sanskrit and Telugu"), b("Kannada, Malayalam and Odia"), b("Marathi, Pali, Prakrit and Assamese"), b("Check current official recognition and criteria")])
+                    ]),
+                    b("11. Festivals, Rituals and Living Culture", [
+                        b("Seasonal and harvest festivals", [b("Pongal, Bihu and Onam"), b("Baisakhi and Makar Sankranti"), b("Regional harvest celebrations")]),
+                        b("Religious and community festivals", [b("Diwali, Holi and Navaratri"), b("Eid, Muharram and Milad traditions"), b("Christmas and Easter"), b("Buddha Purnima and Mahavir Jayanti"), b("Gurpurab and other observances")]),
+                        b("Fairs and pilgrimages", [b("Kumbh Mela"), b("Regional temple festivals"), b("Tribal and pastoral fairs")]),
+                        b("Cultural context", [b("Local history and community participation"), b("Ritual objects, food, dress and music"), b("Cultural change and inclusive representation")])
+                    ]),
+                    b("12. Textiles, Crafts and Material Culture", [
+                        b("Textiles and Weaving", [b("Banarasi, Kanjeevaram and Paithani"), b("Patola and Bandhani"), b("Ikat traditions"), b("Pashmina and regional wool crafts"), b("Handloom, embroidery and dyeing")]),
+                        b("Pottery and Decorative Arts", [b("Terracotta and ceramic traditions"), b("Blue pottery"), b("Bidriware"), b("Metalware and woodcraft")]),
+                        b("Traditional Craft Clusters", [b("Dhokra metal casting"), b("Channapatna toys"), b("Kondapalli toys"), b("Thanjavur painting"), b("Regional masks, lacquerware and jewellery")]),
+                        b("Craft Knowledge", [b("Materials, technique and tools"), b("Community / region of origin"), b("Livelihoods, GI tags and conservation")])
+                    ]),
+                    b("13. Tribal and Folk Culture", [
+                        b("Oral histories, myths and origin stories"),
+                        b("Community festivals and ritual practices"),
+                        b("Music, dance, masks and body art"),
+                        b("Traditional ecological knowledge"),
+                        b("Housing, dress, food and crafts"),
+                        b("Diversity: avoid treating communities as culturally uniform")
+                    ]),
+                    b("14. Cultural Heritage and Conservation", [
+                        b("Tangible Heritage", [b("Monuments, archaeological sites and artefacts"), b("Museums, archives and collections")]),
+                        b("Intangible Heritage", [b("Performing arts and oral traditions"), b("Rituals, festivals and craftsmanship"), b("Knowledge systems and living traditions")]),
+                        b("Institutions and Frameworks", [b("Archaeological Survey of India (ASI)"), b("Ministry of Culture"), b("Sangeet Natak Akademi"), b("Sahitya Akademi"), b("Lalit Kala Akademi"), b("National Archives and museums"), b("UNESCO World Heritage and intangible heritage frameworks")]),
+                        b("Conservation Challenges", [b("Weathering, pollution and urbanisation"), b("Looting and illicit trafficking"), b("Tourism pressure and climate risks"), b("Documentation, restoration and community participation")])
+                    ]),
+                    b("15. UPSC Current-Affairs Linkage", [
+                        b("New UNESCO listings and heritage nominations"),
+                        b("Newly protected monuments and archaeological discoveries"),
+                        b("GI tags for crafts, foods and cultural products"),
+                        b("Classical language and cultural institution updates"),
+                        b("Festivals, traditions and communities in the news"),
+                        b("Heritage restoration and museum initiatives"),
+                        b("Repatriation of antiquities"),
+                        b("Culture, tourism, livelihoods and inclusive conservation")
+                    ]),
+                    b("16. How to Use This for UPSC", [
+                        b("Start with NCERTs: History and Fine Arts, especially Class 11 An Introduction to Indian Art"),
+                        b("For each form, record region, period, materials and technique, themes, patrons or communities, and distinguishing features"),
+                        b("Mark heritage sites, temple styles, painting schools, dance forms and craft clusters on an India map"),
+                        b("Connect UNESCO listings, GI tags, repatriated antiquities and conservation projects"),
+                        b("Prelims needs identification and matching. Mains may ask about pluralism, continuity, preservation, livelihoods and tourism")
+                    ], "Identify the form, the region, the period, the patron or community, and the features.")
+                ]
+            },
+            post: {
+                flows: [
+                    ["State", "Partition", "Integration", "Constitution", "Linguistic reorganisation"],
+                    ["Polity", "Elections", "Congress dominance", "Emergency", "Coalition era"],
+                    ["Economy", "Planning", "Green Revolution", "Crisis", "1991 reforms", "GST and digital economy"],
+                    ["Society", "Caste", "Gender", "Education", "Welfare", "Urbanisation"],
+                    ["Foreign policy", "Non-alignment", "Wars", "Nuclear policy", "Global partnerships"],
+                    ["Security", "Borders", "Insurgency", "Terrorism", "Internal security"],
+                    ["Environment", "Laws", "Conservation", "Climate policy", "Disaster management"],
+                    ["UPSC", "Event", "Causes", "Key actors", "Consequences", "Constitutional and policy significance"]
+                ],
+                priority: [
+                    "Partition and integration of princely states",
+                    "Constitution of 1950 and the first election",
+                    "Linguistic reorganisation of states",
+                    "Congress dominance and the Emergency",
+                    "Planning, the Green Revolution, and 1991 reforms",
+                    "Non-alignment, wars, and nuclear policy",
+                    "Coalition era, Mandal, and regional parties",
+                    "Federalism and Jammu and Kashmir",
+                    "RTI, MGNREGA, RTE, and the Food Security Act",
+                    "Event, causes, actors, consequences, and policy significance"
+                ],
+                battles: [
+                    { year: "1947", name: "Independence and Partition" },
+                    { year: "1949", name: "Constitution adopted" },
+                    { year: "1950", name: "Constitution comes into force; Planning Commission set up" },
+                    { year: "1951–52", name: "First general election" },
+                    { year: "1953", name: "Andhra State formed" },
+                    { year: "1956", name: "States Reorganisation Act" },
+                    { year: "1962", name: "Sino-Indian War" },
+                    { year: "1965", name: "Indo-Pak War; FCI established" },
+                    { year: "1969", name: "Major bank nationalisation" },
+                    { year: "1971", name: "War leading to Bangladesh’s independence" },
+                    { year: "1974", name: "Pokhran-I nuclear test" },
+                    { year: "1975–77", name: "National Emergency" },
+                    { year: "1975", name: "Sikkim becomes a state" },
+                    { year: "1984", name: "Bhopal gas disaster; Operation Blue Star and its aftermath" },
+                    { year: "1989", name: "New phase of coalition politics begins" },
+                    { year: "1991", name: "Economic reforms" },
+                    { year: "1992", name: "73rd and 74th Amendments; Babri Masjid demolition" },
+                    { year: "1998", name: "Pokhran-II nuclear tests" },
+                    { year: "1999", name: "Kargil conflict" },
+                    { year: "2000", name: "Chhattisgarh, Uttarakhand and Jharkhand formed" },
+                    { year: "2005", name: "RTI Act and MGNREGA legislation" },
+                    { year: "2008", name: "National Action Plan on Climate Change" },
+                    { year: "2009", name: "Right to Education Act" },
+                    { year: "2013", name: "National Food Security Act" },
+                    { year: "2014", name: "Telangana formed" },
+                    { year: "2015", name: "NITI Aayog established" },
+                    { year: "2016", name: "Insolvency and Bankruptcy Code enacted" },
+                    { year: "2017", name: "GST introduced" },
+                    { year: "2019", name: "Jammu and Kashmir Reorganisation" },
+                    { year: "2020", name: "National Education Policy" }
+                ],
+                tree: [
+                    b("1. Independence, Partition and Immediate Challenges (1947–1950)", [
+                        b("Independence and Partition – 15 August 1947", [b("Mass migration and refugee rehabilitation"), b("Communal violence and humanitarian crisis"), b("Division of assets and administrative institutions")]),
+                        b("Integration of Princely States", [b("Sardar Vallabhbhai Patel and V. P. Menon"), b("Instruments of Accession and negotiations"), b("Hyderabad and Operation Polo (1948)"), b("Junagadh"), b("Jammu and Kashmir: accession and conflict (1947 onward)")]),
+                        b("Reorganisation of administration and armed forces"),
+                        b("Rehabilitation, food shortages and economic recovery"),
+                        b("Constitution-making", [b("Constituent Assembly debates"), b("Constitution adopted – 26 November 1949"), b("Constitution came into force – 26 January 1950")])
+                    ], "For each event: causes, actors, the outcome, and why it still matters."),
+                    b("2. Building the Republic and Democratic Institutions", [
+                        b("Constitutional Framework", [
+                            b("Sovereign, democratic republic; later amended to add “socialist” and “secular”"),
+                            b("Fundamental Rights and Directive Principles"),
+                            b("Parliamentary system and federal structure"),
+                            b("Independent judiciary and judicial review"),
+                            b("Election Commission and universal adult franchise")
+                        ]),
+                        b("First General Election (1951–1952)"),
+                        b("Parliament, state legislatures and local government"),
+                        b("Civil services and institution-building"),
+                        b("Important Constitutional Amendments", [
+                            b("1st Amendment (1951): several changes including reasonable restrictions"),
+                            b("7th Amendment (1956): reorganisation-related constitutional changes"),
+                            b("42nd Amendment (1976): extensive changes during the Emergency"),
+                            b("44th Amendment (1978): safeguards and changes after the Emergency"),
+                            b("73rd Amendment (1992): Panchayati Raj institutions"),
+                            b("74th Amendment (1992): urban local bodies"),
+                            b("86th Amendment (2002): right to education for ages 6–14"),
+                            b("101st Amendment (2016): GST framework")
+                        ]),
+                        b("Democratic Milestones", [b("Peaceful transfers of power"), b("Coalition governments and regional parties"), b("Expansion of electoral participation"), b("Debates on institutional autonomy and accountability")])
+                    ]),
+                    b("3. Integration and Reorganisation of States", [
+                        b("Linguistic and Regional Demands", [b("Potti Sriramulu’s fast and Andhra State (1953)"), b("States Reorganisation Commission (Fazl Ali Commission)"), b("States Reorganisation Act (1956)")]),
+                        b("Formation and Reorganisation", [
+                            b("Maharashtra and Gujarat (1960)"),
+                            b("Nagaland (1963)"),
+                            b("Haryana and Punjab reorganisation (1966)"),
+                            b("Himachal Pradesh becomes a state (1971)"),
+                            b("Sikkim becomes a state (1975)"),
+                            b("Goa becomes a state (1987)"),
+                            b("Chhattisgarh, Uttarakhand and Jharkhand (2000)"),
+                            b("Telangana (2014)")
+                        ]),
+                        b("Union Territories and Special Arrangements", [
+                            b("Article 370 and Jammu and Kashmir’s special status (historical context)"),
+                            b("Reorganisation of Jammu and Kashmir into Union Territories (2019)"),
+                            b("Special provisions for some states under the Constitution")
+                        ]),
+                        b("Federalism", [b("Centre–state relations"), b("Finance Commission and fiscal federalism"), b("Inter-state river and boundary disputes"), b("Cooperative and competitive federalism")])
+                    ]),
+                    b("4. Political Developments and Party System", [
+                        b("Congress Dominance (1950s–1960s)", [b("Jawaharlal Nehru and planned development"), b("One-party dominance within a competitive democracy"), b("Opposition parties and parliamentary debate")]),
+                        b("Political Transition (1960s–1970s)", [b("Lal Bahadur Shastri"), b("Indira Gandhi and the 1969 Congress split"), b("1971 election and Bangladesh War context"), b("Rise of mass movements and political opposition")]),
+                        b("Emergency (1975–1977)", [b("Emergency proclaimed – 25 June 1975"), b("Civil liberties and press restrictions"), b("42nd Constitutional Amendment"), b("1977 election and restoration of elected government")]),
+                        b("Janata Period and Return of Congress", [b("Janata government (1977–1979)"), b("Congress returns to power in 1980")]),
+                        b("Coalition Era and Regionalisation (1989 onward)", [b("Coalition governments at the Union level"), b("Growth of regional parties"), b("Mandal Commission recommendations implemented (1990)"), b("Babri Masjid demolition and its aftermath (1992)"), b("Changing patterns of social and electoral mobilisation")]),
+                        b("Recent Political Themes", [b("Coalition and majority governments"), b("Electoral reforms and campaign finance debates"), b("Parliament, judiciary and executive relations"), b("Representation, accountability and institutional trust")])
+                    ]),
+                    b("5. Foreign Policy and International Relations", [
+                        b("Core Principles", [b("Strategic autonomy"), b("Non-alignment and the Non-Aligned Movement"), b("Panchsheel principles"), b("Anti-colonialism and peaceful coexistence"), b("Nuclear policy and security considerations")]),
+                        b("Neighbourhood Relations", [b("Pakistan: wars, dialogue and security issues"), b("China: 1962 war, border negotiations and competition"), b("Bangladesh: 1971 war and bilateral cooperation"), b("Nepal, Bhutan, Sri Lanka and Maldives"), b("Myanmar and regional connectivity")]),
+                        b("Major Wars and Security Events", [b("First Indo-Pak war (1947–1948)"), b("Sino-Indian War (1962)"), b("Indo-Pak War (1965)"), b("Indo-Pak War and Bangladesh’s independence (1971)"), b("Pokhran-I nuclear test (1974)"), b("Pokhran-II nuclear tests (1998)"), b("Kargil conflict (1999)")]),
+                        b("Global Engagement", [b("United Nations and peacekeeping"), b("G20, BRICS, SCO and other forums"), b("India–US relations and strategic partnerships"), b("India–Russia relations"), b("Indo-Pacific and Quad"), b("Climate diplomacy and Global South")]),
+                        b("Economic Diplomacy", [b("Trade agreements and supply chains"), b("Energy and technology partnerships"), b("Development cooperation")])
+                    ]),
+                    b("6. Economic Development and Planning", [
+                        b("Early Planning (1950s–1980s)", [b("Planning Commission established (1950)"), b("First Five-Year Plan (1951–1956)"), b("Second Five-Year Plan and heavy industry focus"), b("Public sector and infrastructure development"), b("Green Revolution and agricultural transformation")]),
+                        b("Agriculture and Rural Development", [b("Land reforms and tenancy changes"), b("High-yielding varieties, irrigation and fertilisers"), b("White Revolution and dairy cooperatives"), b("Rural employment and poverty alleviation programmes"), b("Food security and public distribution")]),
+                        b("Economic Challenges", [b("Poverty, unemployment and inequality"), b("Inflation, fiscal deficits and external imbalances"), b("Balance-of-payments crisis (1991)")]),
+                        b("Economic Reforms (1991 onward)", [b("Liberalisation"), b("Privatisation / disinvestment"), b("Globalisation"), b("Industrial licensing reforms"), b("Trade and investment reforms")]),
+                        b("Institutions and Policy Changes", [b("SEBI established as statutory regulator (1992)"), b("Nationalisation of major banks (1969 and 1980)"), b("NITI Aayog replaces Planning Commission (2015)"), b("GST introduced (2017)"), b("Insolvency and Bankruptcy Code (2016)")]),
+                        b("Contemporary Economic Themes", [b("Manufacturing and industrial policy"), b("Digital economy and financial inclusion"), b("Infrastructure and logistics"), b("Labour markets and skilling"), b("Sustainable and inclusive growth")])
+                    ]),
+                    b("7. Agriculture, Food Security and Rural Change", [
+                        b("Green Revolution", [b("High-yielding seed varieties"), b("Irrigation, fertilisers and mechanisation"), b("Gains and regional inequalities"), b("Environmental and groundwater challenges")]),
+                        b("White Revolution", [b("Operation Flood (1970–1996)"), b("Verghese Kurien and dairy cooperatives"), b("Milk production and rural livelihoods")]),
+                        b("Agricultural Institutions and Policies", [b("Food Corporation of India (1965)"), b("Agricultural price support and procurement"), b("Public Distribution System"), b("National Food Security Act (2013)")]),
+                        b("Rural Transformation", [b("Panchayati Raj and decentralisation"), b("MGNREGA (2005 Act; implementation from 2006)"), b("Self-help groups and microfinance"), b("Rural roads, electrification and connectivity")])
+                    ]),
+                    b("8. Social Change and Social Justice", [
+                        b("Caste and Social Equality", [b("Constitutional abolition of untouchability (Article 17)"), b("Reservations and affirmative action"), b("Social justice movements"), b("Debates on caste census and representation")]),
+                        b("Gender and Family", [b("Women’s education and workforce participation"), b("Legal reforms and political representation"), b("Women’s movements and safety"), b("Health, nutrition and care work")]),
+                        b("Education and Health", [b("Expansion of schools and higher education"), b("Right to Education Act (2009)"), b("Public health and immunisation"), b("National Education Policy (2020)")]),
+                        b("Poverty and Welfare", [b("Food, housing and social protection"), b("Direct benefit transfers"), b("Disability rights and inclusion"), b("Welfare access and implementation gaps")]),
+                        b("Demographic and Urban Change", [b("Migration and urbanisation"), b("Slums, housing and urban services"), b("Ageing, youth employment and demographic transition")])
+                    ]),
+                    b("9. Science, Technology and National Capacity", [
+                        b("Atomic energy programme and nuclear research"),
+                        b("Space programme: ISRO and satellite applications"),
+                        b("Defence research and indigenous systems"),
+                        b("IT services and digital transformation"),
+                        b("Pharmaceuticals and vaccine production"),
+                        b("Telecommunications and digital public infrastructure"),
+                        b("Current priorities: AI, semiconductors, quantum and clean energy")
+                    ]),
+                    b("10. Environment, Climate and Disaster Management", [
+                        b("Environmental governance", [b("Wildlife Protection Act (1972)"), b("Water Act (1974)"), b("Forest Conservation Act (1980; later amendments)"), b("Air Act (1981)"), b("Environment Protection Act (1986)")]),
+                        b("Conservation", [b("Project Tiger (1973)"), b("Protected areas and biodiversity"), b("Forest rights and community participation"), b("Pollution control institutions")]),
+                        b("Climate Policy", [b("National Action Plan on Climate Change (2008)"), b("Renewable energy and energy efficiency"), b("International climate negotiations"), b("Adaptation, resilience and climate finance")]),
+                        b("Disaster Management", [b("Disaster Management Act (2005)"), b("NDMA and state / district authorities"), b("Early warning, preparedness and recovery")])
+                    ]),
+                    b("11. Internal Security and National Integration", [
+                        b("Border management and territorial disputes"),
+                        b("Insurgency and peace processes"),
+                        b("Punjab militancy and peace restoration"),
+                        b("Northeast movements and accords"),
+                        b("Left-wing extremism"),
+                        b("Terrorism and counter-terrorism"),
+                        b("Communal harmony and social cohesion")
+                    ]),
+                    b("12. Important Laws, Programmes and Institutions", [
+                        b("Democratic and Governance", [b("Representation of the People Acts (1950, 1951)"), b("Right to Information Act (2005)"), b("Lokpal and Lokayuktas Act (2013)"), b("Goods and Services Tax framework (2016–2017)")]),
+                        b("Social and Welfare", [b("Protection of Civil Rights Act (1955)"), b("SC/ST (Prevention of Atrocities) Act (1989)"), b("MGNREGA (2005)"), b("Right to Education Act (2009)"), b("National Food Security Act (2013)")]),
+                        b("Institutional Development", [b("Election Commission of India"), b("Finance Commission"), b("UPSC and civil services"), b("CAG and parliamentary committees"), b("NITI Aayog")])
+                    ]),
+                    b("13. Culture, Media and National Identity", [
+                        b("Linguistic reorganisation and multilingualism"),
+                        b("Cinema, radio, television and digital media"),
+                        b("National symbols and civic identity"),
+                        b("Literature, art and cultural institutions"),
+                        b("Sports and public life"),
+                        b("Debates on pluralism, secularism and national integration")
+                    ]),
+                    b("14. Important Timeline (1947–Present)", [
+                        b("1947 – Independence and Partition"),
+                        b("1949 – Constitution adopted"),
+                        b("1950 – Constitution comes into force; Planning Commission set up"),
+                        b("1951–52 – First general election"),
+                        b("1953 – Andhra State formed"),
+                        b("1956 – States Reorganisation Act"),
+                        b("1962 – Sino-Indian War"),
+                        b("1965 – Indo-Pak War; FCI established"),
+                        b("1969 – Major bank nationalisation"),
+                        b("1971 – War leading to Bangladesh’s independence"),
+                        b("1974 – Pokhran-I nuclear test"),
+                        b("1975–77 – National Emergency"),
+                        b("1975 – Sikkim becomes a state"),
+                        b("1984 – Bhopal gas disaster; Operation Blue Star and its aftermath"),
+                        b("1989 – New phase of coalition politics begins"),
+                        b("1991 – Economic reforms"),
+                        b("1992 – 73rd and 74th Amendments; Babri Masjid demolition"),
+                        b("1998 – Pokhran-II nuclear tests"),
+                        b("1999 – Kargil conflict"),
+                        b("2000 – Chhattisgarh, Uttarakhand and Jharkhand formed"),
+                        b("2005 – RTI Act and MGNREGA legislation"),
+                        b("2008 – National Action Plan on Climate Change"),
+                        b("2009 – Right to Education Act"),
+                        b("2013 – National Food Security Act"),
+                        b("2014 – Telangana formed"),
+                        b("2015 – NITI Aayog established"),
+                        b("2016 – Insolvency and Bankruptcy Code enacted"),
+                        b("2017 – GST introduced"),
+                        b("2019 – Jammu and Kashmir Reorganisation"),
+                        b("2020 – National Education Policy")
+                    ]),
+                    b("15. UPSC Current-Affairs Linkage", [
+                        b("Constitutional and judicial developments"),
+                        b("Centre–state relations and federalism"),
+                        b("Elections, political parties and democratic institutions"),
+                        b("Economic growth, jobs, inflation and reforms"),
+                        b("Welfare delivery, health and education"),
+                        b("India’s foreign relations and strategic partnerships"),
+                        b("Climate, environment and disaster resilience"),
+                        b("Technology, security and institutional reform")
+                    ]),
+                    b("16. How to Study Post-Independence India", [
+                        b("Start with Class 12 Political Science, Politics in India Since Independence"),
+                        b("Phases: 1947–1964, 1964–1977, 1977–1989, 1989–2004, 2004 onward"),
+                        b("For every major event, note the background, key actors, immediate outcome and long-term significance"),
+                        b("Link polity and federalism to GS II, planning and agriculture to GS III, social change to GS I, and governance to GS IV"),
+                        b("Mark new states, border conflicts, major infrastructure projects and regional movements"),
+                        b("Distinguish policy announcements from implemented outcomes")
+                    ])
                 ]
             },
             society: {
