@@ -26,6 +26,20 @@ const miscellaneousBooks = [
     "Essays_on_Indian_Philosophy_-_Shri_Krishna_Saksena.pdf",
     "History_of_India__A_Captivating_Guide_to_A_-_Captivating_History.pdf",
     "History_of_modern_india_-_Bipan_chandra.pdf",
+    "2014_The_Election_That_Changed_India_-_Rajdeep_Sardesai.pdf",
+    "AKBAR_THE_GREAT_MUGHAL_-_IRA_MUKHOTY.pdf",
+    "A_short_history_of_indian_railways_-_Rajendra_B_Aklekar.pdf",
+    "Coromandel_A_Personal_History_of_South_India_-_Charles_Allen.pdf",
+    "History_of_India__A_Captivating_Guide_to_A_-_Captivating_History.pdf",
+    "History_of_modern_india_-_Bipan_chandra.pdf",
+    "India_Moving_A_History_of_Migration_-_Chinmay_Tumbe.pdf",
+    "Indians_-_Namit_Arora.pdf",
+    "Land_of_the_Seven_Rivers_-_Sanjeev_Sanyal.pdf",
+    "Objective_Indian_and_World_Geography___General_Studies_-_Paper_1_-_Majid_Husain.pdf",
+    "Patriots_and_Partisans_-_Ramachandra_Guha.pdf",
+    "The_cases_that_India_Forget_-_Chinthan_chandrachud.pdf",
+    "The_discovery_of_India_-_Jawaharlal_Nehru.pdf",
+    "The_Indian_Struggle_1920-1942_-_Subhas_Chandra_Bose.pdf",
     "I_do_what_I_do_-_Raghuram_Rajan.pdf",
     "Incredible_Indians_75_People_Who_Shaped_Modern_India_-_Ashwitha_Jayakumar.pdf",
     "India_and_Pakistan_-_Stanley_Wolpert.pdf",
@@ -479,7 +493,7 @@ const economicsCountEl = document.getElementById('economicsCount');
 if (economicsCountEl) economicsCountEl.textContent = `8 Books`;
 
 const historyCountEl = document.getElementById('historyCount');
-if (historyCountEl) historyCountEl.textContent = `26 Books`;
+if (historyCountEl) historyCountEl.textContent = `40 Books`;
 
 const biographiesCountEl = document.getElementById('biographiesCount');
 if (biographiesCountEl) biographiesCountEl.textContent = `33 Books`;
