@@ -257,6 +257,21 @@ const visualBooks = [
     "https://hemachandranss.github.io/books17/books/visual-books/The_Ecology_Book_2nd_Edition_-_DK.pdf",
     "https://hemachandranss.github.io/books17/books/visual-books/1000_Words_Nature_Build_Nature_Vocabulary_and_Literacy_Skills",
     "https://hemachandranss.github.io/books17/books/visual-books/Illustrated_Maths_Dictionary_xvmon.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/Bharat_Jodo_Yatra_-_Pushparaj_Deshpande.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/Edward_Snowden_-_Melissa_Higgins.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/Global_Governance_Under_Fire_-_Allison_Carnegie.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/Permanent_Record_Meine_Geschichte_-_Edward_Snowden.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/The_Hanging_of_Afzal_Guru_and_the_Strange_-_Arundhati_Roy.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/The_Snowden_Operation_-_Edward_Lucas.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/100_All-Time_Greatest_Comics_3rd_Edition.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/Marvel_Greatest_Comics_100_Comics_that_Built_a_Universe_by_Melanie_Scott_Stephen_Wiacek_z-lib_org.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/Marvel Studios The Marvel Cinematic Universe An Official Timeline.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/The_Art_of_Captain_America_-_Civil_War.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/The_Art_of_Captain_America_-_The_First_Avenger.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/The_Art_of_Captain_America_-_The_Winter_Soldier.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/The_Art_of_Iron_Man_2.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/The_Art_of_Iron_Man_3.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/The_Art_of_Iron_Man.pdf",
 ];
 
 const normalizeBookPath = (value) => {

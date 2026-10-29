@@ -232,6 +232,10 @@ const books6Files = [
   'OSFYOct2026.pdf'
 ];
 
+const books30Files = [
+  "OSFYNov2026.pdf"
+];
+
 const osfyBooks = [
   ...books5Files.map(
     (fileName) =>
@@ -241,6 +245,11 @@ const osfyBooks = [
   ...books6Files.map(
     (fileName) =>
       `https://hemachandranss.github.io/books6/books/osfy/${fileName}`
+  ),
+
+  ...books30Files.map(
+    (fileName) =>
+      `https://hemachandranss.github.io/books30/books/visual-books/${fileName}`
   )
 ];
 

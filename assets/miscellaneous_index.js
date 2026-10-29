@@ -40,6 +40,21 @@ const miscellaneousBooks = [
     "The_cases_that_India_Forget_-_Chinthan_chandrachud.pdf",
     "The_discovery_of_India_-_Jawaharlal_Nehru.pdf",
     "The_Indian_Struggle_1920-1942_-_Subhas_Chandra_Bose.pdf",
+    "Bharat_Jodo_Yatra_-_Pushparaj_Deshpande.pdf",
+    "Edward_Snowden_-_Melissa_Higgins.pdf",
+    "Global_Governance_Under_Fire_-_Allison_Carnegie.pdf",
+    "Permanent_Record_Meine_Geschichte_-_Edward_Snowden.pdf",
+    "The_Hanging_of_Afzal_Guru_and_the_Strange_-_Arundhati_Roy.pdf",
+    "The_Snowden_Operation_-_Edward_Lucas.pdf",
+    "100_All-Time_Greatest_Comics_3rd_Edition.pdf",
+    "Marvel_Greatest_Comics_100_Comics_that_Built_a_Universe_by_Melanie_Scott_Stephen_Wiacek_z-lib_org.pdf",
+    "Marvel Studios The Marvel Cinematic Universe An Official Timeline.pdf",
+    "The_Art_of_Captain_America_-_Civil_War.pdf",
+    "The_Art_of_Captain_America_-_The_First_Avenger.pdf",
+    "The_Art_of_Captain_America_-_The_Winter_Soldier.pdf",
+    "The_Art_of_Iron_Man_2.pdf",
+    "The_Art_of_Iron_Man_3.pdf",
+    "The_Art_of_Iron_Man.pdf",
     "I_do_what_I_do_-_Raghuram_Rajan.pdf",
     "Incredible_Indians_75_People_Who_Shaped_Modern_India_-_Ashwitha_Jayakumar.pdf",
     "India_and_Pakistan_-_Stanley_Wolpert.pdf",
@@ -496,10 +511,13 @@ const historyCountEl = document.getElementById('historyCount');
 if (historyCountEl) historyCountEl.textContent = `40 Books`;
 
 const biographiesCountEl = document.getElementById('biographiesCount');
-if (biographiesCountEl) biographiesCountEl.textContent = `33 Books`;
+if (biographiesCountEl) biographiesCountEl.textContent = `35 Books`;
 
 const generalCountEl = document.getElementById('generalCount');
-if (generalCountEl) generalCountEl.textContent = `9 Books`;
+if (generalCountEl) generalCountEl.textContent = `11 Books`;
+
+const comicsCountEl = document.getElementById('comicsCount');
+if (comicsCountEl) comicsCountEl.textContent = `9 Books`;
 
 // Show the "no books" empty state when the list is empty,
 // and hide the grid.
