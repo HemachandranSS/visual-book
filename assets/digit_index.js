@@ -704,7 +704,9 @@ const digitBooks = [
   "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_26_Issue_08_August_2026_Medium-Res",
   "https://hemachandranss.github.io/books6/books/visual-books/digit_mag/Digit_Vol_26_Issue_09_September_2026_Medium-Res-1",
   "https://hemachandranss.github.io/books17/books/visual-books/Digit_Vol_26_Issue_10_October_2026_Medium-Res",
-  "https://hemachandranss.github.io/books17/books/visual-books/Digit-FT-to-Run-Your-Own-AI_Issue_10_Vol_21_October_2026_High-Res"
+  "https://hemachandranss.github.io/books17/books/visual-books/Digit-FT-to-Run-Your-Own-AI_Issue_10_Vol_21_October_2026_High-Res",
+  "https://hemachandranss.github.io/books30/books/visual-books/Digit_Vol_26_Issue_11_November_2026_Medium-Res",
+  "https://hemachandranss.github.io/books30/books/visual-books/Digit-FT-to-Build-Your-Own-AI_Issue_11_Vol_21_November_2026_High-Res"
 ];
 
 const normalizeBookPath = (value) => {

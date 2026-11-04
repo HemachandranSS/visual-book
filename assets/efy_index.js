@@ -230,7 +230,8 @@ const electronicsForYou = [
     "https://hemachandranss.github.io/books10/books/visual-books/EFYJuly2026.pdf",
     "https://hemachandranss.github.io/books10/books/visual-books/EFYAug2026.pdf",
     "https://hemachandranss.github.io/books10/books/visual-books/EFYSep2026.pdf",
-    "https://hemachandranss.github.io/books17/books/visual-books/EFYOct2026.pdf"
+    "https://hemachandranss.github.io/books17/books/visual-books/EFYOct2026.pdf",
+    "https://hemachandranss.github.io/books30/books/visual-books/EFYNov2026.pdf"
 ];
 
 const normalizeBookPath = (value) => {
