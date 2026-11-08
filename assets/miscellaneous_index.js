@@ -55,6 +55,26 @@ const miscellaneousBooks = [
     "The_Art_of_Iron_Man_2.pdf",
     "The_Art_of_Iron_Man_3.pdf",
     "The_Art_of_Iron_Man.pdf",
+    "Astrophysics_for_People_in_a_Hurry_-_Neil_DeGrasse_Tyson.pdf",
+    "Black_Holes_n_Time_Warps_-_Kip_Thorne.pdf",
+    "Cosmos_-_Sagan_Carl_Edward.pdf",
+    "Feynman_Lectures_on_Physics___The_New_Mill_-_Matthew_Feynman_Richard_Phillips_Leighto.pdf",
+    "Pale_Blue_Dot_-_Carl_Sagan.pdf",
+    "Quantum_Mechanics_UK_Edition_-_Leonard_Susskind.pdf",
+    "Reality_Is_Not_What_It_Seems__The_Journey_-_Carlo_Rovelli.pdf",
+    "Seven_Brief_Lessons_on_Physics_-_Carlo_Rovelli.pdf",
+    "Six_Easy_Pieces_-_Richard_P_Feynman.pdf",
+    "Six_Not-So-Easy_Pieces_Einsteins_Relativity_Symmetry_and_Space-Time_-_Richard_P_feynman.pdf",
+    "Something_Deeply_Hidden_-_Sean_Carroll.pdf",
+    "The_Elegant_Universe_Superstrings_Hidden_Dimensions_and_the_Quest_for_the_Ultimate_Theory_-_Brian_Greene.pdf",
+    "The_End_of_Everything_-_Katie_Mack.pdf",
+    "The_Fabric_of_the_Cosmos_-_Brian_Greene.pdf",
+    "The_Order_of_Time_-_Carlo_Rovelli.pdf",
+    "The_origin_of_species_by_means_of_natural_-_Charles_Darwin.pdf",
+    "The_Science_of_Interstellar_-_Kip_Thorne.pdf",
+    "The_Selfish_Gene__40th_Anniversary_edition_-_Richard_Dawkins.pdf",
+    "The_Voyage_of_the_Beagle_Charles_Darwin_-_Charles_Darwin.pdf",
+    "What_Is_Real_The_Unfinished_Quest_for_the_Meaning_of_Quantum_Physics_-_Adam_Becker.pdf",
     "I_do_what_I_do_-_Raghuram_Rajan.pdf",
     "Incredible_Indians_75_People_Who_Shaped_Modern_India_-_Ashwitha_Jayakumar.pdf",
     "India_and_Pakistan_-_Stanley_Wolpert.pdf",
@@ -518,6 +538,9 @@ if (generalCountEl) generalCountEl.textContent = `11 Books`;
 
 const comicsCountEl = document.getElementById('comicsCount');
 if (comicsCountEl) comicsCountEl.textContent = `9 Books`;
+
+const popularScienceCountEl = document.getElementById('popularScienceCount');
+if (popularScienceCountEl) popularScienceCountEl.textContent = `20 Books`;
 
 // Show the "no books" empty state when the list is empty,
 // and hide the grid.
