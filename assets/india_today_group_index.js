@@ -281,6 +281,7 @@ const indiaTodayGroupBooks = [
     "https://hemachandranss.github.io/books27/books/visual-books/11102026-md-hr1",
     "https://hemachandranss.github.io/books27/books/visual-books/25102026-md-hr1",
     "https://hemachandranss.github.io/books27/books/visual-books/08112026-md-hr1",
+    "https://hemachandranss.github.io/books27/books/visual-books/22112026-md-hr1",
     "https://hemachandranss.github.io/books29/books/visual-books/03012022-md-hr",
     "https://hemachandranss.github.io/books29/books/visual-books/10012022-md-hr",
     "https://hemachandranss.github.io/books29/books/visual-books/17012022-md-hr",
@@ -531,7 +532,8 @@ const indiaTodayGroupBooks = [
     "https://hemachandranss.github.io/books27/books/visual-books/19102026-md-hr",
     "https://hemachandranss.github.io/books27/books/visual-books/26102026-md-hr",
     "https://hemachandranss.github.io/books27/books/visual-books/02112026-md-hr",
-    "https://hemachandranss.github.io/books30/books/visual-books/09112026-md-hr"
+    "https://hemachandranss.github.io/books30/books/visual-books/09112026-md-hr",
+    "https://hemachandranss.github.io/books30/books/visual-books/16112026-md-hr"
 
 ];
 
@@ -571,6 +573,9 @@ if (countEl) countEl.textContent = `${bookCount} ${label}`;
 
 const visualCountEl = document.getElementById('visualCount');
 if (visualCountEl) visualCountEl.textContent = `${bookCount} ${label}`;
+
+const businessLineCountEl = document.getElementById('businessLineCount');
+if (businessLineCountEl) businessLineCountEl.textContent = `4 Issues`;
 
 // Show the "no books" empty state when the list is empty,
 // and hide the grid.
