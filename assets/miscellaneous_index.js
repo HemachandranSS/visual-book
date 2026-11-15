@@ -75,6 +75,20 @@ const miscellaneousBooks = [
     "The_Selfish_Gene__40th_Anniversary_edition_-_Richard_Dawkins.pdf",
     "The_Voyage_of_the_Beagle_Charles_Darwin_-_Charles_Darwin.pdf",
     "What_Is_Real_The_Unfinished_Quest_for_the_Meaning_of_Quantum_Physics_-_Adam_Becker.pdf",
+    "Lords_Of_The_Deccan_-_Southern_India_From_The_Chalukyas_To_The_Cholas_-_Anirudh_Kanisetti.pdf",
+    "Nagapattinam_to_Suvarnadwipa_-_Hermann_Kulke.pdf",
+    "Rajaraja_Chola_-_Raghavan_Srinivasan.pdf",
+    "The_American_Revolution_-_DK.pdf",
+    "The_Chola_Tigers_Avengers_of_Somnath_-_Amish.pdf",
+    "The_Conqueror_-_Aditya_Iyengar.pdf",
+    "Tamil_Characters_-_A_R_Venkatachalapathy.pdf",
+    "Tamil_-_David_Shulman.pdf",
+    "Tamil_The_Best_Stories_of_Our_Times_-_Perundevi.pdf",
+    "The_Tamils_A_Portrait_of_a_Community_-_Nirmala_Lakshman.pdf",
+    "AIML_for_Healthcare_Navigating_the_AIML_-_Kapila_Monga.pdf",
+    "Build_Applications_with_Local_AI_Models_on_a_Mac_-_Keiji_Kamigusa.pdf",
+    "Practical_Claude_for_Business_-_Anton_Voroniuk.pdf",
+    "The_AI_Act_Playbook_-_Jordan_Bradford.pdf",
     "I_do_what_I_do_-_Raghuram_Rajan.pdf",
     "Incredible_Indians_75_People_Who_Shaped_Modern_India_-_Ashwitha_Jayakumar.pdf",
     "India_and_Pakistan_-_Stanley_Wolpert.pdf",
@@ -528,13 +542,13 @@ const economicsCountEl = document.getElementById('economicsCount');
 if (economicsCountEl) economicsCountEl.textContent = `8 Books`;
 
 const historyCountEl = document.getElementById('historyCount');
-if (historyCountEl) historyCountEl.textContent = `40 Books`;
+if (historyCountEl) historyCountEl.textContent = `51 Books`;
 
 const biographiesCountEl = document.getElementById('biographiesCount');
 if (biographiesCountEl) biographiesCountEl.textContent = `35 Books`;
 
 const generalCountEl = document.getElementById('generalCount');
-if (generalCountEl) generalCountEl.textContent = `11 Books`;
+if (generalCountEl) generalCountEl.textContent = `15 Books`;
 
 const comicsCountEl = document.getElementById('comicsCount');
 if (comicsCountEl) comicsCountEl.textContent = `9 Books`;
