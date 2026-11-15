@@ -89,6 +89,8 @@ const miscellaneousBooks = [
     "Build_Applications_with_Local_AI_Models_on_a_Mac_-_Keiji_Kamigusa.pdf",
     "Practical_Claude_for_Business_-_Anton_Voroniuk.pdf",
     "The_AI_Act_Playbook_-_Jordan_Bradford.pdf",
+    "Breaking_the_Mould_-_Rajan_G_Raghuram.pdf",
+    "The_Man_Who_Knew_Infinity_-_Robert_Kanigel.pdf",
     "I_do_what_I_do_-_Raghuram_Rajan.pdf",
     "Incredible_Indians_75_People_Who_Shaped_Modern_India_-_Ashwitha_Jayakumar.pdf",
     "India_and_Pakistan_-_Stanley_Wolpert.pdf",
@@ -539,13 +541,13 @@ const tnCountEl = document.getElementById('tnCount');
 if (tnCountEl) tnCountEl.textContent = `264 Books`;
 
 const economicsCountEl = document.getElementById('economicsCount');
-if (economicsCountEl) economicsCountEl.textContent = `8 Books`;
+if (economicsCountEl) economicsCountEl.textContent = `9 Books`;
 
 const historyCountEl = document.getElementById('historyCount');
 if (historyCountEl) historyCountEl.textContent = `51 Books`;
 
 const biographiesCountEl = document.getElementById('biographiesCount');
-if (biographiesCountEl) biographiesCountEl.textContent = `35 Books`;
+if (biographiesCountEl) biographiesCountEl.textContent = `36 Books`;
 
 const generalCountEl = document.getElementById('generalCount');
 if (generalCountEl) generalCountEl.textContent = `15 Books`;
