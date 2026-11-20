@@ -91,6 +91,11 @@ const miscellaneousBooks = [
     "The_AI_Act_Playbook_-_Jordan_Bradford.pdf",
     "Breaking_the_Mould_-_Rajan_G_Raghuram.pdf",
     "The_Man_Who_Knew_Infinity_-_Robert_Kanigel.pdf",
+    "Navigations_-_Malyn_Newitt.pdf",
+    "The_Dutch_East_India_Company_-_Hourly_History.pdf",
+    "The_Dutch_East_India_Company__The_History_-_Charles_River_Editors.pdf",
+    "The_Goa_Inquisition_-_AK_Priolkar.pdf",
+    "The_Indian_Financial_System_-_Bharati_V_Pathak.pdf",
     "I_do_what_I_do_-_Raghuram_Rajan.pdf",
     "Incredible_Indians_75_People_Who_Shaped_Modern_India_-_Ashwitha_Jayakumar.pdf",
     "India_and_Pakistan_-_Stanley_Wolpert.pdf",
@@ -541,10 +546,10 @@ const tnCountEl = document.getElementById('tnCount');
 if (tnCountEl) tnCountEl.textContent = `264 Books`;
 
 const economicsCountEl = document.getElementById('economicsCount');
-if (economicsCountEl) economicsCountEl.textContent = `9 Books`;
+if (economicsCountEl) economicsCountEl.textContent = `10 Books`;
 
 const historyCountEl = document.getElementById('historyCount');
-if (historyCountEl) historyCountEl.textContent = `51 Books`;
+if (historyCountEl) historyCountEl.textContent = `55 Books`;
 
 const biographiesCountEl = document.getElementById('biographiesCount');
 if (biographiesCountEl) biographiesCountEl.textContent = `36 Books`;
