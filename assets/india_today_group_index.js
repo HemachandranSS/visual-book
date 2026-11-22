@@ -534,7 +534,8 @@ const indiaTodayGroupBooks = [
     "https://hemachandranss.github.io/books27/books/visual-books/02112026-md-hr",
     "https://hemachandranss.github.io/books30/books/visual-books/09112026-md-hr",
     "https://hemachandranss.github.io/books30/books/visual-books/16112026-md-hr",
-    "https://hemachandranss.github.io/books30/books/visual-books/23112026-md-hr"
+    "https://hemachandranss.github.io/books30/books/visual-books/23112026-md-hr",
+    "https://hemachandranss.github.io/books31/books/visual-books/30112026-md-hr"
 
 ];
 

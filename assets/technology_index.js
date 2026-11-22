@@ -65,6 +65,19 @@ const technologyBooks = [
     'https://hemachandranss.github.io/books24/books/visual-books/Django_in_Action_-_Christopher_Trudeau',
     'https://hemachandranss.github.io/books24/books/visual-books/DuckDB_in_Action_-_Mark_Needham',
     'https://hemachandranss.github.io/books25/books/visual-books/Elasticsearch_in_Action_-_Madhusudhan_Konda',
+    'https://hemachandranss.github.io/books31/books/visual-books/AI_for_Healthcare_-_Thomas_Klein',
+    'https://hemachandranss.github.io/books31/books/visual-books/Application_of_Generative_AI_in_Healthcare_-_Azadeh_Zamanifar',
+    'https://hemachandranss.github.io/books31/books/visual-books/Data_Science_for_Healthcare_-_Nitin_Singh',
+    'https://hemachandranss.github.io/books31/books/visual-books/Explainable_AI_in_the_Healthcare_Industry_-_Abhishek_Kumar',
+    'https://hemachandranss.github.io/books31/books/visual-books/Generative_AI_in_Healthcare_-_Rajendra_Kumar',
+    'https://hemachandranss.github.io/books31/books/visual-books/Hacking_Healthcare_-_Fred_Trotter',
+    'https://hemachandranss.github.io/books31/books/visual-books/Healthcare_Informatics_with_Explainable_AI_-_Philip_Eappen',
+    'https://hemachandranss.github.io/books31/books/visual-books/Health_Care_Information_Systems_5th_edition_-_Wager',
+    'https://hemachandranss.github.io/books31/books/visual-books/HL7_For_Busy_Professionals_-_Rahul_Bhagat',
+    'https://hemachandranss.github.io/books31/books/visual-books/Industry_50_for_Smart_Healthcare_Technologies_-_Sherin_Zafar',
+    'https://hemachandranss.github.io/books31/books/visual-books/mark-l-braunstein-health-informatics-on-fhir-how-hl7x27s-new-api-is-transforming-healthcare-2018-springer-international-publishing-pdf-free',
+    'https://hemachandranss.github.io/books31/books/visual-books/Transforming_Healthcare_With_AI_And_IoT_-_Bal_Virdee',
+    'https://hemachandranss.github.io/books31/books/visual-books/Transforming_Healthcare_with_AI_-_Harvey_Castro_MD',
 ];
 
 const normalizeBookPath = (value) => {
@@ -140,6 +153,9 @@ if (mathCountEl) mathCountEl.textContent = '2 Books';
 
 const computingCountEl = document.getElementById('computingCount');
 if (computingCountEl) computingCountEl.textContent = '3 Books';
+
+const healthcareCountEl = document.getElementById('healthcareCount');
+if (healthcareCountEl) healthcareCountEl.textContent = '13 Books';
 
 // Show the "no books" empty state when the list is empty,
 // and hide the grid.
