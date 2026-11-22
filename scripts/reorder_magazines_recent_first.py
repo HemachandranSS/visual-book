@@ -135,46 +135,36 @@ def reverse_js_concat_arrays(path: Path, names: list[str]):
     path.write_text(content, encoding="utf-8")
 
 
-def reorder_india_today_group_html():
-    path = ROOT / "pages/india_today_group_index.html"
-    it = path.read_text(encoding="utf-8")
+def reorder_magazine_page(path: Path, section_title: str):
+    html = path.read_text(encoding="utf-8")
+    marker = f'<h2 class="section-title">{section_title}</h2>'
+    m_head = re.search(
+        rf'(<div class="section-head">\s*{re.escape(marker)}[\s\S]*?</div>\s*)',
+        html,
+    )
+    if not m_head:
+        raise SystemExit(f"{path.name}: {section_title} section missing")
 
-    m_bt = re.search(
-        r'(<div class="section-head">\s*<h2 class="section-title">Business Today</h2>[\s\S]*?</div>\s*)',
-        it,
-    )
-    m_it = re.search(
-        r'(<div class="section-head">\s*<h2 class="section-title">India Today</h2>\s*</div>)',
-        it,
-    )
-    if not m_bt or not m_it:
-        raise SystemExit("Business Today / India Today markers missing")
-
-    bt_prefix_end = m_bt.end()
-    it_start = m_it.start()
-    bt_body = it[bt_prefix_end:it_start]
-    it_tail_start = m_it.end()
-    m_close = re.search(
-        r'\n\s*</section>\s*\n\s*<div class="empty"',
-        it[it_tail_start:],
-    )
+    prefix_end = m_head.end()
+    m_close = re.search(r'\n\s*</section>\s*\n\s*<div class="empty"', html[prefix_end:])
     if not m_close:
-        raise SystemExit("India Today section end not found")
-    it_body = it[it_tail_start : it_tail_start + m_close.start()]
-    it_suffix = it[it_tail_start + m_close.start() :]
+        raise SystemExit(f"{path.name}: section end not found")
+    body = html[prefix_end : prefix_end + m_close.start()]
+    suffix = html[prefix_end + m_close.start() :]
+    html = html[:prefix_end] + reverse_year_month_structure(body) + suffix
+    path.write_text(html, encoding="utf-8")
 
-    it = (
-        it[:bt_prefix_end]
-        + reverse_year_month_structure(bt_body)
-        + it[it_start:it_tail_start]
-        + reverse_year_month_structure(it_body)
-        + it_suffix
+
+def reorder_india_today_group_pages():
+    reorder_magazine_page(
+        ROOT / "pages/business_today_index.html", "Business Today"
     )
-    path.write_text(it, encoding="utf-8")
+    reorder_magazine_page(ROOT / "pages/india_today_index.html", "India Today")
+    reorder_magazine_page(ROOT / "pages/auto_today_index.html", "Auto Today")
 
 
 def main():
-    reorder_india_today_group_html()
+    reorder_india_today_group_pages()
 
     for page in ("digit_index.html", "osfy_index.html", "efy_index.html"):
         reverse_single_grid_html(ROOT / "pages" / page)
@@ -187,7 +177,7 @@ def main():
         ["books5Files", "books6Files", "books30Files"],
     )
 
-    print("Reordered: india_today_group, digit, osfy, efy (HTML + JS where applicable).")
+    print("Reordered: business/india/auto today, digit, osfy, efy (HTML + JS where applicable).")
 
 
 if __name__ == "__main__":
