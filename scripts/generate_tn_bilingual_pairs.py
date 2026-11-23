@@ -48,6 +48,23 @@ def pair_key(stem: str, title: str) -> str:
     return s or t
 
 
+def standard_rank(title: str, book_path: str) -> int:
+    """Return class number 1–12 from title or folder name; 99 if unknown."""
+    blob = f"{title} {book_path}"
+    m = re.search(r"\b(\d+)(?:st|nd|rd|th)\b", blob, re.I)
+    if m:
+        n = int(m.group(1))
+        if 1 <= n <= 12:
+            return n
+    for pat in (r"\b(\d+)th_Std\b", r"\b(\d+)st_Std\b"):
+        m = re.search(pat, blob, re.I)
+        if m:
+            n = int(m.group(1))
+            if 1 <= n <= 12:
+                return n
+    return 99
+
+
 def extract_tn_cards(html: str) -> list[dict]:
     start = html.find("TN School Books 2020 Edition")
     end = html.find('<div class="empty"', start)
@@ -82,7 +99,7 @@ def build_pairs(cards: list[dict]) -> list[dict]:
             tm_by_key.setdefault(c["key"], c)
 
     pairs = []
-    for key, em in sorted(em_by_key.items()):
+    for key, em in em_by_key.items():
         tm = tm_by_key.get(key)
         if not tm:
             continue
@@ -94,6 +111,12 @@ def build_pairs(cards: list[dict]) -> list[dict]:
                 "bookTm": tm["book"],
             }
         )
+    pairs.sort(
+        key=lambda p: (
+            standard_rank(p["title"], p["bookEm"]),
+            p["title"].lower(),
+        )
+    )
     return pairs
 
 
