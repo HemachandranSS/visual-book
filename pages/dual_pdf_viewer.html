@@ -85,11 +85,18 @@
         let scale = 1.2;
         let totalPages = 0;
         let bookMode = false;
+        let bilingualPairMode = false;
         let bookPages = [];
         let bookPageBuffers = [];
         let bookFolderPath = '';
         let bookHasMore = true;
         let bookTotalPagesResolved = false;
+        let bookFolderPathTm = '';
+        let bookPageBuffersTm = [];
+        let bookHasMoreTm = true;
+        let bookTotalPagesResolvedTm = false;
+        let emTotalPages = 0;
+        let tmTotalPages = 0;
         let hasZoomed = false;
         let zoomAnchor = null;
         let hasLoadedInitialView = false;
@@ -121,6 +128,8 @@
 
         const params = new URLSearchParams(window.location.search);
         const bookName = normalizeBookFolder(params.get('book'));
+        const bookEmParam = normalizeBookFolder(params.get('bookEm'));
+        const bookTmParam = normalizeBookFolder(params.get('bookTm'));
         const pdfParam = params.get('pdf');
         let headerHideTimer = null;
         let headerPinned = false;
@@ -274,7 +283,14 @@
         header.classList.add('is-hidden');
         clearTimeout(headerHideTimer);
 
-        if (bookName) {
+        if (bookEmParam && bookTmParam) {
+            bilingualPairMode = true;
+            bookMode = true;
+            subtitle.textContent = 'English (left) · Tamil (right) — same page number';
+            bookBadge.style.display = 'inline-flex';
+            bookBadge.textContent = 'EN + TA';
+            loadBilingualPairFromFolders(bookEmParam, bookTmParam);
+        } else if (bookName) {
             bookMode = true;
             subtitle.textContent = 'Loading pages from a book folder';
             bookBadge.style.display = 'inline-flex';
@@ -407,6 +423,39 @@
             }
         }
 
+        async function loadBilingualPairFromFolders(emFolder, tmFolder) {
+            showLoading();
+            try {
+                bookFolderPath = normalizeBookFolder(emFolder);
+                bookFolderPathTm = normalizeBookFolder(tmFolder);
+                bookPages = [];
+                bookPageBuffers = [];
+                bookPageBuffersTm = [];
+                bookHasMore = true;
+                bookHasMoreTm = true;
+                bookTotalPagesResolved = false;
+                bookTotalPagesResolvedTm = false;
+                emTotalPages = 0;
+                tmTotalPages = 0;
+                pdfDoc = null;
+                hasZoomed = false;
+                pageRotation = 0;
+                totalPages = 0;
+                currentPage = 1;
+                hideLoading();
+                subtitle.textContent = `${titleize(bookFolderPath)} ↔ ${titleize(bookFolderPathTm)}`;
+                pageInfo.textContent = 'Page 1';
+                countBookPagesInBackground(bookFolderPath, 'em');
+                countBookPagesInBackground(bookFolderPathTm, 'tm');
+                renderBilingualPairPages();
+                updateNavigationButtons();
+            } catch (error) {
+                console.error('Error loading bilingual pair:', error);
+                alert('Could not load the English/Tamil book pair.');
+                hideLoading();
+            }
+        }
+
         function showLoading() {
             welcomeMessage.style.display = 'none';
             loadingMessage.style.display = 'block';
@@ -465,50 +514,102 @@
             settleViewportAfterRender();
         }
 
+        async function renderBilingualPairPages() {
+            mainContent.classList.toggle('zoomed-state', hasZoomed);
+            const nextContainer = document.createElement('div');
+            nextContainer.className = 'pages-container dual-page-container';
+
+            await renderBookPageForFolder(bookFolderPath, currentPage, 'left', nextContainer, bookPageBuffers, 'em');
+            await renderBookPageForFolder(bookFolderPathTm, currentPage, 'right', nextContainer, bookPageBuffersTm, 'tm');
+            swapPagesContainer(nextContainer);
+            prefetchBilingualSpread();
+            settleViewportAfterRender();
+        }
+
         async function renderBookPage(pageNum, position, targetContainer) {
             const buffer = await getBookPageBuffer(pageNum);
             if (!buffer) return;
             await renderPdfBuffer(buffer, position, targetContainer);
         }
 
+        async function renderBookPageForFolder(folder, pageNum, position, targetContainer, buffers, side) {
+            const buffer = await getBookPageBufferForFolder(folder, pageNum, buffers, side);
+            if (!buffer) return;
+            await renderPdfBuffer(buffer, position, targetContainer);
+        }
+
         async function getBookPageBuffer(pageNum) {
-            if (pageNum <= 0) return null;
-            if (bookPageBuffers[pageNum - 1]) {
-                return bookPageBuffers[pageNum - 1];
+            return getBookPageBufferForFolder(bookFolderPath, pageNum, bookPageBuffers, 'em');
+        }
+
+        async function getBookPageBufferForFolder(folder, pageNum, buffers, side) {
+            if (pageNum <= 0 || !folder) return null;
+            if (buffers[pageNum - 1]) {
+                return buffers[pageNum - 1];
             }
-            if (!bookHasMore && pageNum > bookPages.length) {
+            const hasMore = side === 'tm' ? bookHasMoreTm : bookHasMore;
+            if (!hasMore && pageNum > buffers.length) {
                 return null;
             }
 
-            const pageUrl = new URL(`${normalizeBookFolder(bookFolderPath)}/${pageNum}.pdf`, window.location.origin + '/').toString();
+            const pageUrl = new URL(`${normalizeBookFolder(folder)}/${pageNum}.pdf`, window.location.origin + '/').toString();
             const response = await fetch(pageUrl, { method: 'GET' });
             if (!response.ok) {
-                bookHasMore = false;
+                if (side === 'tm') bookHasMoreTm = false;
+                else bookHasMore = false;
                 return null;
             }
 
-            bookPages[pageNum - 1] = pageUrl;
             const buffer = new Uint8Array(await response.arrayBuffer());
-            bookPageBuffers[pageNum - 1] = buffer;
-            totalPages = Math.max(totalPages, pageNum);
+            buffers[pageNum - 1] = buffer;
+            if (bilingualPairMode) {
+                syncBilingualTotalPages();
+            } else {
+                totalPages = Math.max(totalPages, pageNum);
+            }
             return buffer;
         }
 
-        function countBookPagesInBackground() {
-            const encodedFolder = normalizeBookFolder(bookFolderPath);
+        function syncBilingualTotalPages() {
+            const loadedMax = Math.max(bookPageBuffers.length, bookPageBuffersTm.length);
+            if (bookTotalPagesResolved && bookTotalPagesResolvedTm) {
+                totalPages = Math.min(emTotalPages, tmTotalPages);
+            } else {
+                totalPages = Math.max(totalPages, loadedMax);
+            }
+            updatePageInfo();
+            updateNavigationButtons();
+        }
+
+        function countBookPagesInBackground(folder = bookFolderPath, side = 'em') {
+            const encodedFolder = normalizeBookFolder(folder);
             let pageNum = 1;
 
             const probeNext = () => {
-                if (!bookMode || encodedFolder !== normalizeBookFolder(bookFolderPath)) return;
+                if (!bookMode) return;
+                if (side === 'tm' && encodedFolder !== normalizeBookFolder(bookFolderPathTm)) return;
+                if (side === 'em' && !bilingualPairMode && encodedFolder !== normalizeBookFolder(bookFolderPath)) return;
+                if (side === 'em' && bilingualPairMode && encodedFolder !== normalizeBookFolder(bookFolderPath)) return;
 
                 const pageUrl = new URL(`${encodedFolder}/${pageNum}.pdf`, window.location.origin + '/').toString();
                 fetch(pageUrl, { method: 'HEAD', cache: 'no-store' })
                     .then((response) => {
                         if (!response.ok) {
-                            totalPages = pageNum - 1;
-                            bookTotalPagesResolved = true;
-                            updatePageInfo();
-                            updateNavigationButtons();
+                            const count = pageNum - 1;
+                            if (side === 'tm') {
+                                tmTotalPages = count;
+                                bookTotalPagesResolvedTm = true;
+                            } else {
+                                emTotalPages = count;
+                                bookTotalPagesResolved = true;
+                            }
+                            if (bilingualPairMode) {
+                                syncBilingualTotalPages();
+                            } else {
+                                totalPages = count;
+                                updatePageInfo();
+                                updateNavigationButtons();
+                            }
                             return;
                         }
 
@@ -516,10 +617,22 @@
                         probeNext();
                     })
                     .catch(() => {
-                        totalPages = Math.max(totalPages, pageNum - 1);
-                        bookTotalPagesResolved = true;
-                        updatePageInfo();
-                        updateNavigationButtons();
+                        const count = Math.max(pageNum - 1, 0);
+                        if (side === 'tm') {
+                            tmTotalPages = count;
+                            bookTotalPagesResolvedTm = true;
+                        } else {
+                            emTotalPages = count;
+                            bookTotalPagesResolved = true;
+                        }
+                        if (bilingualPairMode) {
+                            syncBilingualTotalPages();
+                        } else {
+                            totalPages = Math.max(totalPages, count);
+                            bookTotalPagesResolved = true;
+                            updatePageInfo();
+                            updateNavigationButtons();
+                        }
                     });
             };
 
@@ -527,7 +640,7 @@
         }
 
         function prefetchNextBookSpread() {
-            if (!bookMode || !bookHasMore) return;
+            if (!bookMode || bilingualPairMode || !bookHasMore) return;
 
             const nextPage = currentPage === 1 ? 2 : currentPage + 2;
             if (nextPage <= 0 || bookPageBuffers[nextPage - 1]) return;
@@ -536,6 +649,15 @@
                 getBookPageBuffer(nextPage).catch((error) => {
                     console.warn('Prefetch failed:', error);
                 });
+            }, 0);
+        }
+
+        function prefetchBilingualSpread() {
+            if (!bilingualPairMode) return;
+            const nextPage = currentPage + 1;
+            setTimeout(() => {
+                getBookPageBufferForFolder(bookFolderPath, nextPage, bookPageBuffers, 'em').catch(() => {});
+                getBookPageBufferForFolder(bookFolderPathTm, nextPage, bookPageBuffersTm, 'tm').catch(() => {});
             }, 0);
         }
 
@@ -609,18 +731,18 @@
 
         function showPrevPage() {
             if (currentPage > 1) {
-                if (currentPage === 2) {
-                    // Go back to single first page
+                if (bilingualPairMode) {
+                    currentPage -= 1;
+                    renderBilingualPairPages();
+                } else if (currentPage === 2) {
                     currentPage = 1;
+                    if (bookMode) renderBookPages();
+                    else renderPages();
                 } else {
-                    // Normal dual page navigation
                     currentPage -= 2;
                     if (currentPage < 2) currentPage = 2;
-                }
-                if (bookMode) {
-                    renderBookPages();
-                } else {
-                    renderPages();
+                    if (bookMode) renderBookPages();
+                    else renderPages();
                 }
                 updatePageInfo();
                 updateNavigationButtons();
@@ -628,13 +750,23 @@
         }
 
         function showNextPage() {
+            if (bilingualPairMode) {
+                const canAdvance = totalPages
+                    ? currentPage < totalPages
+                    : bookHasMore || bookHasMoreTm;
+                if (!canAdvance) return;
+                currentPage += 1;
+                renderBilingualPairPages();
+                updatePageInfo();
+                updateNavigationButtons();
+                return;
+            }
+
             const canAdvance = bookMode ? (currentPage === 1 || bookHasMore || currentPage + 1 < bookPages.length) : currentPage < totalPages;
             if (canAdvance) {
                 if (currentPage === 1) {
-                    // Go from single first page to dual pages starting at page 2
                     currentPage = 2;
                 } else {
-                    // Normal dual page navigation
                     currentPage += 2;
                     if (!bookMode && currentPage > totalPages) currentPage = totalPages - 1;
                 }
@@ -709,6 +841,12 @@
 
         function updatePageInfo() {
             if (pdfDoc || bookMode) {
+                if (bilingualPairMode) {
+                    pageInfo.textContent = totalPages
+                        ? `Page ${currentPage} of ${totalPages} (EN · TA)`
+                        : `Page ${currentPage} (EN · TA)`;
+                    return;
+                }
                 if (currentPage === 1) {
                     pageInfo.textContent = bookMode && !totalPages ? `Page 1` : `Page 1 of ${totalPages}`;
                 } else {
@@ -729,7 +867,12 @@
         function updateNavigationButtons() {
             const hasDocument = pdfDoc || bookMode;
             const atFirst = !hasDocument || currentPage <= 1;
-            const atLast = !hasDocument || (!bookMode && currentPage >= totalPages) || (bookMode && !(currentPage === 1 || bookHasMore || currentPage + 1 < bookPages.length));
+            let atLast;
+            if (bilingualPairMode) {
+                atLast = !hasDocument || (totalPages ? currentPage >= totalPages : !bookHasMore && !bookHasMoreTm);
+            } else {
+                atLast = !hasDocument || (!bookMode && currentPage >= totalPages) || (bookMode && !(currentPage === 1 || bookHasMore || currentPage + 1 < bookPages.length));
+            }
             prevBtn.disabled = atFirst;
             nextBtn.disabled = atLast;
             mobilePrevBtn.disabled = atFirst;
@@ -743,6 +886,11 @@
 
         function clampBookPageToTotal() {
             if (!bookMode || !totalPages) return;
+            if (bilingualPairMode) {
+                if (currentPage > totalPages) currentPage = totalPages;
+                if (currentPage < 1) currentPage = 1;
+                return;
+            }
             if (currentPage > totalPages) {
                 currentPage = totalPages === 1 ? 1 : (totalPages % 2 === 0 ? totalPages - 1 : totalPages);
             }
@@ -752,7 +900,9 @@
         }
 
         function rerenderCurrentView() {
-            if (bookMode) {
+            if (bilingualPairMode) {
+                renderBilingualPairPages();
+            } else if (bookMode) {
                 renderBookPages();
             } else if (pdfDoc) {
                 renderPages();
