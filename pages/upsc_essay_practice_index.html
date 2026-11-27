@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPSC Essay Practice</title>
+    <link rel="stylesheet" href="../assets/index.css">
+    <link rel="stylesheet" href="../assets/login.css" />
+    <script src="../assets/login.js"></script>
+    <style>
+        .top-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 0 0 24px;
+        }
+
+        .top-nav a {
+            color: var(--muted);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--panel-border);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .top-nav a:hover {
+            color: var(--text);
+        }
+
+        .meta {
+            margin: 0 0 20px;
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .meta a {
+            color: var(--accent);
+        }
+
+        #search {
+            width: 100%;
+            max-width: 36rem;
+            margin: 0 0 20px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1px solid var(--panel-border);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .essay-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .entry {
+            padding: 18px 20px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--panel-border);
+        }
+
+        .entry-head {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: baseline;
+            justify-content: space-between;
+            margin: 0 0 10px;
+        }
+
+        .entry-date {
+            margin: 0;
+            color: var(--accent);
+            font-size: 0.92rem;
+        }
+
+        .entry a.source {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .topics {
+            margin: 0;
+            padding-left: 1.25rem;
+            line-height: 1.65;
+        }
+
+        .topics li + li {
+            margin-top: 6px;
+        }
+
+        .status {
+            color: var(--muted);
+        }
+    </style>
+</head>
+
+<body>
+    <main class="page">
+        <section class="hero">
+            <h1>UPSC Essay Practice</h1>
+            <p>Archived weekly essay prompts from a public Mains practice index (newest first).</p>
+        </section>
+
+        <nav class="top-nav" aria-label="Related">
+            <a href="upsc_syllabus.html">UPSC Syllabus</a>
+            <a href="upsc_mains_questions_index.html">Mains PYQ</a>
+        </nav>
+
+        <p class="meta" id="metaLine">Loading…</p>
+        <input type="search" id="search" placeholder="Search essay topics or dates…" autocomplete="off" disabled>
+        <p class="status" id="status" hidden></p>
+        <div class="essay-list" id="list"></div>
+    </main>
+
+    <script>
+        const listEl = document.getElementById("list");
+        const metaEl = document.getElementById("metaLine");
+        const searchEl = document.getElementById("search");
+        const statusEl = document.getElementById("status");
+        let allEntries = [];
+
+        function render(entries) {
+            listEl.innerHTML = entries.map(function (entry) {
+                const topics = (entry.topics || []).map(function (t) {
+                    return "<li>" + escapeHtml(t) + "</li>";
+                }).join("");
+                const source = entry.url
+                    ? '<a class="source" href="' + escapeHtml(entry.url) + '" target="_blank" rel="noopener noreferrer">Original page</a>'
+                    : "";
+                return (
+                    '<article class="entry">' +
+                    '<div class="entry-head">' +
+                    '<p class="entry-date">' + escapeHtml(entry.dateLabel || entry.date || "") + "</p>" +
+                    source +
+                    "</div>" +
+                    '<ol class="topics">' + topics + "</ol>" +
+                    "</article>"
+                );
+            }).join("");
+            statusEl.hidden = true;
+        }
+
+        function escapeHtml(text) {
+            return String(text)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;");
+        }
+
+        function applyFilter() {
+            const q = searchEl.value.trim().toLowerCase();
+            if (!q) {
+                render(allEntries);
+                return;
+            }
+            const filtered = allEntries.filter(function (entry) {
+                const blob = [entry.dateLabel, entry.date].concat(entry.topics || []).join(" ").toLowerCase();
+                return blob.indexOf(q) !== -1;
+            });
+            render(filtered);
+            statusEl.hidden = false;
+            statusEl.textContent = filtered.length + " of " + allEntries.length + " sets match.";
+        }
+
+        fetch("../assets/upsc_essay_practice_topics.json")
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+                allEntries = data.entries || [];
+                const topicCount = allEntries.reduce(function (n, e) {
+                    return n + (e.topics ? e.topics.length : 0);
+                }, 0);
+                const listed = data.totalListedOnSite != null ? data.totalListedOnSite : data.count;
+                metaEl.innerHTML =
+                    "<strong>" + data.count + "</strong> practice sets" +
+                    (listed && listed !== data.count ? " (source index lists " + listed + ")" : "") +
+                    " · <strong>" + topicCount + "</strong> prompts · " +
+                    (data.source
+                        ? '<a href="' + escapeHtml(data.source) + '" target="_blank" rel="noopener noreferrer">Source index</a> · '
+                        : "") +
+                    "updated " + escapeHtml(data.scrapedAt || "") +
+                    ". Refresh: <code>python3 scripts/scrape_upsc_essay_practice.py</code>.";
+                searchEl.disabled = false;
+                render(allEntries);
+            })
+            .catch(function (err) {
+                metaEl.textContent = "Could not load essay topics JSON.";
+                console.error(err);
+            });
+
+        searchEl.addEventListener("input", applyFilter);
+    </script>
+</body>
+
+</html>
